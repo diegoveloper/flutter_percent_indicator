@@ -33,6 +33,7 @@ There is a example project in the `example` folder. Check it out. Otherwise, kee
 ## Usage
 
 **Circular percent indicator**
+
 Basic Widget
 ```dart
 new CircularPercentIndicator(
@@ -167,6 +168,7 @@ Complete example
 
 
 **Linear percent indicator**
+
 Basic Widget
 ```dart
 new LinearPercentIndicator(

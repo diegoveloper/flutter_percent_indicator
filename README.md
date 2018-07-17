@@ -2,7 +2,7 @@
 
 Circular and Linear percent indicators
 
-<img src="art/screen1.png" alt="drawing" width="230px" hspace="30"/>  <img src="art/screen2.png" alt="drawing" width="230px"/> 
+<img src="https://image.ibb.co/doViid/screen1.png" alt="drawing" width="230px" hspace="30"/>  <img src="https://image.ibb.co/bszyGy/screen2.png" alt="drawing" width="230px"/> 
 
 ## Features
 

@@ -1,12 +1,15 @@
 name: percent_indicator
-description: A new flutter package project.
+description: Circular and Linear percent indicator
 version: 1.0.0
-author: diegoveloper
+author: Diego Velásquez <diegoveloper@gmail.com>
 homepage: https://github.com/diegoveloper/flutter_percent_indicator/
 
 dependencies:
   flutter:
     sdk: flutter
+
+environment:
+    sdk: ">=1.19.0 <2.0.0"    
 
 dev_dependencies:
   flutter_test:

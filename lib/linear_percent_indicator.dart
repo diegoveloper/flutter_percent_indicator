@@ -1,4 +1,4 @@
-part of percent_indicator;
+import 'package:flutter/material.dart';
 
 enum LinearStrokeCap { butt, round, roundAll }
 
@@ -9,6 +9,7 @@ class LinearPercentIndicator extends StatefulWidget {
 
   ///Height of the line
   final double lineHeight;
+
   ///First color applied to the complete line
   final Color backgroundColor;
   final Color progressColor;
@@ -51,12 +52,11 @@ class LinearPercentIndicator extends StatefulWidget {
   }
 
   @override
-  _LinearPercentIndicatorState createState() =>
-      _LinearPercentIndicatorState();
+  _LinearPercentIndicatorState createState() => _LinearPercentIndicatorState();
 }
 
 class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   AnimationController _animationController;
   Animation _animation;
   double _percent = 0.0;
@@ -75,12 +75,13 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
       _animationController = new AnimationController(
           vsync: this,
           duration: Duration(milliseconds: widget.animationDuration));
-      _animation = new Tween(begin: 0.0, end: widget.percent).animate(_animationController)
-        ..addListener(() {
-          setState(() {
-            _percent = _animation.value;
-          });
-        });
+      _animation = new Tween(begin: 0.0, end: widget.percent)
+          .animate(_animationController)
+            ..addListener(() {
+              setState(() {
+                _percent = _animation.value;
+              });
+            });
       _animationController.forward();
     } else {
       _updateProgress();
@@ -110,11 +111,12 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
   Widget build(BuildContext context) {
     var items = new List<Widget>();
     if (widget.leading != null) {
-      items.add(Padding(padding: EdgeInsets.only(right: 5.0), child: widget.leading)) ;
+      items.add(
+          Padding(padding: EdgeInsets.only(right: 5.0), child: widget.leading));
     }
     items.add(Container(
         width: widget.width,
-        height: widget.lineHeight*2,
+        height: widget.lineHeight * 2,
         child: CustomPaint(
           painter: LinearPainter(
               progress: _percent,
@@ -128,16 +130,17 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
         )));
 
     if (widget.trailing != null) {
-      items.add(Padding(padding: EdgeInsets.only(left: 5.0), child: widget.trailing)) ;
+      items.add(
+          Padding(padding: EdgeInsets.only(left: 5.0), child: widget.trailing));
     }
 
     return Material(
       child: new Container(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: items,
-          )),
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: items,
+      )),
     );
   }
 }
@@ -176,10 +179,11 @@ class LinearPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final start = Offset(0.0, size.height/2);
-    final end = Offset(size.width , size.height/2 );
+    final start = Offset(0.0, size.height / 2);
+    final end = Offset(size.width, size.height / 2);
     canvas.drawLine(start, end, _paintBackground);
-    canvas.drawLine(start, Offset(size.width * progress,size.height/2), _paintLine);
+    canvas.drawLine(
+        start, Offset(size.width * progress, size.height / 2), _paintLine);
   }
 
   @override

@@ -2,7 +2,9 @@
 
 Circular and Linear percent indicators
 
+<p align="center">
 <img src="https://image.ibb.co/doViid/screen1.png" alt="drawing" width="230px" hspace="30"/>  <img src="https://image.ibb.co/bszyGy/screen2.png" alt="drawing" width="230px"/> 
+</p>
 
 ## Features
 
@@ -21,7 +23,7 @@ Circular and Linear percent indicators
 You should ensure that you add the router as a dependency in your flutter project.
 ```yaml
 dependencies:
- percent_indicator: "^1.0.0"
+ percent_indicator: "^1.0.2"
 ```
 
 You should then run `flutter packages upgrade` or update your packages in IntelliJ.

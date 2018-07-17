@@ -1,4 +1,5 @@
-part of percent_indicator;
+import 'package:flutter/material.dart';
+import 'package:vector_math/vector_math_64.dart' as math;
 
 enum CircularStrokeCap { butt, round, square }
 

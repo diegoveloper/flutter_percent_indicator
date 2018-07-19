@@ -21,6 +21,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
               padding: EdgeInsets.all(15.0),
               child: new LinearPercentIndicator(
                 width: 140.0,
+                fillColor: Colors.green,
                 lineHeight: 14.0,
                 percent: 0.5,
                 center: Text(

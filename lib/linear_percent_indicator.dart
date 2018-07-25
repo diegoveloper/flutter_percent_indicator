@@ -12,6 +12,7 @@ class LinearPercentIndicator extends StatefulWidget {
 
   ///Color of the background of the Line , default = transparent
   final Color fillColor;
+
   ///First color applied to the complete line
   final Color backgroundColor;
   final Color progressColor;
@@ -139,12 +140,12 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
 
     return Material(
       child: new Container(
-        color: widget.fillColor,
+          color: widget.fillColor,
           child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: items,
-      )),
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: items,
+          )),
     );
   }
 }

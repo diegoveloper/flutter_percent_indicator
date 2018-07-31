@@ -34,11 +34,11 @@ class LinearPercentIndicator extends StatefulWidget {
 
   ///The kind of finish to place on the end of lines drawn, values supported: butt, round, roundAll
   final LinearStrokeCap linearStrokeCap;
-  
+
   ///alignment of the Row (leading-widget-center-trailing)
   final MainAxisAlignment alignment;
 
-  ///padding to the LinearPercentIndicator 
+  ///padding to the LinearPercentIndicator
   final EdgeInsets padding;
 
   LinearPercentIndicator(
@@ -56,8 +56,7 @@ class LinearPercentIndicator extends StatefulWidget {
       this.center,
       this.linearStrokeCap,
       this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
-      this.alignment =  MainAxisAlignment.start
-      })
+      this.alignment = MainAxisAlignment.start})
       : super(key: key) {
     if (percent < 0.0 || percent > 1.0) {
       throw new Exception("Percent value must be a double between 0.0 and 1.0");

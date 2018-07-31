@@ -1,3 +1,6 @@
+# 1.0.9
+- padding property was added for LinearPercentIndicator
+
 # 1.0.7, 1.0.8
 - alignment property was added for LinearPercentIndicator
 

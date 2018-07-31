@@ -38,6 +38,9 @@ class LinearPercentIndicator extends StatefulWidget {
   ///alignment of the Row (leading-widget-center-trailing)
   final MainAxisAlignment alignment;
 
+  ///padding to the LinearPercentIndicator 
+  final EdgeInsets padding;
+
   LinearPercentIndicator(
       {Key key,
       this.fillColor = Colors.transparent,
@@ -52,6 +55,7 @@ class LinearPercentIndicator extends StatefulWidget {
       this.trailing,
       this.center,
       this.linearStrokeCap,
+      this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
       this.alignment =  MainAxisAlignment.start
       })
       : super(key: key) {
@@ -126,6 +130,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
     items.add(Container(
         width: widget.width,
         height: widget.lineHeight * 2,
+        padding: widget.padding,
         child: CustomPaint(
           painter: LinearPainter(
               progress: _percent,

@@ -1,4 +1,4 @@
-# 1.0.7
+# 1.0.7, 1.0.8
 - alignment property was added for LinearPercentIndicator
 
 # 1.0.5, 1.0.6

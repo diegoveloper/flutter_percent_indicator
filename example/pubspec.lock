@@ -26,7 +26,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "1.0.6"
+    version: "1.0.7"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -45,6 +45,6 @@ packages:
       name: vector_math
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.6"
+    version: "2.0.8"
 sdks:
-  dart: ">=1.21.0 <=2.0.0-dev.69.0.flutter-937ee2e8ca"
+  dart: ">=2.0.0-dev.49.0 <=2.0.0-dev.69.3.flutter-937ee2e8ca"

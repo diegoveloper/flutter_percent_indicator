@@ -1,3 +1,6 @@
+# 1.0.7
+- alignment property was added for LinearPercentIndicator
+
 # 1.0.5, 1.0.6
 - fillColor property was added to LinearPercentIndicator
 

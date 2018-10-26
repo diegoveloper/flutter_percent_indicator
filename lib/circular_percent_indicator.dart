@@ -30,26 +30,26 @@ class CircularPercentIndicator extends StatefulWidget {
   ///widget at the bottom of the circle
   final Widget footer;
 
-  ///widget inside the circle
-  final Widget center;
+  ///widget inside the Line, an option to show a widget instead of numeric value
+  final Widget textValue;
 
   ///The kind of finish to place on the end of lines drawn, values supported: butt, round, square
   final CircularStrokeCap circularStrokeCap;
 
   CircularPercentIndicator(
       {Key key,
-      this.percent = 0.0,
-      this.lineWidth = 5.0,
-      @required this.radius,
-      this.fillColor = Colors.transparent,
-      this.backgroundColor = const Color(0xFFB8C7CB),
-      this.progressColor = Colors.red,
-      this.animation = false,
-      this.animationDuration = 500,
-      this.header,
-      this.footer,
-      this.center,
-      this.circularStrokeCap})
+        this.percent = 0.0,
+        this.lineWidth = 5.0,
+        @required this.radius,
+        this.fillColor = Colors.transparent,
+        this.backgroundColor = const Color(0xFFB8C7CB),
+        this.progressColor = Colors.red,
+        this.animation = false,
+        this.animationDuration = 500,
+        this.header,
+        this.footer,
+        this.textValue,
+        this.circularStrokeCap})
       : super(key: key) {
     if (percent < 0.0 || percent > 1.0) {
       throw Exception("Percent value must be a double between 0.0 and 1.0");
@@ -124,13 +124,14 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
         child: CustomPaint(
           painter: CirclePainter(
               progress: _percent,
+              center: widget.textValue,
               progressColor: widget.progressColor,
               backgroundColor: widget.backgroundColor,
               circularStrokeCap: widget.circularStrokeCap,
               radius: (widget.radius / 2) - widget.lineWidth / 2,
               lineWidth: widget.lineWidth),
-          child: (widget.center != null)
-              ? Center(child: widget.center)
+          child: (widget.textValue != null)
+              ? Center(child: widget.textValue)
               : Container(),
         )));
 
@@ -155,6 +156,7 @@ class CirclePainter extends CustomPainter {
   final Paint _paintLine = Paint();
   final lineWidth;
   final progress;
+  final center;
   final radius;
   final Color progressColor;
   final Color backgroundColor;
@@ -162,11 +164,12 @@ class CirclePainter extends CustomPainter {
 
   CirclePainter(
       {this.lineWidth,
-      this.progress,
-      @required this.radius,
-      this.progressColor,
-      this.backgroundColor,
-      this.circularStrokeCap = CircularStrokeCap.round}) {
+        this.progress,
+        this.center,
+        @required this.radius,
+        this.progressColor,
+        this.backgroundColor,
+        this.circularStrokeCap = CircularStrokeCap.round}) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = lineWidth;
@@ -185,6 +188,9 @@ class CirclePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+
+    //print("Circular...   Texto = ${((this.center as AnimatedOpacity).child as Text).data == "0" ? "0.00" : ((this.center as AnimatedOpacity).child as Text).data} - Progress $progress");
+
     final center = Offset(size.width / 2, size.height / 2);
     canvas.drawCircle(center, radius, _paintBackground);
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius),

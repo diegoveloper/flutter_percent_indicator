@@ -29,8 +29,8 @@ class LinearPercentIndicator extends StatefulWidget {
   ///widget at the right of the Line
   final Widget trailing;
 
-  ///widget inside the Line, an option to show a widget instead of numeric value
-  final Widget textValue;
+  ///widget inside the circle
+  final Widget center;
 
   ///The kind of finish to place on the end of lines drawn, values supported: butt, round, roundAll
   final LinearStrokeCap linearStrokeCap;
@@ -53,7 +53,7 @@ class LinearPercentIndicator extends StatefulWidget {
         this.animationDuration = 500,
         this.leading,
         this.trailing,
-        this.textValue,
+        this.center,
         this.linearStrokeCap,
         this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
         this.alignment = MainAxisAlignment.start})
@@ -133,13 +133,13 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
         child: CustomPaint(
           painter: LinearPainter(
               progress: _percent,
-              center: widget.textValue,
+              center: widget.center,
               progressColor: widget.progressColor,
               backgroundColor: widget.backgroundColor,
               linearStrokeCap: widget.linearStrokeCap,
               lineWidth: widget.lineHeight),
-          child: (widget.textValue != null)
-              ? Center(child: widget.textValue)
+          child: (widget.center != null)
+              ? Center(child: widget.center)
               : Container(),
         )));
 

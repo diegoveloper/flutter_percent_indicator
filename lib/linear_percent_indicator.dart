@@ -29,7 +29,7 @@ class LinearPercentIndicator extends StatefulWidget {
   ///widget at the right of the Line
   final Widget trailing;
 
-  ///widget inside the circle
+  ///widget inside the Line
   final Widget center;
 
   ///The kind of finish to place on the end of lines drawn, values supported: butt, round, roundAll

@@ -32,6 +32,9 @@ class LinearPercentIndicator extends StatefulWidget {
   ///widget inside the Line
   final Widget center;
 
+  ///true if you want the center to have opacity animation
+  final bool animatedOpacityCenter;
+
   ///The kind of finish to place on the end of lines drawn, values supported: butt, round, roundAll
   final LinearStrokeCap linearStrokeCap;
 
@@ -41,34 +44,17 @@ class LinearPercentIndicator extends StatefulWidget {
   ///padding to the LinearPercentIndicator
   final EdgeInsets padding;
 
-  LinearPercentIndicator(
-      {Key key,
-        this.fillColor = Colors.transparent,
-        this.percent = 0.0,
-        this.lineHeight = 5.0,
-        @required this.width,
-        this.backgroundColor = const Color(0xFFB8C7CB),
-        this.progressColor = Colors.red,
-        this.animation = false,
-        this.animationDuration = 500,
-        this.leading,
-        this.trailing,
-        this.center,
-        this.linearStrokeCap,
-        this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
-        this.alignment = MainAxisAlignment.start})
-      : super(key: key) {
+  LinearPercentIndicator({Key key, this.fillColor = Colors.transparent, this.percent = 0.0, this.lineHeight = 5.0, @required this.width, this.backgroundColor = const Color(0xFFB8C7CB), this.progressColor = Colors.red, this.animation = false, this.animationDuration = 500, this.leading, this.trailing, this.center, this.animatedOpacityCenter = false, this.linearStrokeCap, this.padding = const EdgeInsets.symmetric(horizontal: 10.0), this.alignment = MainAxisAlignment.start}) : super(key: key) {
     if (percent < 0.0 || percent > 1.0) {
       throw new Exception("Percent value must be a double between 0.0 and 1.0");
     }
   }
 
   @override
-  _LinearPercentIndicatorState createState() => _LinearPercentIndicatorState();
+  LinearPercentIndicatorState createState() => LinearPercentIndicatorState();
 }
 
-class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
-    with SingleTickerProviderStateMixin {
+class LinearPercentIndicatorState extends State<LinearPercentIndicator> with SingleTickerProviderStateMixin {
   AnimationController _animationController;
   Animation _animation;
   double _percent = 0.0;
@@ -84,11 +70,8 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
   @override
   void initState() {
     if (widget.animation) {
-      _animationController = new AnimationController(
-          vsync: this,
-          duration: Duration(milliseconds: widget.animationDuration));
-      _animation = Tween(begin: 0.0, end: 1.0)
-          .animate(_animationController)
+      _animationController = new AnimationController(vsync: this, duration: Duration(milliseconds: widget.animationDuration));
+      _animation = Tween(begin: 0.0, end: 1.0).animate(_animationController)
         ..addListener(() {
           setState(() {
             _percent = widget.percent * _animation.value;
@@ -123,29 +106,27 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
   Widget build(BuildContext context) {
     var items = List<Widget>();
     if (widget.leading != null) {
-      items.add(
-          Padding(padding: EdgeInsets.only(right: 5.0), child: widget.leading));
+      items.add(Padding(padding: EdgeInsets.only(right: 5.0), child: widget.leading));
     }
     items.add(Container(
         width: widget.width,
         height: widget.lineHeight * 2,
         padding: widget.padding,
         child: CustomPaint(
-          painter: LinearPainter(
-              progress: _percent,
-              center: widget.center,
-              progressColor: widget.progressColor,
-              backgroundColor: widget.backgroundColor,
-              linearStrokeCap: widget.linearStrokeCap,
-              lineWidth: widget.lineHeight),
+          painter: LinearPainter(progress: _percent, center: widget.center, progressColor: widget.progressColor, backgroundColor: widget.backgroundColor, linearStrokeCap: widget.linearStrokeCap, lineWidth: widget.lineHeight),
           child: (widget.center != null)
-              ? Center(child: widget.center)
+              ? widget.animatedOpacityCenter
+                  ? AnimatedOpacity(
+                      opacity: executeFunction((widget.center as Text).data),
+                      duration: Duration(milliseconds: widget.animationDuration),
+                      child: Center(child: widget.center),
+                    )
+                  : Center(child: widget.center)
               : Container(),
         )));
 
     if (widget.trailing != null) {
-      items.add(
-          Padding(padding: EdgeInsets.only(left: 5.0), child: widget.trailing));
+      items.add(Padding(padding: EdgeInsets.only(left: 5.0), child: widget.trailing));
     }
 
     return Material(
@@ -159,6 +140,15 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
           )),
     );
   }
+
+  double executeFunction(String value) {
+    var result = _animation.value;
+    return result;
+  }
+
+  double executeFunction2() {
+    return _percent;
+  }
 }
 
 class LinearPainter extends CustomPainter {
@@ -171,13 +161,7 @@ class LinearPainter extends CustomPainter {
   final Color backgroundColor;
   final LinearStrokeCap linearStrokeCap;
 
-  LinearPainter(
-      {this.lineWidth,
-        this.progress,
-        this.center,
-        this.progressColor,
-        this.backgroundColor,
-        this.linearStrokeCap = LinearStrokeCap.butt}) {
+  LinearPainter({this.lineWidth, this.progress, this.center, this.progressColor, this.backgroundColor, this.linearStrokeCap = LinearStrokeCap.butt}) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = lineWidth;
@@ -197,10 +181,6 @@ class LinearPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-
-    //print("Linear.....   Text = ${(center as Text).data == "0" ? "0.00" : (center as Text).data} - Progress $progress");
-
-
     final start = Offset(0.0, size.height / 2);
     final end = Offset(size.width, size.height / 2);
     canvas.drawLine(start, end, _paintBackground);

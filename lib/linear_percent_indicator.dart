@@ -43,20 +43,20 @@ class LinearPercentIndicator extends StatefulWidget {
 
   LinearPercentIndicator(
       {Key key,
-        this.fillColor = Colors.transparent,
-        this.percent = 0.0,
-        this.lineHeight = 5.0,
-        @required this.width,
-        this.backgroundColor = const Color(0xFFB8C7CB),
-        this.progressColor = Colors.red,
-        this.animation = false,
-        this.animationDuration = 500,
-        this.leading,
-        this.trailing,
-        this.center,
-        this.linearStrokeCap,
-        this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
-        this.alignment = MainAxisAlignment.start})
+      this.fillColor = Colors.transparent,
+      this.percent = 0.0,
+      this.lineHeight = 5.0,
+      @required this.width,
+      this.backgroundColor = const Color(0xFFB8C7CB),
+      this.progressColor = Colors.red,
+      this.animation = false,
+      this.animationDuration = 500,
+      this.leading,
+      this.trailing,
+      this.center,
+      this.linearStrokeCap,
+      this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
+      this.alignment = MainAxisAlignment.start})
       : super(key: key) {
     if (percent < 0.0 || percent > 1.0) {
       throw new Exception("Percent value must be a double between 0.0 and 1.0");
@@ -87,8 +87,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
       _animationController = new AnimationController(
           vsync: this,
           duration: Duration(milliseconds: widget.animationDuration));
-      _animation = Tween(begin: 0.0, end: 1.0)
-          .animate(_animationController)
+      _animation = Tween(begin: 0.0, end: 1.0).animate(_animationController)
         ..addListener(() {
           setState(() {
             _percent = widget.percent * _animation.value;
@@ -173,16 +172,18 @@ class LinearPainter extends CustomPainter {
 
   LinearPainter(
       {this.lineWidth,
-        this.progress,
-        this.center,
-        this.progressColor,
-        this.backgroundColor,
-        this.linearStrokeCap = LinearStrokeCap.butt}) {
+      this.progress,
+      this.center,
+      this.progressColor,
+      this.backgroundColor,
+      this.linearStrokeCap = LinearStrokeCap.butt}) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = lineWidth;
 
-    _paintLine.color = progress.toString() == "0.0" ? progressColor.withOpacity(0.0) : progressColor;
+    _paintLine.color = progress.toString() == "0.0"
+        ? progressColor.withOpacity(0.0)
+        : progressColor;
     _paintLine.style = PaintingStyle.stroke;
     _paintLine.strokeWidth = lineWidth;
     if (linearStrokeCap == LinearStrokeCap.round) {
@@ -197,14 +198,13 @@ class LinearPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-
     //print("Linear.....   Text = ${(center as Text).data == "0" ? "0.00" : (center as Text).data} - Progress $progress");
-
 
     final start = Offset(0.0, size.height / 2);
     final end = Offset(size.width, size.height / 2);
     canvas.drawLine(start, end, _paintBackground);
-    canvas.drawLine(start, Offset(size.width * progress, size.height / 2), _paintLine);
+    canvas.drawLine(
+        start, Offset(size.width * progress, size.height / 2), _paintLine);
   }
 
   @override

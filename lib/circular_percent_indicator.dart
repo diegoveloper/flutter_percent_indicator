@@ -142,10 +142,10 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
       color: widget.fillColor,
       child: Container(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: items,
-          )),
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: items,
+      )),
     );
   }
 }

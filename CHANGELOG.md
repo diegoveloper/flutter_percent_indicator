@@ -1,3 +1,6 @@
+# 1.0.10
+- animation update bug fixed. Thanks @Tiagosito 
+
 # 1.0.9
 - padding property was added for LinearPercentIndicator
 

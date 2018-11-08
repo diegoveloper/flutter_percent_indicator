@@ -7,7 +7,7 @@ packages:
       name: collection
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.14.6"
+    version: "1.14.11"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -19,14 +19,14 @@ packages:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.5"
+    version: "1.1.6"
   percent_indicator:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "1.0.9"
+    version: "1.0.10"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -38,7 +38,7 @@ packages:
       name: typed_data
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.5"
+    version: "1.1.6"
   vector_math:
     dependency: transitive
     description:
@@ -47,4 +47,4 @@ packages:
     source: hosted
     version: "2.0.8"
 sdks:
-  dart: ">=2.0.0-dev.49.0 <=2.0.0-dev.69.3.flutter-937ee2e8ca"
+  dart: ">=2.0.0-dev.68.0 <3.0.0"

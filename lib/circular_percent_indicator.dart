@@ -36,10 +36,14 @@ class CircularPercentIndicator extends StatefulWidget {
   ///The kind of finish to place on the end of lines drawn, values supported: butt, round, square
   final CircularStrokeCap circularStrokeCap;
 
+  //the angle which the circle will start the progress (in degrees, eg: 0.0, 45.0, 90.0)
+  final double startAngle;
+
   CircularPercentIndicator(
       {Key key,
       this.percent = 0.0,
       this.lineWidth = 5.0,
+      this.startAngle = 0.0,
       @required this.radius,
       this.fillColor = Colors.transparent,
       this.backgroundColor = const Color(0xFFB8C7CB),
@@ -51,6 +55,7 @@ class CircularPercentIndicator extends StatefulWidget {
       this.center,
       this.circularStrokeCap})
       : super(key: key) {
+    assert(startAngle >= 0.0);
     if (percent < 0.0 || percent > 1.0) {
       throw Exception("Percent value must be a double between 0.0 and 1.0");
     }
@@ -97,7 +102,8 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
   @override
   void didUpdateWidget(CircularPercentIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.percent != widget.percent) {
+    if (oldWidget.percent != widget.percent ||
+        oldWidget.startAngle != widget.startAngle) {
       if (_animationController != null) {
         _animationController.forward(from: 0.0);
       } else {
@@ -126,6 +132,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
               progress: _percent,
               progressColor: widget.progressColor,
               backgroundColor: widget.backgroundColor,
+              startAngle: widget.startAngle,
               circularStrokeCap: widget.circularStrokeCap,
               radius: (widget.radius / 2) - widget.lineWidth / 2,
               lineWidth: widget.lineWidth),
@@ -159,6 +166,7 @@ class CirclePainter extends CustomPainter {
   final Color progressColor;
   final Color backgroundColor;
   final CircularStrokeCap circularStrokeCap;
+  final double startAngle;
 
   CirclePainter(
       {this.lineWidth,
@@ -166,6 +174,7 @@ class CirclePainter extends CustomPainter {
       @required this.radius,
       this.progressColor,
       this.backgroundColor,
+      this.startAngle = 0.0,
       this.circularStrokeCap = CircularStrokeCap.round}) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
@@ -187,8 +196,12 @@ class CirclePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
     canvas.drawCircle(center, radius, _paintBackground);
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius),
-        math.radians(-90.0), math.radians(progress), false, _paintLine);
+    canvas.drawArc(
+        Rect.fromCircle(center: center, radius: radius),
+        math.radians(-90.0 + startAngle),
+        math.radians(progress),
+        false,
+        _paintLine);
   }
 
   @override

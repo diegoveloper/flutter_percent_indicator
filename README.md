@@ -23,7 +23,7 @@ Circular and Linear percent indicators
 You should ensure that you add the router as a dependency in your flutter project.
 ```yaml
 dependencies:
- percent_indicator: "^1.0.10"
+ percent_indicator: "^1.0.11"
 ```
 
 You should then run `flutter packages upgrade` or update your packages in IntelliJ.
@@ -286,3 +286,6 @@ Complete example
 <p align="center">
   <img src="https://media.giphy.com/media/88j2PmdEqCrLq2pZxO/giphy.gif">
 </p>
+
+
+You can follow me on twitter [@diegoveloper](https://www.twitter.com/diegoveloper)

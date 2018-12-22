@@ -1,3 +1,6 @@
+# 1.0.11
+- startAngle for CircularPercentIndicator was added
+
 # 1.0.10
 - animation update bug fixed. Thanks @Tiagosito 
 

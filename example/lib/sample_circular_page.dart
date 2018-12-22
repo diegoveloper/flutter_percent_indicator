@@ -34,7 +34,8 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                 animation: true,
                 animationDuration: 1200,
                 lineWidth: 15.0,
-                percent: 0.4,
+                startAngle: 45.0,
+                percent: 0.9,
                 center: new Text(
                   "40 hours",
                   style:

@@ -57,6 +57,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                 lineHeight: 20.0,
                 animationDuration: 2000,
                 percent: 0.9,
+                animateFromLastPercent: true,
                 center: Text("90.0%"),
                 linearStrokeCap: LinearStrokeCap.roundAll,
                 progressColor: Colors.greenAccent,

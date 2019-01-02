@@ -41,6 +41,9 @@ class LinearPercentIndicator extends StatefulWidget {
   ///padding to the LinearPercentIndicator
   final EdgeInsets padding;
 
+  /// set true if you want to animate the linear from the last percent value you set
+  final bool animateFromLastPercent;
+
   LinearPercentIndicator(
       {Key key,
       this.fillColor = Colors.transparent,
@@ -51,6 +54,7 @@ class LinearPercentIndicator extends StatefulWidget {
       this.progressColor = Colors.red,
       this.animation = false,
       this.animationDuration = 500,
+      this.animateFromLastPercent = false,
       this.leading,
       this.trailing,
       this.center,
@@ -105,7 +109,9 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.percent != widget.percent) {
       if (_animationController != null) {
-        _animationController.forward(from: 0.0);
+        _animationController.forward(
+            from:
+                widget.animateFromLastPercent ? oldWidget.percent + 0.15 : 0.0);
       } else {
         _updateProgress();
       }

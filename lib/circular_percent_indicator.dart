@@ -36,25 +36,29 @@ class CircularPercentIndicator extends StatefulWidget {
   ///The kind of finish to place on the end of lines drawn, values supported: butt, round, square
   final CircularStrokeCap circularStrokeCap;
 
-  //the angle which the circle will start the progress (in degrees, eg: 0.0, 45.0, 90.0)
+  ///the angle which the circle will start the progress (in degrees, eg: 0.0, 45.0, 90.0)
   final double startAngle;
 
-  CircularPercentIndicator(
-      {Key key,
-      this.percent = 0.0,
-      this.lineWidth = 5.0,
-      this.startAngle = 0.0,
-      @required this.radius,
-      this.fillColor = Colors.transparent,
-      this.backgroundColor = const Color(0xFFB8C7CB),
-      this.progressColor = Colors.red,
-      this.animation = false,
-      this.animationDuration = 500,
-      this.header,
-      this.footer,
-      this.center,
-      this.circularStrokeCap})
-      : super(key: key) {
+  /// set true if you want to animate the linear from the last percent value you set
+  final bool animateFromLastPercent;
+
+  CircularPercentIndicator({
+    Key key,
+    this.percent = 0.0,
+    this.lineWidth = 5.0,
+    this.startAngle = 0.0,
+    @required this.radius,
+    this.fillColor = Colors.transparent,
+    this.backgroundColor = const Color(0xFFB8C7CB),
+    this.progressColor = Colors.red,
+    this.animation = false,
+    this.animationDuration = 500,
+    this.header,
+    this.footer,
+    this.center,
+    this.circularStrokeCap,
+    this.animateFromLastPercent = false,
+  }) : super(key: key) {
     assert(startAngle >= 0.0);
     if (percent < 0.0 || percent > 1.0) {
       throw Exception("Percent value must be a double between 0.0 and 1.0");
@@ -86,12 +90,13 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
       _animationController = AnimationController(
           vsync: this,
           duration: Duration(milliseconds: widget.animationDuration));
-      _animation = Tween(begin: 0.0, end: 360).animate(_animationController)
-        ..addListener(() {
-          setState(() {
-            _percent = widget.percent * _animation.value;
-          });
-        });
+      _animation =
+          Tween(begin: 0.0, end: widget.percent).animate(_animationController)
+            ..addListener(() {
+              setState(() {
+                _percent = _animation.value;
+              });
+            });
       _animationController.forward();
     } else {
       _updateProgress();
@@ -105,6 +110,13 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
     if (oldWidget.percent != widget.percent ||
         oldWidget.startAngle != widget.startAngle) {
       if (_animationController != null) {
+        _animation = Tween(
+                begin: widget.animateFromLastPercent &&
+                        oldWidget.percent < widget.percent
+                    ? oldWidget.percent
+                    : 0.0,
+                end: widget.percent)
+            .animate(_animationController);
         _animationController.forward(from: 0.0);
       } else {
         _updateProgress();
@@ -129,7 +141,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
         width: widget.radius,
         child: CustomPaint(
           painter: CirclePainter(
-              progress: _percent,
+              progress: _percent * 360,
               progressColor: widget.progressColor,
               backgroundColor: widget.backgroundColor,
               startAngle: widget.startAngle,

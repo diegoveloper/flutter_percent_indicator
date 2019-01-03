@@ -56,7 +56,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                 animation: true,
                 lineHeight: 20.0,
                 animationDuration: 2000,
-                percent: 0.9,
+                percent: 0.5,
                 animateFromLastPercent: true,
                 center: Text("90.0%"),
                 linearStrokeCap: LinearStrokeCap.roundAll,

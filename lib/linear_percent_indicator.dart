@@ -91,12 +91,13 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
       _animationController = new AnimationController(
           vsync: this,
           duration: Duration(milliseconds: widget.animationDuration));
-      _animation = Tween(begin: 0.0, end: 1.0).animate(_animationController)
-        ..addListener(() {
-          setState(() {
-            _percent = widget.percent * _animation.value;
-          });
-        });
+      _animation =
+          Tween(begin: 0.0, end: widget.percent).animate(_animationController)
+            ..addListener(() {
+              setState(() {
+                _percent = _animation.value;
+              });
+            });
       _animationController.forward();
     } else {
       _updateProgress();
@@ -109,9 +110,14 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.percent != widget.percent) {
       if (_animationController != null) {
-        _animationController.forward(
-            from:
-                widget.animateFromLastPercent ? oldWidget.percent + 0.15 : 0.0);
+        _animation = Tween(
+                begin: widget.animateFromLastPercent &&
+                        oldWidget.percent < widget.percent
+                    ? oldWidget.percent
+                    : 0.0,
+                end: widget.percent)
+            .animate(_animationController);
+        _animationController.forward(from: 0.0);
       } else {
         _updateProgress();
       }
@@ -204,8 +210,6 @@ class LinearPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    //print("Linear.....   Text = ${(center as Text).data == "0" ? "0.00" : (center as Text).data} - Progress $progress");
-
     final start = Offset(0.0, size.height / 2);
     final end = Offset(size.width, size.height / 2);
     canvas.drawLine(start, end, _paintBackground);

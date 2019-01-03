@@ -1,3 +1,6 @@
+# 1.0.12
+- animateFromLastPercent property was added for LinearPercentIndicator and CircularPercentIndicator
+
 # 1.0.11
 - startAngle for CircularPercentIndicator was added
 

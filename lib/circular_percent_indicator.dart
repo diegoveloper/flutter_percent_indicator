@@ -126,7 +126,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
 
   _updateProgress() {
     setState(() {
-      _percent = widget.percent * 360;
+      _percent = widget.percent;
     });
   }
 

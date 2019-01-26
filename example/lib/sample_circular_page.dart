@@ -31,10 +31,10 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
           new CircularPercentIndicator(
             radius: 130.0,
             animation: true,
-            animationDuration: 1200,
+            animationDuration: 2000,
             lineWidth: 15.0,
             startAngle: 45.0,
-            percent: 0.9,
+            percent: 0.6,
             center: new Text(
               "40 hours",
               style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
@@ -98,7 +98,9 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                 new CircularPercentIndicator(
                   radius: 45.0,
                   lineWidth: 4.0,
-                  percent: 0.60,
+                  animation: true,
+                  animationDuration: 200,
+                  percent: 0.30,
                   center: new Text("60%"),
                   progressColor: Colors.yellow,
                 ),

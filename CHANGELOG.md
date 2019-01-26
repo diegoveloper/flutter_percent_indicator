@@ -1,3 +1,7 @@
+# 1.0.13
+- Padding removed from leading and trailing on LinearPercentIndicator, now you can use Expanded or Flexible.
+- Fixed animation when refresh the widget with different duration
+
 # 1.0.12
 - animateFromLastPercent property was added for LinearPercentIndicator and CircularPercentIndicator
 

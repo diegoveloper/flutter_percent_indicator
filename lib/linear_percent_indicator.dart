@@ -110,6 +110,8 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.percent != widget.percent) {
       if (_animationController != null) {
+        _animationController.duration =
+            Duration(milliseconds: widget.animationDuration);
         _animation = Tween(
                 begin: widget.animateFromLastPercent &&
                         oldWidget.percent < widget.percent
@@ -134,8 +136,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
   Widget build(BuildContext context) {
     var items = List<Widget>();
     if (widget.leading != null) {
-      items.add(
-          Padding(padding: EdgeInsets.only(right: 5.0), child: widget.leading));
+      items.add(widget.leading);
     }
     items.add(Container(
         width: widget.width,
@@ -155,8 +156,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
         )));
 
     if (widget.trailing != null) {
-      items.add(
-          Padding(padding: EdgeInsets.only(left: 5.0), child: widget.trailing));
+      items.add(widget.trailing);
     }
 
     return Material(

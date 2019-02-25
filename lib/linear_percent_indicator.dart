@@ -138,22 +138,30 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
     if (widget.leading != null) {
       items.add(widget.leading);
     }
-    items.add(Container(
-        width: widget.width,
+
+    final hasSetWidth = widget.width != null;
+    final containerWidget = Container(
+        width: hasSetWidth ? widget.width : double.infinity,
         height: widget.lineHeight * 2,
         padding: widget.padding,
         child: CustomPaint(
-          painter: LinearPainter(
-              progress: _percent,
-              center: widget.center,
-              progressColor: widget.progressColor,
-              backgroundColor: widget.backgroundColor,
-              linearStrokeCap: widget.linearStrokeCap,
-              lineWidth: widget.lineHeight),
-          child: (widget.center != null)
-              ? Center(child: widget.center)
-              : Container(),
-        )));
+            painter: LinearPainter(
+                progress: _percent,
+                center: widget.center,
+                progressColor: widget.progressColor,
+                backgroundColor: widget.backgroundColor,
+                linearStrokeCap: widget.linearStrokeCap,
+                lineWidth: widget.lineHeight),
+                child: (widget.center != null)
+                    ? Center(child: widget.center)
+                    : Container(),
+        ),
+    );
+    final expandWidget = Expanded(
+        child: containerWidget,
+    );
+
+    items.add(hasSetWidth ? containerWidget : expandWidget);
 
     if (widget.trailing != null) {
       items.add(widget.trailing);

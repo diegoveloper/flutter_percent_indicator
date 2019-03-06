@@ -113,8 +113,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
         _animationController.duration =
             Duration(milliseconds: widget.animationDuration);
         _animation = Tween(
-                begin: widget.animateFromLastPercent &&
-                        oldWidget.percent < widget.percent
+                begin: widget.animateFromLastPercent
                     ? oldWidget.percent
                     : 0.0,
                 end: widget.percent)

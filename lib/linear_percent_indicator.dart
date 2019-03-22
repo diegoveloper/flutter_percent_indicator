@@ -44,6 +44,9 @@ class LinearPercentIndicator extends StatefulWidget {
   /// set true if you want to animate the linear from the last percent value you set
   final bool animateFromLastPercent;
 
+  /// set true if you want to animate the linear from the right to left (RTL)
+  final bool isRTL;
+
   LinearPercentIndicator(
       {Key key,
       this.fillColor = Colors.transparent,
@@ -55,6 +58,7 @@ class LinearPercentIndicator extends StatefulWidget {
       this.animation = false,
       this.animationDuration = 500,
       this.animateFromLastPercent = false,
+      this.isRTL = false,
       this.leading,
       this.trailing,
       this.center,
@@ -143,6 +147,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
         padding: widget.padding,
         child: CustomPaint(
           painter: LinearPainter(
+              isRTL: widget.isRTL,
               progress: _percent,
               center: widget.center,
               progressColor: widget.progressColor,
@@ -177,6 +182,7 @@ class LinearPainter extends CustomPainter {
   final lineWidth;
   final progress;
   final center;
+  final isRTL;
   final Color progressColor;
   final Color backgroundColor;
   final LinearStrokeCap linearStrokeCap;
@@ -185,6 +191,7 @@ class LinearPainter extends CustomPainter {
       {this.lineWidth,
       this.progress,
       this.center,
+      this.isRTL,
       this.progressColor,
       this.backgroundColor,
       this.linearStrokeCap = LinearStrokeCap.butt}) {
@@ -212,8 +219,15 @@ class LinearPainter extends CustomPainter {
     final start = Offset(0.0, size.height / 2);
     final end = Offset(size.width, size.height / 2);
     canvas.drawLine(start, end, _paintBackground);
-    canvas.drawLine(
-        start, Offset(size.width * progress, size.height / 2), _paintLine);
+    if (isRTL) {
+      canvas.drawLine(
+          end,
+          Offset(size.width - (size.width * progress), size.height / 2),
+          _paintLine);
+    } else {
+      canvas.drawLine(
+          start, Offset(size.width * progress, size.height / 2), _paintLine);
+    }
   }
 
   @override

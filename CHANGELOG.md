@@ -1,5 +1,6 @@
 # 1.0.15
-- Added `addAutomaticKeepAlive` property to preserve the state of the widget
+- Added `addAutomaticKeepAlive` property to preserve the state of the widget.
+- Added `isRTL` for `LinearPercentIndicator` widget.
 
 # 1.0.14
 - Fixed bug using animateFromLastPercent. Thanks joelbrostrom

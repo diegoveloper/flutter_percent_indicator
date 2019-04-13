@@ -42,6 +42,9 @@ class CircularPercentIndicator extends StatefulWidget {
   /// set true if you want to animate the linear from the last percent value you set
   final bool animateFromLastPercent;
 
+  /// set false if you don't want to preserve the state of the widget
+  final bool addAutomaticKeepAlive;
+
   CircularPercentIndicator({
     Key key,
     this.percent = 0.0,
@@ -56,6 +59,7 @@ class CircularPercentIndicator extends StatefulWidget {
     this.header,
     this.footer,
     this.center,
+    this.addAutomaticKeepAlive = true,
     this.circularStrokeCap,
     this.animateFromLastPercent = false,
   }) : super(key: key) {
@@ -71,7 +75,7 @@ class CircularPercentIndicator extends StatefulWidget {
 }
 
 class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   AnimationController _animationController;
   Animation _animation;
   double _percent = 0.0;
@@ -113,9 +117,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
         _animationController.duration =
             Duration(milliseconds: widget.animationDuration);
         _animation = Tween(
-                begin: widget.animateFromLastPercent
-                    ? oldWidget.percent
-                    : 0.0,
+                begin: widget.animateFromLastPercent ? oldWidget.percent : 0.0,
                 end: widget.percent)
             .animate(_animationController);
         _animationController.forward(from: 0.0);
@@ -168,6 +170,9 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
       )),
     );
   }
+
+  @override
+  bool get wantKeepAlive => widget.addAutomaticKeepAlive;
 }
 
 class CirclePainter extends CustomPainter {

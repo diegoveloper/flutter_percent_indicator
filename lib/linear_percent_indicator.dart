@@ -44,6 +44,9 @@ class LinearPercentIndicator extends StatefulWidget {
   /// set true if you want to animate the linear from the last percent value you set
   final bool animateFromLastPercent;
 
+  /// set false if you don't want to preserve the state of the widget
+  final bool addAutomaticKeepAlive;
+
   LinearPercentIndicator(
       {Key key,
       this.fillColor = Colors.transparent,
@@ -58,6 +61,7 @@ class LinearPercentIndicator extends StatefulWidget {
       this.leading,
       this.trailing,
       this.center,
+      this.addAutomaticKeepAlive = true,
       this.linearStrokeCap,
       this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
       this.alignment = MainAxisAlignment.start})
@@ -72,7 +76,7 @@ class LinearPercentIndicator extends StatefulWidget {
 }
 
 class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   AnimationController _animationController;
   Animation _animation;
   double _percent = 0.0;
@@ -113,9 +117,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
         _animationController.duration =
             Duration(milliseconds: widget.animationDuration);
         _animation = Tween(
-                begin: widget.animateFromLastPercent
-                    ? oldWidget.percent
-                    : 0.0,
+                begin: widget.animateFromLastPercent ? oldWidget.percent : 0.0,
                 end: widget.percent)
             .animate(_animationController);
         _animationController.forward(from: 0.0);
@@ -169,6 +171,9 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
           )),
     );
   }
+
+  @override
+  bool get wantKeepAlive => widget.addAutomaticKeepAlive;
 }
 
 class LinearPainter extends CustomPainter {

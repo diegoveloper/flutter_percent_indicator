@@ -55,7 +55,7 @@ class LinearPercentIndicator extends StatefulWidget {
       this.fillColor = Colors.transparent,
       this.percent = 0.0,
       this.lineHeight = 5.0,
-      @required this.width,
+      this.width,
       this.backgroundColor = const Color(0xFFB8C7CB),
       this.progressColor = Colors.red,
       this.animation = false,
@@ -143,24 +143,31 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
     if (widget.leading != null) {
       items.add(widget.leading);
     }
-    items.add(Container(
-        width: widget.width,
-        height: widget.lineHeight * 2,
-        padding: widget.padding,
-        child: CustomPaint(
-          painter: LinearPainter(
-              isRTL: widget.isRTL,
-              progress: _percent,
-              center: widget.center,
-              progressColor: widget.progressColor,
-              backgroundColor: widget.backgroundColor,
-              linearStrokeCap: widget.linearStrokeCap,
-              lineWidth: widget.lineHeight),
-          child: (widget.center != null)
-              ? Center(child: widget.center)
-              : Container(),
-        )));
+    final hasSetWidth = widget.width != null;
+    var containerWidget = Container(
+      width: hasSetWidth ? widget.width : double.infinity,
+      height: widget.lineHeight * 2,
+      padding: widget.padding,
+      child: CustomPaint(
+        painter: LinearPainter(
+            isRTL: widget.isRTL,
+            progress: _percent,
+            center: widget.center,
+            progressColor: widget.progressColor,
+            backgroundColor: widget.backgroundColor,
+            linearStrokeCap: widget.linearStrokeCap,
+            lineWidth: widget.lineHeight),
+        child: (widget.center != null) ? Center(child: widget.center) : Container(),
+      ),
+    );
 
+    if (hasSetWidth) {
+      items.add(containerWidget);
+    } else {
+      items.add(Expanded(
+        child: containerWidget,
+      ));
+    }
     if (widget.trailing != null) {
       items.add(widget.trailing);
     }

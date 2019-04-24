@@ -1,3 +1,6 @@
+# 1.0.16
+- `width` is optional for `LinearPercentIndicator` widget,   
+
 # 1.0.15
 - Added `addAutomaticKeepAlive` property to preserve the state of the widget.
 - Added `isRTL` for `LinearPercentIndicator` widget.

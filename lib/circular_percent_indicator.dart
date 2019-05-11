@@ -246,11 +246,7 @@ class CirclePainter extends CustomPainter {
           radius: radius,
         ),
       );*/
-      _paintLine.shader = LinearGradient(
-        colors: linearGradient.colors,
-        begin: linearGradient.begin,
-        end: linearGradient.end,
-      ).createShader(
+      _paintLine.shader = linearGradient.createShader(
         Rect.fromCircle(
           center: center,
           radius: radius,

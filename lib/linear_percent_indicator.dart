@@ -252,24 +252,21 @@ class LinearPainter extends CustomPainter {
     final end = Offset(size.width, size.height / 2);
     canvas.drawLine(start, end, _paintBackground);
     if (isRTL) {
+      final xProgress = size.width - size.width * progress;
       if (linearGradient != null) {
         _paintLine.shader = linearGradient.createShader(Rect.fromPoints(
-            Offset(size.width, size.height),
-            Offset(size.width - size.width * progress, size.height)));
+            Offset(size.width, size.height), Offset(xProgress, size.height)));
       }
 
-      canvas.drawLine(
-          end,
-          Offset(size.width - (size.width * progress), size.height / 2),
-          _paintLine);
+      canvas.drawLine(end, Offset(xProgress, size.height / 2), _paintLine);
     } else {
+      final xProgress = size.width * progress;
       if (linearGradient != null) {
-        _paintLine.shader = linearGradient.createShader(Rect.fromPoints(
-            Offset.zero, Offset(size.width * progress, size.height)));
+        _paintLine.shader = linearGradient.createShader(
+            Rect.fromPoints(Offset.zero, Offset(xProgress, size.height)));
       }
 
-      canvas.drawLine(
-          start, Offset(size.width * progress, size.height / 2), _paintLine);
+      canvas.drawLine(start, Offset(xProgress, size.height / 2), _paintLine);
     }
   }
 

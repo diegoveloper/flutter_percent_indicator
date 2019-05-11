@@ -3,7 +3,7 @@ import 'package:percent_indicator_example/sample_circular_page.dart';
 import 'package:percent_indicator_example/sample_linear_page.dart';
 
 void main() {
-  runApp(new MaterialApp(home: new Scaffold(body: new SamplePage())));
+  runApp(MaterialApp(home: Scaffold(body: SamplePage())));
 }
 
 class SamplePage extends StatefulWidget {
@@ -12,12 +12,10 @@ class SamplePage extends StatefulWidget {
 }
 
 class _SamplePageState extends State<SamplePage> {
-
-
-  _openPage(Widget page){
-      Navigator.push(
+  _openPage(Widget page) {
+    Navigator.push(
       context,
-      new MaterialPageRoute(
+      MaterialPageRoute(
         builder: (BuildContext context) => page,
       ),
     );
@@ -25,28 +23,28 @@ class _SamplePageState extends State<SamplePage> {
 
   @override
   Widget build(BuildContext context) {
-      return Container(
-              child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              MaterialButton(
-                color: Colors.blueAccent,
-                child: new Text("Circular Library"),
-                onPressed: () => _openPage(SampleCircularPage()),
-              ),
-              Padding(
-                padding: EdgeInsets.all(20.0),
-              ),
-              MaterialButton(
-                color: Colors.blueAccent,
-                child: new Text("Linear Library"),
-                onPressed: () => _openPage(SampleLinearPage()),
-              ),
-            ],
-          ),
+    return Container(
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            MaterialButton(
+              color: Colors.blueAccent,
+              child: Text("Circular Library"),
+              onPressed: () => _openPage(SampleCircularPage()),
+            ),
+            Padding(
+              padding: EdgeInsets.all(20.0),
+            ),
+            MaterialButton(
+              color: Colors.blueAccent,
+              child: Text("Linear Library"),
+              onPressed: () => _openPage(SampleLinearPage()),
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }

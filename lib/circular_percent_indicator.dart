@@ -233,12 +233,29 @@ class CirclePainter extends CustomPainter {
     canvas.drawCircle(center, radius, _paintBackground);
 
     if (linearGradient != null) {
+      /*
       _paintLine.shader = SweepGradient(
-              startAngle: 0,
-              endAngle: 2 * pi - pi / 2,
+              center: FractionalOffset.center,
+              startAngle: math.radians(-90.0 + startAngle),
+              endAngle: math.radians(progress),
+              //tileMode: TileMode.mirror,
               colors: linearGradient.colors)
           .createShader(
-              Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
+        Rect.fromCircle(
+          center: center,
+          radius: radius,
+        ),
+      );*/
+      _paintLine.shader = LinearGradient(
+        colors: linearGradient.colors,
+        begin: linearGradient.begin,
+        end: linearGradient.end,
+      ).createShader(
+        Rect.fromCircle(
+          center: center,
+          radius: radius,
+        ),
+      );
     }
 
     canvas.drawArc(

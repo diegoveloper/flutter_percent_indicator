@@ -30,7 +30,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                     lineHeight: 14.0,
                     percent: 0.7,
                     center: Text(
-                      "50.0%",
+                      "70.0%",
                       style: TextStyle(fontSize: 12.0),
                     ),
                     trailing: Icon(Icons.mood),

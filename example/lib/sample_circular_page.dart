@@ -26,6 +26,21 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               color: Colors.blue,
             ),
             backgroundColor: Colors.grey,
+            linearGradient: LinearGradient(
+              colors: [Colors.red, Colors.blue],
+            ),
+          ),
+          new CircularPercentIndicator(
+            radius: 100.0,
+            lineWidth: 10.0,
+            percent: 0.8,
+            header: new Text("Icon header"),
+            center: new Icon(
+              Icons.person_pin,
+              size: 50.0,
+              color: Colors.blue,
+            ),
+            backgroundColor: Colors.grey,
             progressColor: Colors.blue,
           ),
           new CircularPercentIndicator(

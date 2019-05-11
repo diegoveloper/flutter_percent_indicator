@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 
@@ -16,7 +18,9 @@ class CircularPercentIndicator extends StatefulWidget {
 
   ///First color applied to the complete circle
   final Color backgroundColor;
-  final Color progressColor;
+  Color get progressColor => _progressColor;
+
+  Color _progressColor;
 
   ///true if you want the circle to have animation
   final bool animation;
@@ -32,6 +36,8 @@ class CircularPercentIndicator extends StatefulWidget {
 
   ///widget inside the circle
   final Widget center;
+
+  final LinearGradient linearGradient;
 
   ///The kind of finish to place on the end of lines drawn, values supported: butt, round, square
   final CircularStrokeCap circularStrokeCap;
@@ -53,7 +59,8 @@ class CircularPercentIndicator extends StatefulWidget {
     @required this.radius,
     this.fillColor = Colors.transparent,
     this.backgroundColor = const Color(0xFFB8C7CB),
-    this.progressColor = Colors.red,
+    Color progressColor,
+    this.linearGradient,
     this.animation = false,
     this.animationDuration = 500,
     this.header,
@@ -63,6 +70,12 @@ class CircularPercentIndicator extends StatefulWidget {
     this.circularStrokeCap,
     this.animateFromLastPercent = false,
   }) : super(key: key) {
+    if (linearGradient != null && progressColor != null) {
+      throw ArgumentError(
+          'Cannot provide both linearGradient and progressColor');
+    }
+    _progressColor = progressColor ?? Colors.red;
+
     assert(startAngle >= 0.0);
     if (percent < 0.0 || percent > 1.0) {
       throw Exception("Percent value must be a double between 0.0 and 1.0");
@@ -150,7 +163,8 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
               startAngle: widget.startAngle,
               circularStrokeCap: widget.circularStrokeCap,
               radius: (widget.radius / 2) - widget.lineWidth / 2,
-              lineWidth: widget.lineWidth),
+              lineWidth: widget.lineWidth,
+              linearGradient: widget.linearGradient),
           child: (widget.center != null)
               ? Center(child: widget.center)
               : Container(),
@@ -185,15 +199,18 @@ class CirclePainter extends CustomPainter {
   final Color backgroundColor;
   final CircularStrokeCap circularStrokeCap;
   final double startAngle;
+  final LinearGradient linearGradient;
 
-  CirclePainter(
-      {this.lineWidth,
-      this.progress,
-      @required this.radius,
-      this.progressColor,
-      this.backgroundColor,
-      this.startAngle = 0.0,
-      this.circularStrokeCap = CircularStrokeCap.round}) {
+  CirclePainter({
+    this.lineWidth,
+    this.progress,
+    @required this.radius,
+    this.progressColor,
+    this.backgroundColor,
+    this.startAngle = 0.0,
+    this.circularStrokeCap = CircularStrokeCap.round,
+    this.linearGradient,
+  }) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = lineWidth;
@@ -214,6 +231,16 @@ class CirclePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
     canvas.drawCircle(center, radius, _paintBackground);
+
+    if (linearGradient != null) {
+      _paintLine.shader = SweepGradient(
+              startAngle: 0,
+              endAngle: 2 * pi - pi / 2,
+              colors: linearGradient.colors)
+          .createShader(
+              Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
+    }
+
     canvas.drawArc(
         Rect.fromCircle(center: center, radius: radius),
         math.radians(-90.0 + startAngle),

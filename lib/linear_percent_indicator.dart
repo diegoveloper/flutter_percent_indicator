@@ -15,7 +15,9 @@ class LinearPercentIndicator extends StatefulWidget {
 
   ///First color applied to the complete line
   final Color backgroundColor;
-  final Color progressColor;
+  Color get progressColor => _progressColor;
+
+  Color _progressColor;
 
   ///true if you want the Line to have animation
   final bool animation;
@@ -44,6 +46,11 @@ class LinearPercentIndicator extends StatefulWidget {
   /// set true if you want to animate the linear from the last percent value you set
   final bool animateFromLastPercent;
 
+  /// If present, this will make the progress bar colored by this gradient.
+  ///
+  /// This will override [progressColor]. It is an error to provide both.
+  final LinearGradient linearGradient;
+
   /// set false if you don't want to preserve the state of the widget
   final bool addAutomaticKeepAlive;
 
@@ -57,7 +64,8 @@ class LinearPercentIndicator extends StatefulWidget {
       this.lineHeight = 5.0,
       this.width,
       this.backgroundColor = const Color(0xFFB8C7CB),
-      this.progressColor = Colors.red,
+      this.linearGradient,
+      Color progressColor,
       this.animation = false,
       this.animationDuration = 500,
       this.animateFromLastPercent = false,
@@ -70,6 +78,12 @@ class LinearPercentIndicator extends StatefulWidget {
       this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
       this.alignment = MainAxisAlignment.start})
       : super(key: key) {
+    if (linearGradient != null && progressColor != null) {
+      throw ArgumentError(
+          'Cannot provide both linearGradient and progressColor');
+    }
+    _progressColor = progressColor ?? Colors.red;
+
     if (percent < 0.0 || percent > 1.0) {
       throw new Exception("Percent value must be a double between 0.0 and 1.0");
     }
@@ -154,10 +168,13 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
             progress: _percent,
             center: widget.center,
             progressColor: widget.progressColor,
+            linearGradient: widget.linearGradient,
             backgroundColor: widget.backgroundColor,
             linearStrokeCap: widget.linearStrokeCap,
             lineWidth: widget.lineHeight),
-        child: (widget.center != null) ? Center(child: widget.center) : Container(),
+        child: (widget.center != null)
+            ? Center(child: widget.center)
+            : Container(),
       ),
     );
 
@@ -198,6 +215,7 @@ class LinearPainter extends CustomPainter {
   final Color progressColor;
   final Color backgroundColor;
   final LinearStrokeCap linearStrokeCap;
+  final LinearGradient linearGradient;
 
   LinearPainter(
       {this.lineWidth,
@@ -206,7 +224,8 @@ class LinearPainter extends CustomPainter {
       this.isRTL,
       this.progressColor,
       this.backgroundColor,
-      this.linearStrokeCap = LinearStrokeCap.butt}) {
+      this.linearStrokeCap = LinearStrokeCap.butt,
+      this.linearGradient}) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = lineWidth;
@@ -216,6 +235,7 @@ class LinearPainter extends CustomPainter {
         : progressColor;
     _paintLine.style = PaintingStyle.stroke;
     _paintLine.strokeWidth = lineWidth;
+
     if (linearStrokeCap == LinearStrokeCap.round) {
       _paintLine.strokeCap = StrokeCap.round;
     } else if (linearStrokeCap == LinearStrokeCap.butt) {
@@ -232,11 +252,22 @@ class LinearPainter extends CustomPainter {
     final end = Offset(size.width, size.height / 2);
     canvas.drawLine(start, end, _paintBackground);
     if (isRTL) {
+      if (linearGradient != null) {
+        _paintLine.shader = linearGradient.createShader(Rect.fromPoints(
+            Offset(size.width, size.height),
+            Offset(size.width - size.width * progress, size.height)));
+      }
+
       canvas.drawLine(
           end,
           Offset(size.width - (size.width * progress), size.height / 2),
           _paintLine);
     } else {
+      if (linearGradient != null) {
+        _paintLine.shader = linearGradient.createShader(Rect.fromPoints(
+            Offset.zero, Offset(size.width * progress, size.height)));
+      }
+
       canvas.drawLine(
           start, Offset(size.width * progress, size.height / 2), _paintLine);
     }

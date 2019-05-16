@@ -5,6 +5,11 @@ import 'package:vector_math/vector_math_64.dart' as math;
 
 enum CircularStrokeCap { butt, round, square }
 
+enum ArcType {
+  HALF,
+  FULL,
+}
+
 class CircularPercentIndicator extends StatefulWidget {
   ///Percent value between 0.0 and 1.0
   final double percent;
@@ -51,6 +56,15 @@ class CircularPercentIndicator extends StatefulWidget {
   /// set false if you don't want to preserve the state of the widget
   final bool addAutomaticKeepAlive;
 
+  /// set the arc type
+  final ArcType arcType;
+
+  /// set a circular background color when use the arcType property
+  final Color arcBackgroundColor;
+
+  /// set true when you want to display the progress in reverse mode
+  final bool reverse;
+
   CircularPercentIndicator({
     Key key,
     this.percent = 0.0,
@@ -68,7 +82,10 @@ class CircularPercentIndicator extends StatefulWidget {
     this.center,
     this.addAutomaticKeepAlive = true,
     this.circularStrokeCap,
+    this.arcBackgroundColor,
+    this.arcType,
     this.animateFromLastPercent = false,
+    this.reverse = false,
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
@@ -79,6 +96,10 @@ class CircularPercentIndicator extends StatefulWidget {
     assert(startAngle >= 0.0);
     if (percent < 0.0 || percent > 1.0) {
       throw Exception("Percent value must be a double between 0.0 and 1.0");
+    }
+
+    if (arcType == null && arcBackgroundColor != null) {
+      throw ArgumentError('arcType is required when you arcBackgroundColor');
     }
   }
 
@@ -164,6 +185,9 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
               circularStrokeCap: widget.circularStrokeCap,
               radius: (widget.radius / 2) - widget.lineWidth / 2,
               lineWidth: widget.lineWidth,
+              arcBackgroundColor: widget.arcBackgroundColor,
+              arcType: widget.arcType,
+              reverse: widget.reverse,
               linearGradient: widget.linearGradient),
           child: (widget.center != null)
               ? Center(child: widget.center)
@@ -192,14 +216,18 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
 class CirclePainter extends CustomPainter {
   final Paint _paintBackground = Paint();
   final Paint _paintLine = Paint();
-  final lineWidth;
-  final progress;
-  final radius;
+  final Paint _paintBackgroundStartAngle = Paint();
+  final double lineWidth;
+  final double progress;
+  final double radius;
   final Color progressColor;
   final Color backgroundColor;
   final CircularStrokeCap circularStrokeCap;
   final double startAngle;
   final LinearGradient linearGradient;
+  final Color arcBackgroundColor;
+  final ArcType arcType;
+  final bool reverse;
 
   CirclePainter({
     this.lineWidth,
@@ -210,10 +238,19 @@ class CirclePainter extends CustomPainter {
     this.startAngle = 0.0,
     this.circularStrokeCap = CircularStrokeCap.round,
     this.linearGradient,
+    this.reverse,
+    this.arcBackgroundColor,
+    this.arcType,
   }) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = lineWidth;
+
+    if (arcBackgroundColor != null) {
+      _paintBackgroundStartAngle.color = arcBackgroundColor;
+      _paintBackgroundStartAngle.style = PaintingStyle.stroke;
+      _paintBackgroundStartAngle.strokeWidth = lineWidth;
+    }
 
     _paintLine.color = progressColor;
     _paintLine.style = PaintingStyle.stroke;
@@ -254,12 +291,57 @@ class CirclePainter extends CustomPainter {
       );
     }
 
-    canvas.drawArc(
+    double fixedStartAngle = startAngle;
+
+    double startAngleFixedMargin = 1.0;
+    if (arcType != null) {
+      if (arcType == ArcType.FULL) {
+        fixedStartAngle = 220;
+        startAngleFixedMargin = 172 / fixedStartAngle;
+      } else {
+        fixedStartAngle = 270;
+        startAngleFixedMargin = 135 / fixedStartAngle;
+      }
+    }
+
+    if (arcBackgroundColor != null) {
+      canvas.drawArc(
         Rect.fromCircle(center: center, radius: radius),
-        math.radians(-90.0 + startAngle),
-        math.radians(progress),
+        math.radians(-90.0 + fixedStartAngle),
+        math.radians(360 * startAngleFixedMargin),
         false,
-        _paintLine);
+        _paintBackgroundStartAngle,
+      );
+    }
+
+    if (reverse) {
+      final start =
+          math.radians(360 * startAngleFixedMargin - 90.0 + fixedStartAngle);
+      final end = math.radians(-progress * startAngleFixedMargin);
+      canvas.drawArc(
+        Rect.fromCircle(
+          center: center,
+          radius: radius,
+        ),
+        start,
+        end,
+        false,
+        _paintLine,
+      );
+    } else {
+      final start = math.radians(-90.0 + fixedStartAngle);
+      final end = math.radians(progress * startAngleFixedMargin);
+      canvas.drawArc(
+        Rect.fromCircle(
+          center: center,
+          radius: radius,
+        ),
+        start,
+        end,
+        false,
+        _paintLine,
+      );
+    }
   }
 
   @override

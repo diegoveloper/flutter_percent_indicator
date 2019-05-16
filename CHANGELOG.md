@@ -1,3 +1,7 @@
+# 2.0.0
+- `linearGradient` was added for `LinearPercentIndicator` and `CircularPercentIndicator`.
+- `reverse`, `arcType` and `arcBackgroundColor` were added to the  `CircularPercentIndicator`.
+
 # 1.0.16
 - `width` is optional for `LinearPercentIndicator` widget,   
 

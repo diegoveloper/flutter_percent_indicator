@@ -1,3 +1,6 @@
+# 2.0.1
+- `maskFilter` was added for `LinearPercentIndicator` and `CircularPercentIndicator`. Thanks to akdu12 for the contribution
+
 # 2.0.0
 - `linearGradient` was added for `LinearPercentIndicator` and `CircularPercentIndicator`.
 - `reverse`, `arcType` and `arcBackgroundColor` were added to the  `CircularPercentIndicator`.

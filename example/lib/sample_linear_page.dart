@@ -90,6 +90,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                   center: Text("90.0%"),
                   linearStrokeCap: LinearStrokeCap.roundAll,
                   progressColor: Colors.greenAccent,
+                  maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
                 ),
               ),
               Padding(

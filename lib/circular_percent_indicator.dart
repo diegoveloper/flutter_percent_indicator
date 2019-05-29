@@ -23,6 +23,7 @@ class CircularPercentIndicator extends StatefulWidget {
 
   ///First color applied to the complete circle
   final Color backgroundColor;
+
   Color get progressColor => _progressColor;
 
   Color _progressColor;
@@ -65,28 +66,32 @@ class CircularPercentIndicator extends StatefulWidget {
   /// set true when you want to display the progress in reverse mode
   final bool reverse;
 
-  CircularPercentIndicator({
-    Key key,
-    this.percent = 0.0,
-    this.lineWidth = 5.0,
-    this.startAngle = 0.0,
-    @required this.radius,
-    this.fillColor = Colors.transparent,
-    this.backgroundColor = const Color(0xFFB8C7CB),
-    Color progressColor,
-    this.linearGradient,
-    this.animation = false,
-    this.animationDuration = 500,
-    this.header,
-    this.footer,
-    this.center,
-    this.addAutomaticKeepAlive = true,
-    this.circularStrokeCap,
-    this.arcBackgroundColor,
-    this.arcType,
-    this.animateFromLastPercent = false,
-    this.reverse = false,
-  }) : super(key: key) {
+  /// Creates a mask filter that takes the progress shape being drawn and blurs it.
+  final MaskFilter maskFilter;
+
+  CircularPercentIndicator(
+      {Key key,
+      this.percent = 0.0,
+      this.lineWidth = 5.0,
+      this.startAngle = 0.0,
+      @required this.radius,
+      this.fillColor = Colors.transparent,
+      this.backgroundColor = const Color(0xFFB8C7CB),
+      Color progressColor,
+      this.linearGradient,
+      this.animation = false,
+      this.animationDuration = 500,
+      this.header,
+      this.footer,
+      this.center,
+      this.addAutomaticKeepAlive = true,
+      this.circularStrokeCap,
+      this.arcBackgroundColor,
+      this.arcType,
+      this.animateFromLastPercent = false,
+      this.reverse = false,
+      this.maskFilter})
+      : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
           'Cannot provide both linearGradient and progressColor');
@@ -188,7 +193,8 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
               arcBackgroundColor: widget.arcBackgroundColor,
               arcType: widget.arcType,
               reverse: widget.reverse,
-              linearGradient: widget.linearGradient),
+              linearGradient: widget.linearGradient,
+              maskFilter: widget.maskFilter),
           child: (widget.center != null)
               ? Center(child: widget.center)
               : Container(),
@@ -228,20 +234,21 @@ class CirclePainter extends CustomPainter {
   final Color arcBackgroundColor;
   final ArcType arcType;
   final bool reverse;
+  final MaskFilter maskFilter;
 
-  CirclePainter({
-    this.lineWidth,
-    this.progress,
-    @required this.radius,
-    this.progressColor,
-    this.backgroundColor,
-    this.startAngle = 0.0,
-    this.circularStrokeCap = CircularStrokeCap.round,
-    this.linearGradient,
-    this.reverse,
-    this.arcBackgroundColor,
-    this.arcType,
-  }) {
+  CirclePainter(
+      {this.lineWidth,
+      this.progress,
+      @required this.radius,
+      this.progressColor,
+      this.backgroundColor,
+      this.startAngle = 0.0,
+      this.circularStrokeCap = CircularStrokeCap.round,
+      this.linearGradient,
+      this.reverse,
+      this.arcBackgroundColor,
+      this.arcType,
+      this.maskFilter}) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = lineWidth;
@@ -269,6 +276,9 @@ class CirclePainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
     canvas.drawCircle(center, radius, _paintBackground);
 
+    if (maskFilter != null) {
+      _paintLine.maskFilter = maskFilter;
+    }
     if (linearGradient != null) {
       /*
       _paintLine.shader = SweepGradient(

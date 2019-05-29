@@ -15,6 +15,7 @@ class LinearPercentIndicator extends StatefulWidget {
 
   ///First color applied to the complete line
   final Color backgroundColor;
+
   Color get progressColor => _progressColor;
 
   Color _progressColor;
@@ -57,6 +58,9 @@ class LinearPercentIndicator extends StatefulWidget {
   /// set true if you want to animate the linear from the right to left (RTL)
   final bool isRTL;
 
+  /// Creates a mask filter that takes the progress shape being drawn and blurs it.
+  final MaskFilter maskFilter;
+
   LinearPercentIndicator(
       {Key key,
       this.fillColor = Colors.transparent,
@@ -76,7 +80,8 @@ class LinearPercentIndicator extends StatefulWidget {
       this.addAutomaticKeepAlive = true,
       this.linearStrokeCap,
       this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
-      this.alignment = MainAxisAlignment.start})
+      this.alignment = MainAxisAlignment.start,
+      this.maskFilter})
       : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
@@ -171,7 +176,8 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
             linearGradient: widget.linearGradient,
             backgroundColor: widget.backgroundColor,
             linearStrokeCap: widget.linearStrokeCap,
-            lineWidth: widget.lineHeight),
+            lineWidth: widget.lineHeight,
+             maskFilter: widget.maskFilter),
         child: (widget.center != null)
             ? Center(child: widget.center)
             : Container(),
@@ -216,6 +222,7 @@ class LinearPainter extends CustomPainter {
   final Color backgroundColor;
   final LinearStrokeCap linearStrokeCap;
   final LinearGradient linearGradient;
+  final MaskFilter maskFilter;
 
   LinearPainter(
       {this.lineWidth,
@@ -225,7 +232,8 @@ class LinearPainter extends CustomPainter {
       this.progressColor,
       this.backgroundColor,
       this.linearStrokeCap = LinearStrokeCap.butt,
-      this.linearGradient}) {
+      this.linearGradient,
+      this.maskFilter}) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = lineWidth;
@@ -251,6 +259,11 @@ class LinearPainter extends CustomPainter {
     final start = Offset(0.0, size.height / 2);
     final end = Offset(size.width, size.height / 2);
     canvas.drawLine(start, end, _paintBackground);
+
+    if (maskFilter != null) {
+      _paintLine.maskFilter = maskFilter;
+    }
+
     if (isRTL) {
       final xProgress = size.width - size.width * progress;
       if (linearGradient != null) {

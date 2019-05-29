@@ -22,6 +22,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
             center: Text("50%"),
             circularStrokeCap: CircularStrokeCap.round,
             backgroundColor: Colors.grey,
+            maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
             linearGradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,

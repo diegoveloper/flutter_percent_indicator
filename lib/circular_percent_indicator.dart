@@ -1,4 +1,4 @@
-import 'dart:math';
+//import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
@@ -174,6 +174,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     var items = List<Widget>();
     if (widget.header != null) {
       items.add(widget.header);

@@ -158,6 +158,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     var items = List<Widget>();
     if (widget.leading != null) {
       items.add(widget.leading);
@@ -165,7 +166,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
     final hasSetWidth = widget.width != null;
     var containerWidget = Container(
       width: hasSetWidth ? widget.width : double.infinity,
-      height: widget.lineHeight * 2,
+      height: widget.lineHeight,
       padding: widget.padding,
       child: CustomPaint(
         painter: LinearPainter(
@@ -177,7 +178,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
             backgroundColor: widget.backgroundColor,
             linearStrokeCap: widget.linearStrokeCap,
             lineWidth: widget.lineHeight,
-             maskFilter: widget.maskFilter),
+            maskFilter: widget.maskFilter),
         child: (widget.center != null)
             ? Center(child: widget.center)
             : Container(),

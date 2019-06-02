@@ -23,7 +23,7 @@ Circular and Linear percent indicators
 You should ensure that you add the router as a dependency in your flutter project.
 ```yaml
 dependencies:
- percent_indicator: "^2.0.1"
+ percent_indicator: "^2.1.0"
 ```
 
 You should then run `flutter packages upgrade` or update your packages in IntelliJ.

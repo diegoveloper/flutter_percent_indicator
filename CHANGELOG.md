@@ -1,3 +1,6 @@
+# 2.1.0
+- vertical padding removed from `LinearPercentIndicator`.
+
 # 2.0.1
 - `maskFilter` was added for `LinearPercentIndicator` and `CircularPercentIndicator`. Thanks to akdu12 for the contribution
 

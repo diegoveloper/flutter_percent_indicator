@@ -61,28 +61,33 @@ class LinearPercentIndicator extends StatefulWidget {
   /// Creates a mask filter that takes the progress shape being drawn and blurs it.
   final MaskFilter maskFilter;
 
-  LinearPercentIndicator(
-      {Key key,
-      this.fillColor = Colors.transparent,
-      this.percent = 0.0,
-      this.lineHeight = 5.0,
-      this.width,
-      this.backgroundColor = const Color(0xFFB8C7CB),
-      this.linearGradient,
-      Color progressColor,
-      this.animation = false,
-      this.animationDuration = 500,
-      this.animateFromLastPercent = false,
-      this.isRTL = false,
-      this.leading,
-      this.trailing,
-      this.center,
-      this.addAutomaticKeepAlive = true,
-      this.linearStrokeCap,
-      this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
-      this.alignment = MainAxisAlignment.start,
-      this.maskFilter})
-      : super(key: key) {
+  /// Set true if you want to display only part of [linearGradient] based on percent value
+  /// (ie. create 'VU effect'). If no [linearGradient] is specified this option is ignored.
+  final bool clipLinearGradient;
+
+  LinearPercentIndicator({
+    Key key,
+    this.fillColor = Colors.transparent,
+    this.percent = 0.0,
+    this.lineHeight = 5.0,
+    this.width,
+    this.backgroundColor = const Color(0xFFB8C7CB),
+    this.linearGradient,
+    Color progressColor,
+    this.animation = false,
+    this.animationDuration = 500,
+    this.animateFromLastPercent = false,
+    this.isRTL = false,
+    this.leading,
+    this.trailing,
+    this.center,
+    this.addAutomaticKeepAlive = true,
+    this.linearStrokeCap,
+    this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
+    this.alignment = MainAxisAlignment.start,
+    this.maskFilter,
+    this.clipLinearGradient = false,
+  }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
           'Cannot provide both linearGradient and progressColor');
@@ -170,15 +175,17 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
       padding: widget.padding,
       child: CustomPaint(
         painter: LinearPainter(
-            isRTL: widget.isRTL,
-            progress: _percent,
-            center: widget.center,
-            progressColor: widget.progressColor,
-            linearGradient: widget.linearGradient,
-            backgroundColor: widget.backgroundColor,
-            linearStrokeCap: widget.linearStrokeCap,
-            lineWidth: widget.lineHeight,
-            maskFilter: widget.maskFilter),
+          isRTL: widget.isRTL,
+          progress: _percent,
+          center: widget.center,
+          progressColor: widget.progressColor,
+          linearGradient: widget.linearGradient,
+          backgroundColor: widget.backgroundColor,
+          linearStrokeCap: widget.linearStrokeCap,
+          lineWidth: widget.lineHeight,
+          maskFilter: widget.maskFilter,
+          clipLinearGradient: widget.clipLinearGradient,
+        ),
         child: (widget.center != null)
             ? Center(child: widget.center)
             : Container(),
@@ -224,17 +231,20 @@ class LinearPainter extends CustomPainter {
   final LinearStrokeCap linearStrokeCap;
   final LinearGradient linearGradient;
   final MaskFilter maskFilter;
+  final bool clipLinearGradient;
 
-  LinearPainter(
-      {this.lineWidth,
-      this.progress,
-      this.center,
-      this.isRTL,
-      this.progressColor,
-      this.backgroundColor,
-      this.linearStrokeCap = LinearStrokeCap.butt,
-      this.linearGradient,
-      this.maskFilter}) {
+  LinearPainter({
+    this.lineWidth,
+    this.progress,
+    this.center,
+    this.isRTL,
+    this.progressColor,
+    this.backgroundColor,
+    this.linearStrokeCap = LinearStrokeCap.butt,
+    this.linearGradient,
+    this.maskFilter,
+    this.clipLinearGradient,
+  }) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = lineWidth;
@@ -268,20 +278,39 @@ class LinearPainter extends CustomPainter {
     if (isRTL) {
       final xProgress = size.width - size.width * progress;
       if (linearGradient != null) {
-        _paintLine.shader = linearGradient.createShader(Rect.fromPoints(
-            Offset(size.width, size.height), Offset(xProgress, size.height)));
+        _paintLine.shader = _createGradientShaderRightToLeft(size, xProgress);
       }
-
       canvas.drawLine(end, Offset(xProgress, size.height / 2), _paintLine);
     } else {
       final xProgress = size.width * progress;
       if (linearGradient != null) {
-        _paintLine.shader = linearGradient.createShader(
-            Rect.fromPoints(Offset.zero, Offset(xProgress, size.height)));
+        _paintLine.shader = _createGradientShaderLeftToRight(size, xProgress);
       }
-
       canvas.drawLine(start, Offset(xProgress, size.height / 2), _paintLine);
     }
+  }
+
+  Shader _createGradientShaderRightToLeft(Size size, double xProgress) {
+    Offset shaderEndPoint =
+        clipLinearGradient ? Offset.zero : Offset(xProgress, size.height);
+    return linearGradient.createShader(
+      Rect.fromPoints(
+        Offset(size.width, size.height),
+        shaderEndPoint,
+      ),
+    );
+  }
+
+  Shader _createGradientShaderLeftToRight(Size size, double xProgress) {
+    Offset shaderEndPoint = clipLinearGradient
+        ? Offset(size.width, size.height)
+        : Offset(xProgress, size.height);
+    return linearGradient.createShader(
+      Rect.fromPoints(
+        Offset.zero,
+        shaderEndPoint,
+      ),
+    );
   }
 
   @override

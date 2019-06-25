@@ -1,5 +1,7 @@
 # Percent Indicator
 
+[![pub package](https://img.shields.io/pub/v/percent_indicator.svg)](https://pub.dev/packages/percent_indicator)
+
 Circular and Linear percent indicators
 
 <p align="center">
@@ -17,13 +19,14 @@ Circular and Linear percent indicators
 - Custom size
 - Left , right or center child for Linear percent indicator
 - Top, bottom or center child for Circular percent indicator
+- Progress Color using gradients
 
 ## Getting started
 
 You should ensure that you add the router as a dependency in your flutter project.
 ```yaml
 dependencies:
- percent_indicator: "^2.1.0"
+ percent_indicator: "^2.1.1"
 ```
 
 You should then run `flutter packages upgrade` or update your packages in IntelliJ.

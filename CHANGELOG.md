@@ -1,3 +1,6 @@
+# 2.1.1
+- `LinearPercentIndicator` now can display only part of linear gradient using `clipLinearGradient`.
+
 # 2.1.0
 - vertical padding removed from `LinearPercentIndicator`.
 

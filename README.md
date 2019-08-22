@@ -37,6 +37,11 @@ There is a example project in the `example` folder. Check it out. Otherwise, kee
 
 ## Usage
 
+Need to include the import the package to the dart file where it will be used, use the below command,
+
+```dart
+import 'package:percent_indicator/percent_indicator.dart';
+```
 **Circular percent indicator**
 
 Basic Widget

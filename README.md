@@ -184,7 +184,7 @@ Basic Widget
 new LinearPercentIndicator(
                 width: 140.0,
                 lineHeight: 14.0,
-                percent: 0.5,,
+                percent: 0.5,
                 backgroundColor: Colors.grey,
                 progressColor: Colors.blue,
               ),

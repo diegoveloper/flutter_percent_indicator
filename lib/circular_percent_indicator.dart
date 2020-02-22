@@ -69,6 +69,9 @@ class CircularPercentIndicator extends StatefulWidget {
   /// Creates a mask filter that takes the progress shape being drawn and blurs it.
   final MaskFilter maskFilter;
 
+  /// set a circular curve animation type
+  final Curve curve;
+
   CircularPercentIndicator(
       {Key key,
       this.percent = 0.0,
@@ -90,6 +93,7 @@ class CircularPercentIndicator extends StatefulWidget {
       this.arcType,
       this.animateFromLastPercent = false,
       this.reverse = false,
+      this.curve = Curves.linear,
       this.maskFilter})
       : super(key: key) {
     if (linearGradient != null && progressColor != null) {
@@ -99,6 +103,7 @@ class CircularPercentIndicator extends StatefulWidget {
     _progressColor = progressColor ?? Colors.red;
 
     assert(startAngle >= 0.0);
+    assert(curve != null);
     if (percent < 0.0 || percent > 1.0) {
       throw Exception("Percent value must be a double between 0.0 and 1.0");
     }
@@ -133,13 +138,13 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
       _animationController = AnimationController(
           vsync: this,
           duration: Duration(milliseconds: widget.animationDuration));
-      _animation =
-          Tween(begin: 0.0, end: widget.percent).animate(_animationController)
-            ..addListener(() {
-              setState(() {
-                _percent = _animation.value;
-              });
-            });
+      _animation = Tween(begin: 0.0, end: widget.percent).animate(
+        CurvedAnimation(parent: _animationController, curve: widget.curve),
+      )..addListener(() {
+          setState(() {
+            _percent = _animation.value;
+          });
+        });
       _animationController.forward();
     } else {
       _updateProgress();
@@ -158,7 +163,9 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
         _animation = Tween(
                 begin: widget.animateFromLastPercent ? oldWidget.percent : 0.0,
                 end: widget.percent)
-            .animate(_animationController);
+            .animate(
+          CurvedAnimation(parent: _animationController, curve: widget.curve),
+        );
         _animationController.forward(from: 0.0);
       } else {
         _updateProgress();

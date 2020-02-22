@@ -1,3 +1,6 @@
+# 2.1.2
+- `curve` was added in both indicators.
+
 # 2.1.1
 - `LinearPercentIndicator` now can display only part of linear gradient using `clipLinearGradient`.
 

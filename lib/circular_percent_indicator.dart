@@ -1,7 +1,7 @@
 //import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:vector_math/vector_math_64.dart' as math;
+import 'dart:math' as math;
 
 enum CircularStrokeCap { butt, round, square }
 
@@ -332,8 +332,8 @@ class CirclePainter extends CustomPainter {
     if (arcBackgroundColor != null) {
       canvas.drawArc(
         Rect.fromCircle(center: center, radius: radius),
-        math.radians(-90.0 + fixedStartAngle),
-        math.radians(360 * startAngleFixedMargin),
+        radians(-90.0 + fixedStartAngle),
+        radians(360 * startAngleFixedMargin),
         false,
         _paintBackgroundStartAngle,
       );
@@ -341,8 +341,8 @@ class CirclePainter extends CustomPainter {
 
     if (reverse) {
       final start =
-          math.radians(360 * startAngleFixedMargin - 90.0 + fixedStartAngle);
-      final end = math.radians(-progress * startAngleFixedMargin);
+          radians(360 * startAngleFixedMargin - 90.0 + fixedStartAngle);
+      final end = radians(-progress * startAngleFixedMargin);
       canvas.drawArc(
         Rect.fromCircle(
           center: center,
@@ -354,8 +354,8 @@ class CirclePainter extends CustomPainter {
         _paintLine,
       );
     } else {
-      final start = math.radians(-90.0 + fixedStartAngle);
-      final end = math.radians(progress * startAngleFixedMargin);
+      final start = radians(-90.0 + fixedStartAngle);
+      final end = radians(progress * startAngleFixedMargin);
       canvas.drawArc(
         Rect.fromCircle(
           center: center,
@@ -373,4 +373,6 @@ class CirclePainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
   }
+
+  num radians(num deg) => deg * (math.pi / 180.0);
 }

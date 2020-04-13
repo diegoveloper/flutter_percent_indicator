@@ -1,3 +1,6 @@
+# 2.1.3
+- Added `StrokeCap` on background. Thanks @mifama
+
 # 2.1.2
 - `curve` was added in both indicators.
 

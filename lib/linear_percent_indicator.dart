@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 enum LinearStrokeCap { butt, round, roundAll }
 
+// ignore: must_be_immutable
 class LinearPercentIndicator extends StatefulWidget {
   ///Percent value between 0.0 and 1.0
   final double percent;

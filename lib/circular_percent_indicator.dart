@@ -10,6 +10,7 @@ enum ArcType {
   FULL,
 }
 
+// ignore: must_be_immutable
 class CircularPercentIndicator extends StatefulWidget {
   ///Percent value between 0.0 and 1.0
   final double percent;

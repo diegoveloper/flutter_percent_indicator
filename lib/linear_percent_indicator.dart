@@ -69,30 +69,35 @@ class LinearPercentIndicator extends StatefulWidget {
   /// set a linear curve animation type
   final Curve curve;
 
-  LinearPercentIndicator({
-    Key key,
-    this.fillColor = Colors.transparent,
-    this.percent = 0.0,
-    this.lineHeight = 5.0,
-    this.width,
-    this.backgroundColor = const Color(0xFFB8C7CB),
-    this.linearGradient,
-    Color progressColor,
-    this.animation = false,
-    this.animationDuration = 500,
-    this.animateFromLastPercent = false,
-    this.isRTL = false,
-    this.leading,
-    this.trailing,
-    this.center,
-    this.addAutomaticKeepAlive = true,
-    this.linearStrokeCap,
-    this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
-    this.alignment = MainAxisAlignment.start,
-    this.maskFilter,
-    this.clipLinearGradient = false,
-    this.curve = Curves.linear,
-  }) : super(key: key) {
+  /// set true when you want to restart the animation, it restarts only when reaches 1.0 as a value
+  /// defaults to false
+  final bool restartAnimation;
+
+  LinearPercentIndicator(
+      {Key key,
+      this.fillColor = Colors.transparent,
+      this.percent = 0.0,
+      this.lineHeight = 5.0,
+      this.width,
+      this.backgroundColor = const Color(0xFFB8C7CB),
+      this.linearGradient,
+      Color progressColor,
+      this.animation = false,
+      this.animationDuration = 500,
+      this.animateFromLastPercent = false,
+      this.isRTL = false,
+      this.leading,
+      this.trailing,
+      this.center,
+      this.addAutomaticKeepAlive = true,
+      this.linearStrokeCap,
+      this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
+      this.alignment = MainAxisAlignment.start,
+      this.maskFilter,
+      this.clipLinearGradient = false,
+      this.curve = Curves.linear,
+      this.restartAnimation = false})
+      : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
           'Cannot provide both linearGradient and progressColor');
@@ -136,6 +141,9 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
           setState(() {
             _percent = _animation.value;
           });
+          if (widget.restartAnimation && _percent == 1.0) {
+            _animationController.repeat(min: 0, max: 1.0);
+          }
         });
       _animationController.forward();
     } else {

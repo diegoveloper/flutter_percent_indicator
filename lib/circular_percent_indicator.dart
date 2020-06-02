@@ -72,6 +72,8 @@ class CircularPercentIndicator extends StatefulWidget {
   /// set a circular curve animation type
   final Curve curve;
 
+  /// set true when you want to restart the animation, it restarts only when reaches 1.0 as a value
+  /// defaults to false
   final bool restartAnimation;
 
   CircularPercentIndicator(
@@ -147,7 +149,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
           setState(() {
             _percent = _animation.value;
           });
-          if(widget.restartAnimation && _percent == 1.0){
+          if (widget.restartAnimation && _percent == 1.0) {
             _animationController.repeat(min: 0, max: 1.0);
           }
         });

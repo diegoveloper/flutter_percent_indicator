@@ -1,3 +1,6 @@
+# 2.1.4
+- `restartAnimation` was added to restart the animation when reached the end. Thanks to superciccio for the contribution
+
 # 2.1.3
 - Added `StrokeCap` on background. Thanks @mifama
 

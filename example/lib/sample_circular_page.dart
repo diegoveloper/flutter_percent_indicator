@@ -164,6 +164,20 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                   percent: 0.90,
                   center: Text("90%"),
                   progressColor: Colors.green,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                ),
+                CircularPercentIndicator(
+                  radius: 45.0,
+                  lineWidth: 4.0,
+                  percent: 1.0,
+                  animation: true,
+                  restartAnimation: true,
+                  center: CircleAvatar(
+                    child: Icon(Icons.person),
+                  ),
+                  progressColor: Colors.redAccent,
                 )
               ],
             ),

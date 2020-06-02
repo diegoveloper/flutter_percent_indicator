@@ -145,6 +145,17 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                       lineHeight: 8.0,
                       percent: 0.9,
                       progressColor: Colors.blue,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    LinearPercentIndicator(
+                      width: 100.0,
+                      lineHeight: 8.0,
+                      percent: 1.0,
+                      progressColor: Colors.lightBlueAccent,
+                      restartAnimation: true,
+                      animation: true,
                     )
                   ],
                 ),

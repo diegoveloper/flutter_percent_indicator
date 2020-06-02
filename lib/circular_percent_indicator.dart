@@ -72,6 +72,8 @@ class CircularPercentIndicator extends StatefulWidget {
   /// set a circular curve animation type
   final Curve curve;
 
+  final bool restartAnimation;
+
   CircularPercentIndicator(
       {Key key,
       this.percent = 0.0,
@@ -94,7 +96,8 @@ class CircularPercentIndicator extends StatefulWidget {
       this.animateFromLastPercent = false,
       this.reverse = false,
       this.curve = Curves.linear,
-      this.maskFilter})
+      this.maskFilter,
+      this.restartAnimation = false})
       : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
@@ -144,6 +147,9 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
           setState(() {
             _percent = _animation.value;
           });
+          if(widget.restartAnimation && _percent == 1.0){
+            _animationController.repeat(min: 0, max: 1.0);
+          }
         });
       _animationController.forward();
     } else {

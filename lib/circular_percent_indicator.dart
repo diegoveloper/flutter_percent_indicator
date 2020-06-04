@@ -15,8 +15,11 @@ class CircularPercentIndicator extends StatefulWidget {
   final double percent;
   final double radius;
 
-  ///Width of the line of the Circle
+  ///Width of the progress bar of the circle
   final double lineWidth;
+  
+  ///Width of the unfilled background of the progress bar
+  final double backgroundWidth;
 
   ///Color of the background of the circle , default = transparent
   final Color fillColor;
@@ -80,7 +83,8 @@ class CircularPercentIndicator extends StatefulWidget {
       @required this.radius,
       this.fillColor = Colors.transparent,
       this.backgroundColor = const Color(0xFFB8C7CB),
-      Color progressColor,
+      Color progressColor, 
+      this.backgroundWidth = -1, //negative values ignored, replaced with lineWidth
       this.linearGradient,
       this.animation = false,
       this.animationDuration = 500,
@@ -198,6 +202,9 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
               circularStrokeCap: widget.circularStrokeCap,
               radius: (widget.radius / 2) - widget.lineWidth / 2,
               lineWidth: widget.lineWidth,
+              backgroundWidth: //negative values ignored, replaced with lineWidth
+                widget.backgroundWidth >= 0.0?
+                  (widget.backgroundWidth): widget.lineWidth,
               arcBackgroundColor: widget.arcBackgroundColor,
               arcType: widget.arcType,
               reverse: widget.reverse,
@@ -232,6 +239,7 @@ class CirclePainter extends CustomPainter {
   final Paint _paintLine = Paint();
   final Paint _paintBackgroundStartAngle = Paint();
   final double lineWidth;
+  final double backgroundWidth;
   final double progress;
   final double radius;
   final Color progressColor;
@@ -246,6 +254,7 @@ class CirclePainter extends CustomPainter {
 
   CirclePainter(
       {this.lineWidth,
+      this.backgroundWidth,
       this.progress,
       @required this.radius,
       this.progressColor,
@@ -259,7 +268,7 @@ class CirclePainter extends CustomPainter {
       this.maskFilter}) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
-    _paintBackground.strokeWidth = lineWidth;
+    _paintBackground.strokeWidth = backgroundWidth;
 
     if (arcBackgroundColor != null) {
       _paintBackgroundStartAngle.color = arcBackgroundColor;

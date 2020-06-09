@@ -1,3 +1,6 @@
+# 2.1.5
+- Added optional `backgroundWidth` for `CircularPercentIndicator`. Thanks to CircuitGuy for the contribution
+
 # 2.1.4
 - `restartAnimation` was added to restart the animation when reached the end. Thanks to superciccio for the contribution
 

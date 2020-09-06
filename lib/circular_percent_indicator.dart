@@ -18,7 +18,7 @@ class CircularPercentIndicator extends StatefulWidget {
 
   ///Width of the progress bar of the circle
   final double lineWidth;
-
+  
   ///Width of the unfilled background of the progress bar
   final double backgroundWidth;
 

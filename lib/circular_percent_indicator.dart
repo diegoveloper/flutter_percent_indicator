@@ -18,7 +18,7 @@ class CircularPercentIndicator extends StatefulWidget {
 
   ///Width of the progress bar of the circle
   final double lineWidth;
-  
+
   ///Width of the unfilled background of the progress bar
   final double backgroundWidth;
 
@@ -80,32 +80,35 @@ class CircularPercentIndicator extends StatefulWidget {
   /// defaults to false
   final bool restartAnimation;
 
-  CircularPercentIndicator(
-      {Key key,
-      this.percent = 0.0,
-      this.lineWidth = 5.0,
-      this.startAngle = 0.0,
-      @required this.radius,
-      this.fillColor = Colors.transparent,
-      this.backgroundColor = const Color(0xFFB8C7CB),
-      Color progressColor, 
-      this.backgroundWidth = -1, //negative values ignored, replaced with lineWidth
-      this.linearGradient,
-      this.animation = false,
-      this.animationDuration = 500,
-      this.header,
-      this.footer,
-      this.center,
-      this.addAutomaticKeepAlive = true,
-      this.circularStrokeCap,
-      this.arcBackgroundColor,
-      this.arcType,
-      this.animateFromLastPercent = false,
-      this.reverse = false,
-      this.curve = Curves.linear,
-      this.maskFilter,
-      this.restartAnimation = false})
-      : super(key: key) {
+  final VoidCallback onAnimationEnd;
+
+  CircularPercentIndicator({
+    Key key,
+    this.percent = 0.0,
+    this.lineWidth = 5.0,
+    this.startAngle = 0.0,
+    @required this.radius,
+    this.fillColor = Colors.transparent,
+    this.backgroundColor = const Color(0xFFB8C7CB),
+    Color progressColor,
+    this.backgroundWidth = -1, //negative values ignored, replaced with lineWidth
+    this.linearGradient,
+    this.animation = false,
+    this.animationDuration = 500,
+    this.header,
+    this.footer,
+    this.center,
+    this.addAutomaticKeepAlive = true,
+    this.circularStrokeCap,
+    this.arcBackgroundColor,
+    this.arcType,
+    this.animateFromLastPercent = false,
+    this.reverse = false,
+    this.curve = Curves.linear,
+    this.maskFilter,
+    this.restartAnimation = false,
+    this.onAnimationEnd,
+  }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError('Cannot provide both linearGradient and progressColor');
     }
@@ -155,6 +158,11 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
             _animationController.repeat(min: 0, max: 1.0);
           }
         });
+      _animationController.addStatusListener((status) {
+        if (widget.onAnimationEnd != null && status == AnimationStatus.completed) {
+          widget.onAnimationEnd();
+        }
+      });
       _animationController.forward();
     } else {
       _updateProgress();
@@ -204,8 +212,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
               radius: (widget.radius / 2) - widget.lineWidth / 2,
               lineWidth: widget.lineWidth,
               backgroundWidth: //negative values ignored, replaced with lineWidth
-                widget.backgroundWidth >= 0.0?
-                  (widget.backgroundWidth): widget.lineWidth,
+                  widget.backgroundWidth >= 0.0 ? (widget.backgroundWidth) : widget.lineWidth,
               arcBackgroundColor: widget.arcBackgroundColor,
               arcType: widget.arcType,
               reverse: widget.reverse,

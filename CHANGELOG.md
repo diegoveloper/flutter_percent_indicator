@@ -1,3 +1,6 @@
+# 2.1.6
+- Added optional `onAnimationEnd` for `CircularPercentIndicator` and `LinearPercentIndicator`, it's a callback when the animation ends. Thanks to Brayan Cantos for the contribution
+
 # 2.1.5
 - Added optional `backgroundWidth` for `CircularPercentIndicator`. Thanks to CircuitGuy for the contribution
 

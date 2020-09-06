@@ -125,76 +125,79 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
             ),
             Container(
               padding: EdgeInsets.all(15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  CircularPercentIndicator(
-                    radius: 45.0,
-                    lineWidth: 4.0,
-                    percent: 0.10,
-                    center: Text("10%"),
-                    progressColor: Colors.red,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  ),
-                  CircularPercentIndicator(
-                    radius: 45.0,
-                    lineWidth: 4.0,
-                    backgroundWidth: 1.0,
-                    percent: 0.2,
-                    animation: true,
-                    center: Text("20%"),
-                    progressColor: Colors.orangeAccent,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  ),
-                  CircularPercentIndicator(
-                    radius: 45.0,
-                    lineWidth: 4.0,
-                    percent: 0.30,
-                    center: Text("30%"),
-                    progressColor: Colors.orange,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  ),
-                  CircularPercentIndicator(
-                    radius: 45.0,
-                    lineWidth: 4.0,
-                    backgroundWidth: 8,
-                    animation: true,
-                    animationDuration: 200,
-                    percent: 0.60,
-                    center: Text("60%"),
-                    progressColor: Colors.yellow,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  ),
-                  CircularPercentIndicator(
-                    radius: 45.0,
-                    lineWidth: 4.0,
-                    percent: 0.90,
-                    center: Text("90%"),
-                    progressColor: Colors.green,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  ),
-                  CircularPercentIndicator(
-                    radius: 45.0,
-                    lineWidth: 4.0,
-                    percent: 1.0,
-                    animation: true,
-                    restartAnimation: true,
-                    center: CircleAvatar(
-                      child: Icon(Icons.person),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    CircularPercentIndicator(
+                      radius: 45.0,
+                      lineWidth: 4.0,
+                      percent: 0.10,
+                      center: Text("10%"),
+                      progressColor: Colors.red,
                     ),
-                    progressColor: Colors.redAccent,
-                  ),
-                ],
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    ),
+                    CircularPercentIndicator(
+                      radius: 45.0,
+                      lineWidth: 4.0,
+                      backgroundWidth: 1.0,
+                      percent: 0.2,
+                      animation: true,
+                      center: Text("20%"),
+                      progressColor: Colors.orangeAccent,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    ),
+                    CircularPercentIndicator(
+                      radius: 45.0,
+                      lineWidth: 4.0,
+                      percent: 0.30,
+                      center: Text("30%"),
+                      progressColor: Colors.orange,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    ),
+                    CircularPercentIndicator(
+                      radius: 45.0,
+                      lineWidth: 4.0,
+                      backgroundWidth: 8,
+                      animation: true,
+                      animationDuration: 200,
+                      percent: 0.60,
+                      center: Text("60%"),
+                      progressColor: Colors.yellow,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    ),
+                    CircularPercentIndicator(
+                      radius: 45.0,
+                      lineWidth: 4.0,
+                      percent: 0.90,
+                      center: Text("90%"),
+                      progressColor: Colors.green,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    ),
+                    CircularPercentIndicator(
+                      radius: 45.0,
+                      lineWidth: 4.0,
+                      percent: 1.0,
+                      animation: true,
+                      restartAnimation: true,
+                      center: CircleAvatar(
+                        child: Icon(Icons.person),
+                      ),
+                      progressColor: Colors.redAccent,
+                    ),
+                  ],
+                ),
               ),
             ),
             CircularPercentIndicator(

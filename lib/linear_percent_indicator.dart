@@ -73,6 +73,7 @@ class LinearPercentIndicator extends StatefulWidget {
   /// defaults to false
   final bool restartAnimation;
 
+  /// Callback called when the animation ends (only if `animation` is true)
   final VoidCallback onAnimationEnd;
 
   LinearPercentIndicator({

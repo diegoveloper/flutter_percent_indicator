@@ -12,7 +12,7 @@ class SamplePage extends StatefulWidget {
 }
 
 class _SamplePageState extends State<SamplePage> {
-  _openPage(Widget page) {
+  void _openPage(Widget page) {
     Navigator.push(
       context,
       MaterialPageRoute(

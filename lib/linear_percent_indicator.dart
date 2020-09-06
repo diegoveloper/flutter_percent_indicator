@@ -73,31 +73,35 @@ class LinearPercentIndicator extends StatefulWidget {
   /// defaults to false
   final bool restartAnimation;
 
-  LinearPercentIndicator(
-      {Key key,
-      this.fillColor = Colors.transparent,
-      this.percent = 0.0,
-      this.lineHeight = 5.0,
-      this.width,
-      this.backgroundColor = const Color(0xFFB8C7CB),
-      this.linearGradient,
-      Color progressColor,
-      this.animation = false,
-      this.animationDuration = 500,
-      this.animateFromLastPercent = false,
-      this.isRTL = false,
-      this.leading,
-      this.trailing,
-      this.center,
-      this.addAutomaticKeepAlive = true,
-      this.linearStrokeCap,
-      this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
-      this.alignment = MainAxisAlignment.start,
-      this.maskFilter,
-      this.clipLinearGradient = false,
-      this.curve = Curves.linear,
-      this.restartAnimation = false})
-      : super(key: key) {
+  /// Callback called when the animation ends (only if `animation` is true)
+  final VoidCallback onAnimationEnd;
+
+  LinearPercentIndicator({
+    Key key,
+    this.fillColor = Colors.transparent,
+    this.percent = 0.0,
+    this.lineHeight = 5.0,
+    this.width,
+    this.backgroundColor = const Color(0xFFB8C7CB),
+    this.linearGradient,
+    Color progressColor,
+    this.animation = false,
+    this.animationDuration = 500,
+    this.animateFromLastPercent = false,
+    this.isRTL = false,
+    this.leading,
+    this.trailing,
+    this.center,
+    this.addAutomaticKeepAlive = true,
+    this.linearStrokeCap,
+    this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
+    this.alignment = MainAxisAlignment.start,
+    this.maskFilter,
+    this.clipLinearGradient = false,
+    this.curve = Curves.linear,
+    this.restartAnimation = false,
+    this.onAnimationEnd,
+  }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError('Cannot provide both linearGradient and progressColor');
     }
@@ -122,9 +126,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
 
   @override
   void dispose() {
-    if (_animationController != null) {
-      _animationController.dispose();
-    }
+    _animationController?.dispose();
     super.dispose();
   }
 
@@ -132,7 +134,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
   void initState() {
     if (widget.animation) {
       _animationController =
-          new AnimationController(vsync: this, duration: Duration(milliseconds: widget.animationDuration));
+          AnimationController(vsync: this, duration: Duration(milliseconds: widget.animationDuration));
       _animation = Tween(begin: 0.0, end: widget.percent).animate(
         CurvedAnimation(parent: _animationController, curve: widget.curve),
       )..addListener(() {
@@ -143,6 +145,11 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
             _animationController.repeat(min: 0, max: 1.0);
           }
         });
+      _animationController.addStatusListener((status) {
+        if (widget.onAnimationEnd != null && status == AnimationStatus.completed) {
+          widget.onAnimationEnd();
+        }
+      });
       _animationController.forward();
     } else {
       _updateProgress();

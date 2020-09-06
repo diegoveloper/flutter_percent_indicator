@@ -7,6 +7,7 @@ class SampleLinearPage extends StatefulWidget {
 }
 
 class _SampleLinearPageState extends State<SampleLinearPage> {
+  String state = 'Animation start';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -160,6 +161,20 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                   ],
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: LinearPercentIndicator(
+                  lineHeight: 20,
+                  center: Text('50%'),
+                  progressColor: Colors.blueAccent,
+                  percent: .5,
+                  animation: true,
+                  animationDuration: 5000,
+                  onAnimationEnd: () =>
+                      setState(() => state = 'End Animation at 50%'),
+                ),
+              ),
+              Text(state),
             ],
           ),
         ),

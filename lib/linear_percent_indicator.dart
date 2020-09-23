@@ -212,7 +212,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
       height: widget.lineHeight,
       padding: widget.padding,
       child: Stack(
-        overflow: Overflow.visible,
+        clipBehavior: Clip.none,
         children: [
           CustomPaint(
             key: _containerKey,

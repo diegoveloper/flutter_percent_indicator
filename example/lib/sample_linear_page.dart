@@ -21,6 +21,21 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.all(15.0),
+                child: LinearPercentIndicator(
+                  width: MediaQuery.of(context).size.width - 50,
+                  animation: true,
+                  lineHeight: 20.0,
+                  animationDuration: 2000,
+                  percent: 0.5,
+                  animateFromLastPercent: true,
+                  center: Text("50.0%"),
+                  linearStrokeCap: LinearStrokeCap.butt,
+                  progressColor: Colors.red,
+                  widgetIndicator: RotatedBox(quarterTurns: 1, child: Icon(Icons.airplanemode_active, size: 50)),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(15.0),
                 child: FittedBox(
                   child: LinearPercentIndicator(
                     width: 140.0,
@@ -170,8 +185,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                   percent: .5,
                   animation: true,
                   animationDuration: 5000,
-                  onAnimationEnd: () =>
-                      setState(() => state = 'End Animation at 50%'),
+                  onAnimationEnd: () => setState(() => state = 'End Animation at 50%'),
                 ),
               ),
               Text(state),

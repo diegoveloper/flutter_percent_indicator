@@ -1,3 +1,6 @@
+# 2.1.7
+- Added optional `widgetIndicator` for `CircularPercentIndicator` and `LinearPercentIndicator`, it's an indicator displayed at the end of the progress, it only works when the `animation` is `true`. Thanks to Brayan Cantos for the contribution
+
 # 2.1.6
 - Added optional `onAnimationEnd` for `CircularPercentIndicator` and `LinearPercentIndicator`, it's a callback when the animation ends. Thanks to Brayan Cantos for the contribution
 

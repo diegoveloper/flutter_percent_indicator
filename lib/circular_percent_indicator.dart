@@ -83,6 +83,9 @@ class CircularPercentIndicator extends StatefulWidget {
   /// Callback called when the animation ends (only if `animation` is true)
   final VoidCallback onAnimationEnd;
 
+  /// Display a widget indicator at the end of the progress. It only works when `animation` is true
+  final Widget widgetIndicator;
+
   CircularPercentIndicator({
     Key key,
     this.percent = 0.0,
@@ -109,6 +112,7 @@ class CircularPercentIndicator extends StatefulWidget {
     this.maskFilter,
     this.restartAnimation = false,
     this.onAnimationEnd,
+    this.widgetIndicator,
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError('Cannot provide both linearGradient and progressColor');
@@ -200,27 +204,50 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
     if (widget.header != null) {
       items.add(widget.header);
     }
-    items.add(Container(
+    items.add(
+      Container(
         height: widget.radius + widget.lineWidth,
         width: widget.radius,
-        child: CustomPaint(
-          painter: CirclePainter(
-              progress: _percent * 360,
-              progressColor: widget.progressColor,
-              backgroundColor: widget.backgroundColor,
-              startAngle: widget.startAngle,
-              circularStrokeCap: widget.circularStrokeCap,
-              radius: (widget.radius / 2) - widget.lineWidth / 2,
-              lineWidth: widget.lineWidth,
-              backgroundWidth: //negative values ignored, replaced with lineWidth
-                  widget.backgroundWidth >= 0.0 ? (widget.backgroundWidth) : widget.lineWidth,
-              arcBackgroundColor: widget.arcBackgroundColor,
-              arcType: widget.arcType,
-              reverse: widget.reverse,
-              linearGradient: widget.linearGradient,
-              maskFilter: widget.maskFilter),
-          child: (widget.center != null) ? Center(child: widget.center) : Container(),
-        )));
+        child: Stack(
+          children: [
+            CustomPaint(
+              painter: CirclePainter(
+                  progress: _percent * 360,
+                  progressColor: widget.progressColor,
+                  backgroundColor: widget.backgroundColor,
+                  startAngle: widget.startAngle,
+                  circularStrokeCap: widget.circularStrokeCap,
+                  radius: (widget.radius / 2) - widget.lineWidth / 2,
+                  lineWidth: widget.lineWidth,
+                  backgroundWidth: //negative values ignored, replaced with lineWidth
+                      widget.backgroundWidth >= 0.0 ? (widget.backgroundWidth) : widget.lineWidth,
+                  arcBackgroundColor: widget.arcBackgroundColor,
+                  arcType: widget.arcType,
+                  reverse: widget.reverse,
+                  linearGradient: widget.linearGradient,
+                  maskFilter: widget.maskFilter),
+              child: (widget.center != null) ? Center(child: widget.center) : Container(),
+            ),
+            if (widget.widgetIndicator != null && widget.animation)
+              Positioned.fill(
+                child: Transform.rotate(
+                  angle: radians((widget.circularStrokeCap != CircularStrokeCap.butt && widget.reverse) ? -15 : 0),
+                  child: Transform.rotate(
+                    angle: radians((widget.reverse ? -360 : 360) * _percent),
+                    child: Transform.translate(
+                      offset: Offset(
+                        (widget.circularStrokeCap != CircularStrokeCap.butt) ? widget.lineWidth / 2 : 0,
+                        (-widget.radius / 2 + widget.lineWidth / 2),
+                      ),
+                      child: widget.widgetIndicator,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
 
     if (widget.footer != null) {
       items.add(widget.footer);
@@ -229,11 +256,12 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
     return Material(
       color: widget.fillColor,
       child: Container(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: items,
-      )),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: items,
+        ),
+      ),
     );
   }
 
@@ -388,6 +416,6 @@ class CirclePainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
   }
-
-  num radians(num deg) => deg * (math.pi / 180.0);
 }
+
+num radians(num deg) => deg * (math.pi / 180.0);

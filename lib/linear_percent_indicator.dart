@@ -76,6 +76,9 @@ class LinearPercentIndicator extends StatefulWidget {
   /// Callback called when the animation ends (only if `animation` is true)
   final VoidCallback onAnimationEnd;
 
+  /// Display a widget indicator at the end of the progress. It only works when `animation` is true
+  final Widget widgetIndicator;
+
   LinearPercentIndicator({
     Key key,
     this.fillColor = Colors.transparent,
@@ -101,6 +104,7 @@ class LinearPercentIndicator extends StatefulWidget {
     this.curve = Curves.linear,
     this.restartAnimation = false,
     this.onAnimationEnd,
+    this.widgetIndicator,
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError('Cannot provide both linearGradient and progressColor');
@@ -123,6 +127,12 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
   AnimationController _animationController;
   Animation _animation;
   double _percent = 0.0;
+  final _containerKey = GlobalKey();
+  final _keyIndicator = GlobalKey();
+  double _containerWidth = 0.0;
+  double _containerHeight = 0.0;
+  double _indicatorWidth = 0.0;
+  double _indicatorHeight = 0.0;
 
   @override
   void dispose() {
@@ -132,6 +142,16 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _containerWidth = _containerKey.currentContext.size.width;
+        _containerHeight = _containerKey.currentContext.size.height;
+        if (_keyIndicator.currentContext != null) {
+          _indicatorWidth = _keyIndicator.currentContext.size.width;
+          _indicatorHeight = _keyIndicator.currentContext.size.height;
+        }
+      });
+    });
     if (widget.animation) {
       _animationController =
           AnimationController(vsync: this, duration: Duration(milliseconds: widget.animationDuration));
@@ -191,20 +211,37 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
       width: hasSetWidth ? widget.width : double.infinity,
       height: widget.lineHeight,
       padding: widget.padding,
-      child: CustomPaint(
-        painter: LinearPainter(
-          isRTL: widget.isRTL,
-          progress: _percent,
-          center: widget.center,
-          progressColor: widget.progressColor,
-          linearGradient: widget.linearGradient,
-          backgroundColor: widget.backgroundColor,
-          linearStrokeCap: widget.linearStrokeCap,
-          lineWidth: widget.lineHeight,
-          maskFilter: widget.maskFilter,
-          clipLinearGradient: widget.clipLinearGradient,
-        ),
-        child: (widget.center != null) ? Center(child: widget.center) : Container(),
+      child: Stack(
+        overflow: Overflow.visible,
+        children: [
+          CustomPaint(
+            key: _containerKey,
+            painter: LinearPainter(
+              isRTL: widget.isRTL,
+              progress: _percent,
+              progressColor: widget.progressColor,
+              linearGradient: widget.linearGradient,
+              backgroundColor: widget.backgroundColor,
+              linearStrokeCap: widget.linearStrokeCap,
+              lineWidth: widget.lineHeight,
+              maskFilter: widget.maskFilter,
+              clipLinearGradient: widget.clipLinearGradient,
+            ),
+            child: (widget.center != null) ? Center(child: widget.center) : Container(),
+          ),
+          if (widget.widgetIndicator != null && _indicatorWidth == 0)
+            Opacity(
+              opacity: 0.0,
+              key: _keyIndicator,
+              child: widget.widgetIndicator,
+            ),
+          if (widget.widgetIndicator != null && widget.animation && _containerWidth > 0 && _indicatorWidth > 0)
+            Positioned(
+              left: _containerWidth * _percent - _indicatorWidth / 2,
+              top: _containerHeight / 2 - _indicatorHeight,
+              child: widget.widgetIndicator,
+            ),
+        ],
       ),
     );
 
@@ -221,13 +258,14 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
 
     return Material(
       color: Colors.transparent,
-      child: new Container(
-          color: widget.fillColor,
-          child: Row(
-            mainAxisAlignment: widget.alignment,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: items,
-          )),
+      child: Container(
+        color: widget.fillColor,
+        child: Row(
+          mainAxisAlignment: widget.alignment,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: items,
+        ),
+      ),
     );
   }
 
@@ -238,10 +276,9 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
 class LinearPainter extends CustomPainter {
   final Paint _paintBackground = new Paint();
   final Paint _paintLine = new Paint();
-  final lineWidth;
-  final progress;
-  final center;
-  final isRTL;
+  final double lineWidth;
+  final double progress;
+  final bool isRTL;
   final Color progressColor;
   final Color backgroundColor;
   final LinearStrokeCap linearStrokeCap;
@@ -252,7 +289,6 @@ class LinearPainter extends CustomPainter {
   LinearPainter({
     this.lineWidth,
     this.progress,
-    this.center,
     this.isRTL,
     this.progressColor,
     this.backgroundColor,

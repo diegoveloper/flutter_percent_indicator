@@ -207,6 +207,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
       items.add(widget.leading);
     }
     final hasSetWidth = widget.width != null;
+    final percentPositionedHorizontal = _containerWidth * _percent - _indicatorWidth / 3;
     var containerWidget = Container(
       width: hasSetWidth ? widget.width : double.infinity,
       height: widget.lineHeight,
@@ -237,7 +238,8 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
             ),
           if (widget.widgetIndicator != null && widget.animation && _containerWidth > 0 && _indicatorWidth > 0)
             Positioned(
-              left: _containerWidth * _percent - _indicatorWidth / 2,
+              right: widget.isRTL ? percentPositionedHorizontal : null,
+              left: !widget.isRTL ? percentPositionedHorizontal : null,
               top: _containerHeight / 2 - _indicatorHeight,
               child: widget.widgetIndicator,
             ),

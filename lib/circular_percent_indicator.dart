@@ -86,6 +86,9 @@ class CircularPercentIndicator extends StatefulWidget {
   /// Display a widget indicator at the end of the progress. It only works when `animation` is true
   final Widget widgetIndicator;
 
+  /// Set to true if you want to rotate linear gradient in accordance to the [startAngle].
+  final bool rotateLinearGradient;
+
   CircularPercentIndicator({
     Key key,
     this.percent = 0.0,
@@ -113,6 +116,7 @@ class CircularPercentIndicator extends StatefulWidget {
     this.restartAnimation = false,
     this.onAnimationEnd,
     this.widgetIndicator,
+    this.rotateLinearGradient = false
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError('Cannot provide both linearGradient and progressColor');
@@ -225,7 +229,8 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
                   arcType: widget.arcType,
                   reverse: widget.reverse,
                   linearGradient: widget.linearGradient,
-                  maskFilter: widget.maskFilter),
+                  maskFilter: widget.maskFilter,
+                  rotateLinearGradient: widget.rotateLinearGradient),
               child: (widget.center != null) ? Center(child: widget.center) : Container(),
             ),
             if (widget.widgetIndicator != null && widget.animation)
@@ -286,6 +291,7 @@ class CirclePainter extends CustomPainter {
   final ArcType arcType;
   final bool reverse;
   final MaskFilter maskFilter;
+  final bool rotateLinearGradient;
 
   CirclePainter(
       {this.lineWidth,
@@ -300,7 +306,8 @@ class CirclePainter extends CustomPainter {
       this.reverse,
       this.arcBackgroundColor,
       this.arcType,
-      this.maskFilter}) {
+      this.maskFilter,
+      this.rotateLinearGradient}) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = backgroundWidth;
@@ -339,25 +346,39 @@ class CirclePainter extends CustomPainter {
       _paintLine.maskFilter = maskFilter;
     }
     if (linearGradient != null) {
-      /*
-      _paintLine.shader = SweepGradient(
-              center: FractionalOffset.center,
-              startAngle: math.radians(-90.0 + startAngle),
-              endAngle: math.radians(progress),
-              //tileMode: TileMode.mirror,
-              colors: linearGradient.colors)
-          .createShader(
-        Rect.fromCircle(
-          center: center,
-          radius: radius,
-        ),
-      );*/
-      _paintLine.shader = linearGradient.createShader(
-        Rect.fromCircle(
-          center: center,
-          radius: radius,
-        ),
-      );
+      if (rotateLinearGradient && progress > 0) {
+        double correction = 0;
+        if (_paintLine.strokeCap == StrokeCap.round || _paintLine.strokeCap == StrokeCap.square) {
+          if (reverse) {
+            correction = math.atan(_paintLine.strokeWidth/2/radius);
+          } else {
+            correction = math.atan(_paintLine.strokeWidth/2/radius);
+          }
+        }
+        _paintLine.shader = SweepGradient(
+            transform:  reverse?
+                        GradientRotation(radians(-90 - progress + startAngle) - correction):
+                        GradientRotation(radians(-90.0 + startAngle) - correction),
+            startAngle: radians(0),
+            endAngle: radians(progress),
+            tileMode: TileMode.clamp,
+            colors: reverse?
+                    linearGradient.colors.reversed.toList():
+                    linearGradient.colors)
+            .createShader(
+          Rect.fromCircle(
+            center: center,
+            radius: radius,
+          ),
+        );
+      } else if (!rotateLinearGradient) {
+        _paintLine.shader = linearGradient.createShader(
+          Rect.fromCircle(
+            center: center,
+            radius: radius,
+          ),
+        );
+      }
     }
 
     double fixedStartAngle = startAngle;

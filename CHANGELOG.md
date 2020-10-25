@@ -1,3 +1,6 @@
+# 2.1.8
+- New field was added : `rotateLinearGradient` -> Enable rotation of linear gradient in circular percent indicator. Added by `ecokeco`.
+
 # 2.1.7 - 2.1.7+4
 - Added optional `widgetIndicator` for `CircularPercentIndicator` and `LinearPercentIndicator`, it's an indicator displayed at the end of the progress, it only works when the `animation` is `true`. Thanks to Brayan Cantos for the contribution
 

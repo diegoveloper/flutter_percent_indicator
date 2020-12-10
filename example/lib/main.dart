@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:percent_indicator_example/sample_circular_page.dart';
-import 'package:percent_indicator_example/sample_linear_page.dart';
+
+import './sample_circular_page.dart';
+import './sample_linear_page.dart';
 
 void main() {
   runApp(MaterialApp(home: Scaffold(body: SamplePage())));

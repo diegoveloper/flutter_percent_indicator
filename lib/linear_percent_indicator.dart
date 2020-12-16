@@ -182,6 +182,14 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
     super.initState();
   }
 
+  void _checkIfNeedCancelAnimation(LinearPercentIndicator oldWidget) {
+    if (oldWidget.animation &&
+        !widget.animation &&
+        _animationController != null) {
+      _animationController.stop();
+    }
+  }
+
   @override
   void didUpdateWidget(LinearPercentIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -200,6 +208,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
         _updateProgress();
       }
     }
+    _checkIfNeedCancelAnimation(oldWidget);
   }
 
   _updateProgress() {
@@ -249,7 +258,6 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
               child: widget.widgetIndicator,
             ),
           if (widget.widgetIndicator != null &&
-              widget.animation &&
               _containerWidth > 0 &&
               _indicatorWidth > 0)
             Positioned(

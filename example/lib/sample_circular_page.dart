@@ -240,7 +240,8 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               ),
               circularStrokeCap: CircularStrokeCap.round,
               progressColor: Colors.blueAccent,
-              onAnimationEnd: () => setState(() => state = 'End Animation at 50%'),
+              onAnimationEnd: () =>
+                  setState(() => state = 'End Animation at 50%'),
             ),
             const SizedBox(height: 20),
           ],

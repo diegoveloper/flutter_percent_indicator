@@ -184,6 +184,14 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
     super.initState();
   }
 
+  void _checkIfNeedCancelAnimation(CircularPercentIndicator oldWidget) {
+    if (oldWidget.animation &&
+        !widget.animation &&
+        _animationController != null) {
+      _animationController.stop();
+    }
+  }
+
   @override
   void didUpdateWidget(CircularPercentIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -203,6 +211,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
         _updateProgress();
       }
     }
+    _checkIfNeedCancelAnimation(oldWidget);
   }
 
   _updateProgress() {

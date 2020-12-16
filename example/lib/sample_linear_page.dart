@@ -8,11 +8,22 @@ class SampleLinearPage extends StatefulWidget {
 
 class _SampleLinearPageState extends State<SampleLinearPage> {
   String state = 'Animation start';
+  bool isRunning = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Linear Percent Indicators"),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.stop),
+              onPressed: () {
+                setState(() {
+                  isRunning = false;
+                });
+              })
+        ],
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -23,15 +34,17 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                 padding: EdgeInsets.all(15.0),
                 child: LinearPercentIndicator(
                   width: MediaQuery.of(context).size.width - 50,
-                  animation: true,
+                  animation: isRunning,
                   lineHeight: 20.0,
-                  animationDuration: 2000,
+                  animationDuration: 3000,
                   percent: 0.5,
                   animateFromLastPercent: true,
                   center: Text("50.0%"),
                   linearStrokeCap: LinearStrokeCap.butt,
                   progressColor: Colors.red,
-                  widgetIndicator: RotatedBox(quarterTurns: 1, child: Icon(Icons.airplanemode_active, size: 50)),
+                  widgetIndicator: RotatedBox(
+                      quarterTurns: 1,
+                      child: Icon(Icons.airplanemode_active, size: 50)),
                 ),
               ),
               Padding(
@@ -185,7 +198,8 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                   percent: .5,
                   animation: true,
                   animationDuration: 5000,
-                  onAnimationEnd: () => setState(() => state = 'End Animation at 50%'),
+                  onAnimationEnd: () =>
+                      setState(() => state = 'End Animation at 50%'),
                 ),
               ),
               Text(state),

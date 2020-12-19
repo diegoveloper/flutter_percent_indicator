@@ -369,7 +369,24 @@ class CirclePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    canvas.drawCircle(center, radius, _paintBackground);
+    double fixedStartAngle = startAngle;
+    final rectForArc = Rect.fromCircle(center: center, radius: radius);
+    double startAngleFixedMargin = 1.0;
+    if (arcType != null) {
+      if (arcType == ArcType.FULL) {
+        fixedStartAngle = 220;
+        startAngleFixedMargin = 172 / fixedStartAngle;
+      } else {
+        fixedStartAngle = 270;
+        startAngleFixedMargin = 135 / fixedStartAngle;
+      }
+    }
+    if (arcType == ArcType.HALF) {
+      canvas.drawArc(rectForArc, radians(-90.0 + fixedStartAngle),
+          radians(360 * startAngleFixedMargin), false, _paintBackground);
+    } else {
+      canvas.drawCircle(center, radius, _paintBackground);
+    }
 
     if (maskFilter != null) {
       _paintLine.maskFilter = maskFilter;
@@ -413,9 +430,9 @@ class CirclePainter extends CustomPainter {
       }
     }
 
-    double fixedStartAngle = startAngle;
+    fixedStartAngle = startAngle;
 
-    double startAngleFixedMargin = 1.0;
+    startAngleFixedMargin = 1.0;
     if (arcType != null) {
       if (arcType == ArcType.FULL) {
         fixedStartAngle = 220;

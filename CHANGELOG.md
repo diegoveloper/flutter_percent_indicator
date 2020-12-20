@@ -1,3 +1,7 @@
+# 2.1.9
+- Users can stop `animation` after this was initialize.
+- Added Half Arc for `CircularPercentIndicator` , added by Vivek
+
 # 2.1.8
 - New field was added : `rotateLinearGradient` -> Enable rotation of linear gradient in circular percent indicator. Added by `ecokeco`.
 

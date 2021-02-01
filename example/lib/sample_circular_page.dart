@@ -16,6 +16,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
       ),
       body: Center(
         child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 10),
           children: <Widget>[
             CircularPercentIndicator(
               radius: 120.0,

@@ -16,6 +16,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
       ),
       body: Center(
         child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 10),
           children: <Widget>[
             CircularPercentIndicator(
               radius: 120.0,
@@ -240,8 +241,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               ),
               circularStrokeCap: CircularStrokeCap.round,
               progressColor: Colors.blueAccent,
-              onAnimationEnd: () =>
-                  setState(() => state = 'End Animation at 50%'),
+              onAnimationEnd: () => setState(() => state = 'End Animation at 50%'),
             ),
             const SizedBox(height: 20),
             CircularPercentIndicator(

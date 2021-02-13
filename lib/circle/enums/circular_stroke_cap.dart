@@ -1,1 +1,5 @@
-enum CircularStrokeCap { butt, round, square }
+enum CircularStrokeCap {
+  butt,
+  round,
+  square,
+}

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math.dart' as vectorMath show radians;
-import 'dart:math' as math;
+import 'dart:math' as math show atan;
 
 enum CircularStrokeCap { butt, round, square }
 

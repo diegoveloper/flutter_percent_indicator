@@ -29,9 +29,10 @@ class CircularPercentIndicator extends StatefulWidget {
   /// First color applied to the complete circle
   final Color backgroundColor;
 
-  Color get progressColor => _progressColor;
+  Color? get progressColor => _progressColor;
+  /* set progressColor(Color? colour) => _progressColor; */
 
-  Color _progressColor;
+  Color? _progressColor;
 
   /// true if you want the circle to have animation
   final bool animation;
@@ -48,7 +49,7 @@ class CircularPercentIndicator extends StatefulWidget {
   /// widget inside the circle
   final Widget center;
 
-  final LinearGradient linearGradient;
+  final LinearGradient? linearGradient;
 
   /// The kind of finish to place on the end of lines drawn, values supported: butt, round, square
   final CircularStrokeCap circularStrokeCap;
@@ -98,7 +99,7 @@ class CircularPercentIndicator extends StatefulWidget {
       required this.diameter,
       this.fillColor = Colors.transparent,
       this.backgroundColor = const Color(0xFFB8C7CB),
-      Color progressColor,
+      Color? progressColor = null,
       // negative values are ignored, replaced with lineWidth
       this.backgroundWidth = -1,
       this.linearGradient,
@@ -119,12 +120,17 @@ class CircularPercentIndicator extends StatefulWidget {
       this.onAnimationEnd,
       this.widgetIndicator,
       this.rotateLinearGradient = false})
-      : super(key: key) {
+
+      // Expect only a linearGradient or a progressColor given.
+      : assert(linearGradient != null && progressColor != null),
+        super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
         'Cannot provide both linearGradient and progressColor',
       );
     }
+    // Custom logic warning defaults to red if no colour or gradient is set...
+    // Should remove the custom progressColor mutability for maintainability
     _progressColor = progressColor ?? Colors.red;
 
     assert(startAngle >= 0.0);

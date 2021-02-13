@@ -116,7 +116,9 @@ class CircularPercentIndicator extends StatefulWidget {
       this.rotateLinearGradient = false})
 
       // Expect only a linearGradient or a progressColor given.
-      : assert(linearGradient != null && progressColor != null),
+      // Assert breaks the example page... strange as both non-null would
+      // expect to be evaluated the same way as the argument error thrower..
+      : /* assert(linearGradient != null && progressColor != null), */
         super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(

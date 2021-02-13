@@ -1,3 +1,5 @@
+import 'dart:math' as math show atan;
+
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circle_percent_indicator/enums/arc_type.dart';
 import 'package:percent_indicator/circle_percent_indicator/enums/circular_stroke_cap.dart';
@@ -11,7 +13,7 @@ class CirclePainter extends CustomPainter {
   final double backgroundWidth;
   final double progress;
   final double radius;
-  final Color? progressColor;
+  final Color progressColor;
   final Color backgroundColor;
   final CircularStrokeCap circularStrokeCap;
   final double startAngle;
@@ -24,19 +26,19 @@ class CirclePainter extends CustomPainter {
 
   CirclePainter({
     required this.lineWidth,
-    this.backgroundWidth,
-    this.progress,
+    required this.backgroundWidth,
+    required this.progress,
     required this.radius,
-    this.progressColor,
-    this.backgroundColor,
+    required this.progressColor,
+    required this.backgroundColor,
     this.startAngle = 0.0,
     this.circularStrokeCap = CircularStrokeCap.round,
     this.linearGradient,
-    this.reverse,
+    required this.reverse,
     this.arcBackgroundColor,
     this.arcType,
     this.maskFilter,
-    this.rotateLinearGradient,
+    required this.rotateLinearGradient,
   }) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
@@ -49,7 +51,7 @@ class CirclePainter extends CustomPainter {
       _paintBackground.strokeCap = StrokeCap.square;
     }
     if (arcBackgroundColor != null) {
-      _paintBackgroundStartAngle.color = arcBackgroundColor;
+      _paintBackgroundStartAngle.color = arcBackgroundColor!;
       _paintBackgroundStartAngle.style = PaintingStyle.stroke;
       _paintBackgroundStartAngle.strokeWidth = lineWidth;
       if (circularStrokeCap == CircularStrokeCap.round) {
@@ -122,8 +124,8 @@ class CirclePainter extends CustomPainter {
                 endAngle: radians(progress),
                 tileMode: TileMode.clamp,
                 colors: reverse
-                    ? linearGradient.colors.reversed.toList()
-                    : linearGradient.colors)
+                    ? linearGradient!.colors.reversed.toList()
+                    : linearGradient!.colors)
             .createShader(
           Rect.fromCircle(
             center: center,
@@ -131,7 +133,7 @@ class CirclePainter extends CustomPainter {
           ),
         );
       } else if (!rotateLinearGradient) {
-        _paintLine.shader = linearGradient.createShader(
+        _paintLine.shader = linearGradient!.createShader(
           Rect.fromCircle(
             center: center,
             radius: radius,

@@ -80,11 +80,11 @@ class LinearPercentIndicator extends StatefulWidget {
   final Widget widgetIndicator;
 
   LinearPercentIndicator({
-    Key key,
+    Key? key,
     this.fillColor = Colors.transparent,
     this.percent = 0.0,
     this.lineHeight = 5.0,
-    this.width,
+    this.width = double.infinity,
     this.backgroundColor = const Color(0xFFB8C7CB),
     this.linearGradient,
     Color progressColor,
@@ -239,11 +239,11 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
     if (widget.leading != null) {
       items.add(widget.leading);
     }
-    final hasSetWidth = widget.width != null;
+
     final percentPositionedHorizontal =
         _containerWidth * _percent - _indicatorWidth / 3;
     var containerWidget = Container(
-      width: hasSetWidth ? widget.width : double.infinity,
+      width: widget.width,
       height: widget.lineHeight,
       padding: widget.padding,
       child: Stack(

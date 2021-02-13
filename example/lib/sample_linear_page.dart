@@ -14,7 +14,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Linear Percent Indicators"),
+        title: Text('Linear Percent Indicators'),
         actions: [
           IconButton(
               icon: Icon(Icons.stop),
@@ -39,7 +39,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                   animationDuration: 3000,
                   percent: 0.5,
                   animateFromLastPercent: true,
-                  center: Text("50.0%"),
+                  center: Text('50.0%'),
                   linearStrokeCap: LinearStrokeCap.butt,
                   progressColor: Colors.red,
                   widgetIndicator: RotatedBox(
@@ -59,7 +59,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                     lineHeight: 14.0,
                     percent: 0.7,
                     center: Text(
-                      "70.0%",
+                      '70.0%',
                       style: TextStyle(fontSize: 12.0),
                     ),
                     trailing: Icon(Icons.mood),
@@ -77,7 +77,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                     lineHeight: 14.0,
                     percent: 0.5,
                     center: Text(
-                      "50.0%",
+                      '50.0%',
                       style: TextStyle(fontSize: 12.0),
                     ),
                     trailing: Icon(Icons.mood),
@@ -94,15 +94,15 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                   animationDuration: 500,
                   lineHeight: 20.0,
                   leading: Expanded(
-                    child: Text("left content"),
+                    child: Text('left content'),
                   ),
                   trailing: Expanded(
                       child: Text(
-                    "right content",
+                    'right content',
                     textAlign: TextAlign.end,
                   )),
                   percent: 0.2,
-                  center: Text("20.0%"),
+                  center: Text('20.0%'),
                   linearStrokeCap: LinearStrokeCap.butt,
                   progressColor: Colors.red,
                 ),
@@ -116,7 +116,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                   animationDuration: 2000,
                   percent: 0.9,
                   animateFromLastPercent: true,
-                  center: Text("90.0%"),
+                  center: Text('90.0%'),
                   linearStrokeCap: LinearStrokeCap.roundAll,
                   progressColor: Colors.greenAccent,
                   maskFilter: MaskFilter.blur(BlurStyle.solid, 3),
@@ -130,7 +130,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                   lineHeight: 20.0,
                   animationDuration: 2500,
                   percent: 0.8,
-                  center: Text("80.0%"),
+                  center: Text('80.0%'),
                   linearStrokeCap: LinearStrokeCap.roundAll,
                   progressColor: Colors.green,
                 ),
@@ -142,7 +142,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                   lineHeight: 20.0,
                   animationDuration: 2500,
                   percent: 0.55,
-                  center: Text("55.0%"),
+                  center: Text('55.0%'),
                   linearStrokeCap: LinearStrokeCap.roundAll,
                   progressColor: Colors.green,
                 ),
@@ -198,8 +198,9 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                   percent: .5,
                   animation: true,
                   animationDuration: 5000,
-                  onAnimationEnd: () =>
-                      setState(() => state = 'End Animation at 50%'),
+                  onAnimationEnd: () => setState(
+                    () => state = 'End Animation at 50%',
+                  ),
                 ),
               ),
               Text(state),

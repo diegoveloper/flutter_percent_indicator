@@ -27,11 +27,17 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               animateFromLastPercent: true,
               center: Text(
                 "70.0%",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
               ),
               footer: Text(
                 "Sales this week",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17.0,
+                ),
               ),
               circularStrokeCap: CircularStrokeCap.round,
               progressColor: Colors.purple,
@@ -79,7 +85,10 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                 arcType: ArcType.HALF,
                 center: Text(
                   "40 hours",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14.0,
+                  ),
                 ),
                 circularStrokeCap: CircularStrokeCap.butt,
                 backgroundColor: Colors.transparent,
@@ -96,7 +105,10 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                 arcType: ArcType.FULL,
                 center: Text(
                   "20 hours",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14.0,
+                  ),
                 ),
                 circularStrokeCap: CircularStrokeCap.butt,
                 backgroundColor: Colors.yellow,
@@ -113,7 +125,10 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               center: Text(
                 "Start angle 250",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14.0,
+                ),
               ),
               circularStrokeCap: CircularStrokeCap.butt,
               backgroundColor: Colors.grey,
@@ -128,11 +143,17 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               animateFromLastPercent: true,
               center: Text(
                 "70.0%",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
               ),
               footer: Text(
                 "Sales this week",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17.0,
+                ),
               ),
               circularStrokeCap: CircularStrokeCap.round,
               progressColor: Colors.purple,
@@ -233,15 +254,23 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               animateFromLastPercent: true,
               center: Text(
                 "50.0%",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
               ),
               footer: Text(
                 state,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17.0,
+                ),
               ),
               circularStrokeCap: CircularStrokeCap.round,
               progressColor: Colors.blueAccent,
-              onAnimationEnd: () => setState(() => state = 'End Animation at 50%'),
+              onAnimationEnd: () => setState(
+                () => state = 'End Animation at 50%',
+              ),
             ),
             const SizedBox(height: 20),
             CircularPercentIndicator(

@@ -108,14 +108,17 @@ class LinearPercentIndicator extends StatefulWidget {
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
-          'Cannot provide both linearGradient and progressColor');
+        'Cannot provide both linearGradient and progressColor',
+      );
     }
     _progressColor = progressColor ?? Colors.red;
 
     assert(curve != null);
 
     if (percent < 0.0 || percent > 1.0) {
-      throw new Exception("Percent value must be a double between 0.0 and 1.0");
+      throw new Exception(
+        'Percent value must be a double between 0.0 and 1.0',
+      );
     }
   }
 
@@ -159,14 +162,23 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
       _animationController = AnimationController(
           vsync: this,
           duration: Duration(milliseconds: widget.animationDuration));
-      _animation = Tween(begin: 0.0, end: widget.percent).animate(
-        CurvedAnimation(parent: _animationController, curve: widget.curve),
+      _animation = Tween(
+        begin: 0.0,
+        end: widget.percent,
+      ).animate(
+        CurvedAnimation(
+          parent: _animationController,
+          curve: widget.curve,
+        ),
       )..addListener(() {
           setState(() {
             _percent = _animation.value;
           });
           if (widget.restartAnimation && _percent == 1.0) {
-            _animationController.repeat(min: 0, max: 1.0);
+            _animationController.repeat(
+              min: 0,
+              max: 1.0,
+            );
           }
         });
       _animationController.addStatusListener((status) {
@@ -201,7 +213,10 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
                 begin: widget.animateFromLastPercent ? oldWidget.percent : 0.0,
                 end: widget.percent)
             .animate(
-          CurvedAnimation(parent: _animationController, curve: widget.curve),
+          CurvedAnimation(
+            parent: _animationController,
+            curve: widget.curve,
+          ),
         );
         _animationController.forward(from: 0.0);
       } else {
@@ -326,7 +341,7 @@ class LinearPainter extends CustomPainter {
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = lineWidth;
 
-    _paintLine.color = progress.toString() == "0.0"
+    _paintLine.color = progress.toString() == '0.0'
         ? progressColor.withOpacity(0.0)
         : progressColor;
     _paintLine.style = PaintingStyle.stroke;

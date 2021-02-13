@@ -148,8 +148,8 @@ class CircularPercentIndicator extends StatefulWidget {
 
 class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  AnimationController? _animationController;
-  Animation? _animation;
+  late AnimationController _animationController;
+  late Animation _animation;
   double _percent = 0.0;
 
   @override

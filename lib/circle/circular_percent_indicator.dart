@@ -45,7 +45,7 @@ class CircularPercentIndicator extends StatefulWidget {
   final LinearGradient? linearGradient;
 
   /// The kind of finish to place on the end of lines drawn, values supported: butt, round, square
-  final CircularStrokeCap circularStrokeCap;
+  final CircularStrokeCap? circularStrokeCap;
 
   /// the angle which the circle will start the progress (in degrees, eg: 0.0, 45.0, 90.0)
   final double startAngle;
@@ -66,7 +66,7 @@ class CircularPercentIndicator extends StatefulWidget {
   final bool reverse;
 
   /// Creates a mask filter that takes the progress shape being drawn and blurs it.
-  final MaskFilter maskFilter;
+  final MaskFilter? maskFilter;
 
   /// set a circular curve animation type
   final Curve curve;
@@ -102,15 +102,15 @@ class CircularPercentIndicator extends StatefulWidget {
       this.footer,
       this.center,
       this.addAutomaticKeepAlive = true,
-      required this.circularStrokeCap,
+      this.circularStrokeCap,
       this.arcBackgroundColor,
       this.arcType,
       this.animateFromLastPercent = false,
       this.reverse = false,
       this.curve = Curves.linear,
-      required this.maskFilter,
+      this.maskFilter,
       this.restartAnimation = false,
-      required /**/ this.onAnimationEnd,
+      this.onAnimationEnd,
       this.widgetIndicator,
       this.rotateLinearGradient = false})
 

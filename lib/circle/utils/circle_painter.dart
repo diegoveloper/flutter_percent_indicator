@@ -1,8 +1,8 @@
 import 'dart:math' as math show atan;
 
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/circle/enums/circular_stroke_cap.dart';
 import 'package:percent_indicator/circle_percent_indicator/enums/arc_type.dart';
-import 'package:percent_indicator/circle_percent_indicator/enums/circular_stroke_cap.dart';
 import 'package:vector_math/vector_math.dart' as vectorMath show radians;
 
 class CirclePainter extends CustomPainter {

@@ -4,45 +4,45 @@ enum LinearStrokeCap { butt, round, roundAll }
 
 // ignore: must_be_immutable
 class LinearPercentIndicator extends StatefulWidget {
-  ///Percent value between 0.0 and 1.0
+  /// Percent value between 0.0 and 1.0
   final double percent;
   final double width;
 
-  ///Height of the line
+  /// Height of the line
   final double lineHeight;
 
-  ///Color of the background of the Line , default = transparent
+  /// Color of the background of the Line , default = transparent
   final Color fillColor;
 
-  ///First color applied to the complete line
+  /// First color applied to the complete line
   final Color backgroundColor;
 
   Color get progressColor => _progressColor;
 
   Color _progressColor;
 
-  ///true if you want the Line to have animation
+  /// true if you want the Line to have animation
   final bool animation;
 
-  ///duration of the animation in milliseconds, It only applies if animation attribute is true
+  /// duration of the animation in milliseconds, It only applies if animation attribute is true
   final int animationDuration;
 
-  ///widget at the left of the Line
+  /// widget at the left of the Line
   final Widget leading;
 
-  ///widget at the right of the Line
+  /// widget at the right of the Line
   final Widget trailing;
 
-  ///widget inside the Line
+  /// widget inside the Line
   final Widget center;
 
-  ///The kind of finish to place on the end of lines drawn, values supported: butt, round, roundAll
+  /// The kind of finish to place on the end of lines drawn, values supported: butt, round, roundAll
   final LinearStrokeCap linearStrokeCap;
 
-  ///alignment of the Row (leading-widget-center-trailing)
+  /// alignment of the Row (leading-widget-center-trailing)
   final MainAxisAlignment alignment;
 
-  ///padding to the LinearPercentIndicator
+  /// padding to the LinearPercentIndicator
   final EdgeInsets padding;
 
   /// set true if you want to animate the linear from the last percent value you set

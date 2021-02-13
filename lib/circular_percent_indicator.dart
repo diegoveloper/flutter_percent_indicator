@@ -12,47 +12,47 @@ enum ArcType {
 
 // ignore: must_be_immutable
 class CircularPercentIndicator extends StatefulWidget {
-  ///Percent value between 0.0 and 1.0
+  /// Percent value between 0.0 and 1.0
   final double percent;
   final double radius;
 
-  ///Width of the progress bar of the circle
+  /// Width of the progress bar of the circle
   final double lineWidth;
 
-  ///Width of the unfilled background of the progress bar
+  /// Width of the unfilled background of the progress bar
   final double backgroundWidth;
 
-  ///Color of the background of the circle , default = transparent
+  /// Color of the background of the circle , default = transparent
   final Color fillColor;
 
-  ///First color applied to the complete circle
+  /// First color applied to the complete circle
   final Color backgroundColor;
 
   Color get progressColor => _progressColor;
 
   Color _progressColor;
 
-  ///true if you want the circle to have animation
+  /// true if you want the circle to have animation
   final bool animation;
 
-  ///duration of the animation in milliseconds, It only applies if animation attribute is true
+  /// duration of the animation in milliseconds, It only applies if animation attribute is true
   final int animationDuration;
 
-  ///widget at the top of the circle
+  /// widget at the top of the circle
   final Widget header;
 
-  ///widget at the bottom of the circle
+  /// widget at the bottom of the circle
   final Widget footer;
 
-  ///widget inside the circle
+  /// widget inside the circle
   final Widget center;
 
   final LinearGradient linearGradient;
 
-  ///The kind of finish to place on the end of lines drawn, values supported: butt, round, square
+  /// The kind of finish to place on the end of lines drawn, values supported: butt, round, square
   final CircularStrokeCap circularStrokeCap;
 
-  ///the angle which the circle will start the progress (in degrees, eg: 0.0, 45.0, 90.0)
+  /// the angle which the circle will start the progress (in degrees, eg: 0.0, 45.0, 90.0)
   final double startAngle;
 
   /// set true if you want to animate the linear from the last percent value you set

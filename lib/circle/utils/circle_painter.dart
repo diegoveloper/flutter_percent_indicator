@@ -2,7 +2,7 @@ import 'dart:math' as math show atan;
 
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circle/enums/circular_stroke_cap.dart';
-import 'package:percent_indicator/circle_percent_indicator/enums/arc_type.dart';
+import 'package:percent_indicator/circle/enums/arc_type.dart' show ArcType;
 import 'package:vector_math/vector_math.dart' as vectorMath show radians;
 
 class CirclePainter extends CustomPainter {
@@ -15,7 +15,7 @@ class CirclePainter extends CustomPainter {
   final double radius;
   final Color progressColor;
   final Color backgroundColor;
-  final CircularStrokeCap circularStrokeCap;
+  final CircularStrokeCap? circularStrokeCap;
   final double startAngle;
   final LinearGradient? linearGradient;
   final Color? arcBackgroundColor;

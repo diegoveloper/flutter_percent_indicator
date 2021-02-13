@@ -1,8 +1,9 @@
+import 'package:percent_indicator/circle/utils/circle_painter.dart';
 import 'package:vector_math/vector_math.dart' as vectorMath show radians;
 
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circle/enums/circular_stroke_cap.dart';
-import 'package:percent_indicator/circle/enums/arc_type.dart';
+import 'package:percent_indicator/circle/enums/arc_type.dart' show ArcType;
 
 // ignore: must_be_immutable
 class CircularPercentIndicator extends StatefulWidget {
@@ -127,7 +128,6 @@ class CircularPercentIndicator extends StatefulWidget {
     _progressColor = progressColor ?? Colors.red;
 
     assert(startAngle >= 0.0);
-    assert(curve != null);
     if (percent < 0.0 || percent > 1.0) {
       throw Exception(
         "Percent value must be a double between 0.0 and 1.0",
@@ -253,7 +253,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
             CustomPaint(
               painter: CirclePainter(
                   progress: _percent * 360,
-                  progressColor: widget.progressColor,
+                  progressColor: widget.progressColor ?? Colors.red,
                   backgroundColor: widget.backgroundColor,
                   startAngle: widget.startAngle,
                   circularStrokeCap: widget.circularStrokeCap,

@@ -22,21 +22,22 @@ class CirclePainter extends CustomPainter {
   final MaskFilter maskFilter;
   final bool rotateLinearGradient;
 
-  CirclePainter(
-      {this.lineWidth,
-      this.backgroundWidth,
-      this.progress,
-      required this.radius,
-      this.progressColor,
-      this.backgroundColor,
-      this.startAngle = 0.0,
-      this.circularStrokeCap = CircularStrokeCap.round,
-      this.linearGradient,
-      this.reverse,
-      this.arcBackgroundColor,
-      this.arcType,
-      this.maskFilter,
-      this.rotateLinearGradient}) {
+  CirclePainter({
+    this.lineWidth,
+    this.backgroundWidth,
+    this.progress,
+    required this.radius,
+    this.progressColor,
+    this.backgroundColor,
+    this.startAngle = 0.0,
+    this.circularStrokeCap = CircularStrokeCap.round,
+    this.linearGradient,
+    this.reverse,
+    this.arcBackgroundColor,
+    this.arcType,
+    this.maskFilter,
+    this.rotateLinearGradient,
+  }) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = backgroundWidth;

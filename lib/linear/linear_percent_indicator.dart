@@ -4,45 +4,45 @@ enum LinearStrokeCap { butt, round, roundAll }
 
 // ignore: must_be_immutable
 class LinearPercentIndicator extends StatefulWidget {
-  ///Percent value between 0.0 and 1.0
+  /// Percent value between 0.0 and 1.0
   final double percent;
   final double width;
 
-  ///Height of the line
+  /// Height of the line
   final double lineHeight;
 
-  ///Color of the background of the Line , default = transparent
+  /// Color of the background of the Line , default = transparent
   final Color fillColor;
 
-  ///First color applied to the complete line
+  /// First color applied to the complete line
   final Color backgroundColor;
 
-  Color get progressColor => _progressColor;
+  Color? get progressColor => _progressColor;
 
-  Color _progressColor;
+  Color? _progressColor;
 
-  ///true if you want the Line to have animation
+  /// true if you want the Line to have animation
   final bool animation;
 
-  ///duration of the animation in milliseconds, It only applies if animation attribute is true
+  /// duration of the animation in milliseconds, It only applies if animation attribute is true
   final int animationDuration;
 
-  ///widget at the left of the Line
-  final Widget leading;
+  /// widget at the left of the Line
+  final Widget? leading;
 
-  ///widget at the right of the Line
-  final Widget trailing;
+  /// widget at the right of the Line
+  final Widget? trailing;
 
-  ///widget inside the Line
-  final Widget center;
+  /// widget inside the Line
+  final Widget? center;
 
-  ///The kind of finish to place on the end of lines drawn, values supported: butt, round, roundAll
-  final LinearStrokeCap linearStrokeCap;
+  /// The kind of finish to place on the end of lines drawn, values supported: butt, round, roundAll
+  final LinearStrokeCap? linearStrokeCap;
 
-  ///alignment of the Row (leading-widget-center-trailing)
+  /// alignment of the Row (leading-widget-center-trailing)
   final MainAxisAlignment alignment;
 
-  ///padding to the LinearPercentIndicator
+  /// padding to the LinearPercentIndicator
   final EdgeInsets padding;
 
   /// set true if you want to animate the linear from the last percent value you set
@@ -51,7 +51,7 @@ class LinearPercentIndicator extends StatefulWidget {
   /// If present, this will make the progress bar colored by this gradient.
   ///
   /// This will override [progressColor]. It is an error to provide both.
-  final LinearGradient linearGradient;
+  final LinearGradient? linearGradient;
 
   /// set false if you don't want to preserve the state of the widget
   final bool addAutomaticKeepAlive;
@@ -60,7 +60,7 @@ class LinearPercentIndicator extends StatefulWidget {
   final bool isRTL;
 
   /// Creates a mask filter that takes the progress shape being drawn and blurs it.
-  final MaskFilter maskFilter;
+  final MaskFilter? maskFilter;
 
   /// Set true if you want to display only part of [linearGradient] based on percent value
   /// (ie. create 'VU effect'). If no [linearGradient] is specified this option is ignored.
@@ -74,20 +74,20 @@ class LinearPercentIndicator extends StatefulWidget {
   final bool restartAnimation;
 
   /// Callback called when the animation ends (only if `animation` is true)
-  final VoidCallback onAnimationEnd;
+  final VoidCallback? onAnimationEnd;
 
   /// Display a widget indicator at the end of the progress. It only works when `animation` is true
-  final Widget widgetIndicator;
+  final Widget? widgetIndicator;
 
   LinearPercentIndicator({
-    Key key,
+    Key? key,
     this.fillColor = Colors.transparent,
     this.percent = 0.0,
     this.lineHeight = 5.0,
-    this.width,
+    this.width = double.infinity,
     this.backgroundColor = const Color(0xFFB8C7CB),
     this.linearGradient,
-    Color progressColor,
+    Color? progressColor,
     this.animation = false,
     this.animationDuration = 500,
     this.animateFromLastPercent = false,
@@ -108,14 +108,17 @@ class LinearPercentIndicator extends StatefulWidget {
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
-          'Cannot provide both linearGradient and progressColor');
+        'Cannot provide both linearGradient and progressColor',
+      );
     }
     _progressColor = progressColor ?? Colors.red;
 
     assert(curve != null);
 
     if (percent < 0.0 || percent > 1.0) {
-      throw new Exception("Percent value must be a double between 0.0 and 1.0");
+      throw new Exception(
+        'Percent value must be a double between 0.0 and 1.0',
+      );
     }
   }
 
@@ -125,8 +128,8 @@ class LinearPercentIndicator extends StatefulWidget {
 
 class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  AnimationController _animationController;
-  Animation _animation;
+  late AnimationController _animationController;
+  late Animation _animation;
   double _percent = 0.0;
   final _containerKey = GlobalKey();
   final _keyIndicator = GlobalKey();
@@ -137,20 +140,20 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
 
   @override
   void dispose() {
-    _animationController?.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
-          _containerWidth = _containerKey.currentContext.size.width;
-          _containerHeight = _containerKey.currentContext.size.height;
+          _containerWidth = _containerKey.currentContext!.size!.width;
+          _containerHeight = _containerKey.currentContext!.size!.height;
           if (_keyIndicator.currentContext != null) {
-            _indicatorWidth = _keyIndicator.currentContext.size.width;
-            _indicatorHeight = _keyIndicator.currentContext.size.height;
+            _indicatorWidth = _keyIndicator.currentContext!.size!.width;
+            _indicatorHeight = _keyIndicator.currentContext!.size!.height;
           }
         });
       }
@@ -159,20 +162,29 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
       _animationController = AnimationController(
           vsync: this,
           duration: Duration(milliseconds: widget.animationDuration));
-      _animation = Tween(begin: 0.0, end: widget.percent).animate(
-        CurvedAnimation(parent: _animationController, curve: widget.curve),
+      _animation = Tween(
+        begin: 0.0,
+        end: widget.percent,
+      ).animate(
+        CurvedAnimation(
+          parent: _animationController,
+          curve: widget.curve,
+        ),
       )..addListener(() {
           setState(() {
             _percent = _animation.value;
           });
           if (widget.restartAnimation && _percent == 1.0) {
-            _animationController.repeat(min: 0, max: 1.0);
+            _animationController.repeat(
+              min: 0,
+              max: 1.0,
+            );
           }
         });
       _animationController.addStatusListener((status) {
         if (widget.onAnimationEnd != null &&
             status == AnimationStatus.completed) {
-          widget.onAnimationEnd();
+          widget.onAnimationEnd!();
         }
       });
       _animationController.forward();
@@ -201,7 +213,10 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
                 begin: widget.animateFromLastPercent ? oldWidget.percent : 0.0,
                 end: widget.percent)
             .animate(
-          CurvedAnimation(parent: _animationController, curve: widget.curve),
+          CurvedAnimation(
+            parent: _animationController,
+            curve: widget.curve,
+          ),
         );
         _animationController.forward(from: 0.0);
       } else {
@@ -220,15 +235,15 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    var items = List<Widget>();
+    var items = <Widget>[];
     if (widget.leading != null) {
-      items.add(widget.leading);
+      items.add(widget.leading!);
     }
-    final hasSetWidth = widget.width != null;
+
     final percentPositionedHorizontal =
         _containerWidth * _percent - _indicatorWidth / 3;
     var containerWidget = Container(
-      width: hasSetWidth ? widget.width : double.infinity,
+      width: widget.width,
       height: widget.lineHeight,
       padding: widget.padding,
       child: Stack(
@@ -264,13 +279,13 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
               right: widget.isRTL ? percentPositionedHorizontal : null,
               left: !widget.isRTL ? percentPositionedHorizontal : null,
               top: _containerHeight / 2 - _indicatorHeight,
-              child: widget.widgetIndicator,
+              child: widget.widgetIndicator!,
             ),
         ],
       ),
     );
 
-    if (hasSetWidth) {
+    if (widget.width != double.infinity) {
       items.add(containerWidget);
     } else {
       items.add(Expanded(
@@ -278,7 +293,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
       ));
     }
     if (widget.trailing != null) {
-      items.add(widget.trailing);
+      items.add(widget.trailing!);
     }
 
     return Material(
@@ -304,31 +319,31 @@ class LinearPainter extends CustomPainter {
   final double lineWidth;
   final double progress;
   final bool isRTL;
-  final Color progressColor;
+  final Color? progressColor;
   final Color backgroundColor;
-  final LinearStrokeCap linearStrokeCap;
-  final LinearGradient linearGradient;
-  final MaskFilter maskFilter;
+  final LinearStrokeCap? linearStrokeCap;
+  final LinearGradient? linearGradient;
+  final MaskFilter? maskFilter;
   final bool clipLinearGradient;
 
   LinearPainter({
-    this.lineWidth,
-    this.progress,
-    this.isRTL,
-    this.progressColor,
-    this.backgroundColor,
+    required this.lineWidth,
+    required this.progress,
+    this.isRTL = false,
+    required this.progressColor,
+    required this.backgroundColor,
     this.linearStrokeCap = LinearStrokeCap.butt,
     this.linearGradient,
     this.maskFilter,
-    this.clipLinearGradient,
+    required this.clipLinearGradient,
   }) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = lineWidth;
 
-    _paintLine.color = progress.toString() == "0.0"
-        ? progressColor.withOpacity(0.0)
-        : progressColor;
+    _paintLine.color = progress.toString() == '0.0'
+        ? progressColor!.withOpacity(0.0)
+        : progressColor!;
     _paintLine.style = PaintingStyle.stroke;
     _paintLine.strokeWidth = lineWidth;
 
@@ -355,19 +370,28 @@ class LinearPainter extends CustomPainter {
     if (isRTL) {
       final xProgress = size.width - size.width * progress;
       if (linearGradient != null) {
-        _paintLine.shader = _createGradientShaderRightToLeft(size, xProgress);
+        _paintLine.shader = _createGradientShaderRightToLeft(
+          linearGradient!,
+          size,
+          xProgress,
+        );
       }
       canvas.drawLine(end, Offset(xProgress, size.height / 2), _paintLine);
     } else {
       final xProgress = size.width * progress;
       if (linearGradient != null) {
-        _paintLine.shader = _createGradientShaderLeftToRight(size, xProgress);
+        _paintLine.shader = _createGradientShaderLeftToRight(
+          linearGradient!,
+          size,
+          xProgress,
+        );
       }
       canvas.drawLine(start, Offset(xProgress, size.height / 2), _paintLine);
     }
   }
 
-  Shader _createGradientShaderRightToLeft(Size size, double xProgress) {
+  Shader _createGradientShaderRightToLeft(
+      LinearGradient linearGradient, Size size, double xProgress) {
     Offset shaderEndPoint =
         clipLinearGradient ? Offset.zero : Offset(xProgress, size.height);
     return linearGradient.createShader(
@@ -378,7 +402,8 @@ class LinearPainter extends CustomPainter {
     );
   }
 
-  Shader _createGradientShaderLeftToRight(Size size, double xProgress) {
+  Shader _createGradientShaderLeftToRight(
+      LinearGradient linearGradient, Size size, double xProgress) {
     Offset shaderEndPoint = clipLinearGradient
         ? Offset(size.width, size.height)
         : Offset(xProgress, size.height);

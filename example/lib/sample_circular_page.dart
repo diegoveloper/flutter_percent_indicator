@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/circle/enums/arc_type.dart';
+import 'package:percent_indicator/circle/enums/circular_stroke_cap.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class SampleCircularPage extends StatefulWidget {
@@ -19,7 +21,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
           padding: const EdgeInsets.symmetric(vertical: 10),
           children: <Widget>[
             CircularPercentIndicator(
-              radius: 120.0,
+              diameter: 120.0,
               lineWidth: 13.0,
               animation: true,
               animationDuration: 3000,
@@ -27,11 +29,17 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               animateFromLastPercent: true,
               center: Text(
                 "70.0%",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
               ),
               footer: Text(
                 "Sales this week",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17.0,
+                ),
               ),
               circularStrokeCap: CircularStrokeCap.round,
               progressColor: Colors.purple,
@@ -41,7 +49,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               ),
             ),
             CircularPercentIndicator(
-              radius: 100.0,
+              diameter: 100.0,
               lineWidth: 10.0,
               percent: 0.5,
               center: Text("50%"),
@@ -55,7 +63,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               ),
             ),
             CircularPercentIndicator(
-              radius: 100.0,
+              diameter: 100.0,
               lineWidth: 10.0,
               percent: 0.8,
               header: Text("Icon header"),
@@ -70,7 +78,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
             ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               CircularPercentIndicator(
-                radius: 100.0,
+                diameter: 100.0,
                 animation: true,
                 animationDuration: 2000,
                 lineWidth: 10.0,
@@ -79,14 +87,17 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                 arcType: ArcType.HALF,
                 center: Text(
                   "40 hours",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14.0,
+                  ),
                 ),
                 circularStrokeCap: CircularStrokeCap.butt,
                 backgroundColor: Colors.transparent,
                 progressColor: Colors.red,
               ),
               CircularPercentIndicator(
-                radius: 120.0,
+                diameter: 120.0,
                 animation: true,
                 animationDuration: 2000,
                 lineWidth: 10.0,
@@ -96,7 +107,10 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                 arcType: ArcType.FULL,
                 center: Text(
                   "20 hours",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14.0,
+                  ),
                 ),
                 circularStrokeCap: CircularStrokeCap.butt,
                 backgroundColor: Colors.yellow,
@@ -104,7 +118,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               ),
             ]),
             CircularPercentIndicator(
-              radius: 100.0,
+              diameter: 100.0,
               animation: true,
               animationDuration: 2000,
               lineWidth: 10.0,
@@ -113,14 +127,17 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               center: Text(
                 "Start angle 250",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14.0,
+                ),
               ),
               circularStrokeCap: CircularStrokeCap.butt,
               backgroundColor: Colors.grey,
               progressColor: Colors.red,
             ),
             CircularPercentIndicator(
-              radius: 120.0,
+              diameter: 120.0,
               lineWidth: 13.0,
               animation: true,
               animationDuration: 3000,
@@ -128,11 +145,17 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               animateFromLastPercent: true,
               center: Text(
                 "70.0%",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
               ),
               footer: Text(
                 "Sales this week",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17.0,
+                ),
               ),
               circularStrokeCap: CircularStrokeCap.round,
               progressColor: Colors.purple,
@@ -140,7 +163,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
             Padding(
               padding: EdgeInsets.all(15.0),
               child: CircularPercentIndicator(
-                radius: 60.0,
+                diameter: 60.0,
                 lineWidth: 5.0,
                 percent: 1.0,
                 center: Text("100%"),
@@ -155,7 +178,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     CircularPercentIndicator(
-                      radius: 45.0,
+                      diameter: 45.0,
                       lineWidth: 4.0,
                       percent: 0.10,
                       center: Text("10%"),
@@ -165,7 +188,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                     ),
                     CircularPercentIndicator(
-                      radius: 45.0,
+                      diameter: 45.0,
                       lineWidth: 4.0,
                       backgroundWidth: 1.0,
                       percent: 0.2,
@@ -177,7 +200,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                     ),
                     CircularPercentIndicator(
-                      radius: 45.0,
+                      diameter: 45.0,
                       lineWidth: 4.0,
                       percent: 0.30,
                       center: Text("30%"),
@@ -187,7 +210,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                     ),
                     CircularPercentIndicator(
-                      radius: 45.0,
+                      diameter: 45.0,
                       lineWidth: 4.0,
                       backgroundWidth: 8,
                       animation: true,
@@ -200,7 +223,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                     ),
                     CircularPercentIndicator(
-                      radius: 45.0,
+                      diameter: 45.0,
                       lineWidth: 4.0,
                       percent: 0.90,
                       center: Text("90%"),
@@ -210,7 +233,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                     ),
                     CircularPercentIndicator(
-                      radius: 45.0,
+                      diameter: 45.0,
                       lineWidth: 4.0,
                       percent: 1.0,
                       animation: true,
@@ -225,7 +248,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               ),
             ),
             CircularPercentIndicator(
-              radius: 80.0,
+              diameter: 80.0,
               lineWidth: 5.0,
               animation: true,
               percent: .5,
@@ -233,19 +256,27 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               animateFromLastPercent: true,
               center: Text(
                 "50.0%",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
               ),
               footer: Text(
                 state,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17.0,
+                ),
               ),
               circularStrokeCap: CircularStrokeCap.round,
               progressColor: Colors.blueAccent,
-              onAnimationEnd: () => setState(() => state = 'End Animation at 50%'),
+              onAnimationEnd: () => setState(
+                () => state = 'End Animation at 50%',
+              ),
             ),
             const SizedBox(height: 20),
             CircularPercentIndicator(
-              radius: 80.0,
+              diameter: 80.0,
               backgroundColor: Colors.white,
               percent: .7,
               lineWidth: 10,

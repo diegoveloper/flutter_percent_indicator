@@ -5,8 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   testWidgets('testing circular percent indicator widget',
       (WidgetTester tester) async {
-    CircularPercentIndicator localWidget =
-        CircularPercentIndicator(radius: 20.0);
+    CircularPercentIndicator localWidget = CircularPercentIndicator(
+      diameter: 20.0,
+    );
     await tester.pumpWidget(localWidget);
     expect(localWidget.percent, 0.0);
   });

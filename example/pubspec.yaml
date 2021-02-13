@@ -1,6 +1,9 @@
 name: percent_indicator_example
 description: A new Flutter project.
 
+environment:
+  sdk: ">=2.12.0-0 <3.0.0"
+
 dependencies:
   flutter:
     sdk: flutter
@@ -13,7 +16,6 @@ dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

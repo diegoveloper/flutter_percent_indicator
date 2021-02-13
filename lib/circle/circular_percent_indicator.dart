@@ -1,4 +1,4 @@
-//import 'dart:math';
+import 'package:vector_math/vector_math.dart' as vectorMath show radians;
 
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circle/enums/circular_stroke_cap.dart';
@@ -276,13 +276,14 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
             if (widget.widgetIndicator != null && widget.animation)
               Positioned.fill(
                 child: Transform.rotate(
-                  angle: radians(
+                  angle: vectorMath.radians(
                       (widget.circularStrokeCap != CircularStrokeCap.butt &&
                               widget.reverse)
                           ? -15
                           : 0),
                   child: Transform.rotate(
-                    angle: radians((widget.reverse ? -360 : 360) * _percent),
+                    angle: vectorMath
+                        .radians((widget.reverse ? -360 : 360) * _percent),
                     child: Transform.translate(
                       offset: Offset(
                         (widget.circularStrokeCap != CircularStrokeCap.butt)

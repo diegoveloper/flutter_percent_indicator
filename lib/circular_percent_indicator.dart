@@ -14,7 +14,7 @@ enum ArcType {
 class CircularPercentIndicator extends StatefulWidget {
   /// Percent value between 0.0 and 1.0
   final double percent;
-  final double radius;
+  final double diameter;
 
   /// Width of the progress bar of the circle
   final double lineWidth;
@@ -94,7 +94,7 @@ class CircularPercentIndicator extends StatefulWidget {
       this.percent = 0.0,
       this.lineWidth = 5.0,
       this.startAngle = 0.0,
-      required this.radius,
+      required this.diameter,
       this.fillColor = Colors.transparent,
       this.backgroundColor = const Color(0xFFB8C7CB),
       Color progressColor,
@@ -246,8 +246,8 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
     }
     items.add(
       Container(
-        height: widget.radius,
-        width: widget.radius,
+        height: widget.diameter,
+        width: widget.diameter,
         child: Stack(
           children: [
             CustomPaint(
@@ -257,7 +257,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
                   backgroundColor: widget.backgroundColor,
                   startAngle: widget.startAngle,
                   circularStrokeCap: widget.circularStrokeCap,
-                  radius: (widget.radius / 2) - widget.lineWidth / 2,
+                  radius: (widget.diameter / 2) - widget.lineWidth / 2,
                   lineWidth: widget.lineWidth,
                   backgroundWidth: //negative values ignored, replaced with lineWidth
                       widget.backgroundWidth >= 0.0
@@ -288,7 +288,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
                         (widget.circularStrokeCap != CircularStrokeCap.butt)
                             ? widget.lineWidth / 2
                             : 0,
-                        (-widget.radius / 2 + widget.lineWidth / 2),
+                        (-widget.diameter / 2 + widget.lineWidth / 2),
                       ),
                       child: widget.widgetIndicator,
                     ),

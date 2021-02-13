@@ -140,20 +140,20 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
 
   @override
   void dispose() {
-    _animationController?.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
-          _containerWidth = _containerKey.currentContext.size.width;
-          _containerHeight = _containerKey.currentContext.size.height;
+          _containerWidth = _containerKey.currentContext!.size!.width;
+          _containerHeight = _containerKey.currentContext!.size!.height;
           if (_keyIndicator.currentContext != null) {
-            _indicatorWidth = _keyIndicator.currentContext.size.width;
-            _indicatorHeight = _keyIndicator.currentContext.size.height;
+            _indicatorWidth = _keyIndicator.currentContext!.size!.width;
+            _indicatorHeight = _keyIndicator.currentContext!.size!.height;
           }
         });
       }
@@ -184,7 +184,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
       _animationController.addStatusListener((status) {
         if (widget.onAnimationEnd != null &&
             status == AnimationStatus.completed) {
-          widget.onAnimationEnd();
+          widget.onAnimationEnd!();
         }
       });
       _animationController.forward();
@@ -235,9 +235,9 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    var items = List<Widget>();
+    var items = <Widget>[];
     if (widget.leading != null) {
-      items.add(widget.leading);
+      items.add(widget.leading!);
     }
 
     final percentPositionedHorizontal =
@@ -279,13 +279,13 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
               right: widget.isRTL ? percentPositionedHorizontal : null,
               left: !widget.isRTL ? percentPositionedHorizontal : null,
               top: _containerHeight / 2 - _indicatorHeight,
-              child: widget.widgetIndicator,
+              child: widget.widgetIndicator!,
             ),
         ],
       ),
     );
 
-    if (hasSetWidth) {
+    if (widget.width != double.infinity) {
       items.add(containerWidget);
     } else {
       items.add(Expanded(
@@ -293,7 +293,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
       ));
     }
     if (widget.trailing != null) {
-      items.add(widget.trailing);
+      items.add(widget.trailing!);
     }
 
     return Material(
@@ -319,31 +319,31 @@ class LinearPainter extends CustomPainter {
   final double lineWidth;
   final double progress;
   final bool isRTL;
-  final Color progressColor;
+  final Color? progressColor;
   final Color backgroundColor;
-  final LinearStrokeCap linearStrokeCap;
-  final LinearGradient linearGradient;
-  final MaskFilter maskFilter;
+  final LinearStrokeCap? linearStrokeCap;
+  final LinearGradient? linearGradient;
+  final MaskFilter? maskFilter;
   final bool clipLinearGradient;
 
   LinearPainter({
-    this.lineWidth,
-    this.progress,
-    this.isRTL,
-    this.progressColor,
-    this.backgroundColor,
+    required this.lineWidth,
+    required this.progress,
+    this.isRTL = false,
+    required this.progressColor,
+    required this.backgroundColor,
     this.linearStrokeCap = LinearStrokeCap.butt,
     this.linearGradient,
     this.maskFilter,
-    this.clipLinearGradient,
+    required this.clipLinearGradient,
   }) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = lineWidth;
 
     _paintLine.color = progress.toString() == '0.0'
-        ? progressColor.withOpacity(0.0)
-        : progressColor;
+        ? progressColor!.withOpacity(0.0)
+        : progressColor!;
     _paintLine.style = PaintingStyle.stroke;
     _paintLine.strokeWidth = lineWidth;
 
@@ -370,19 +370,28 @@ class LinearPainter extends CustomPainter {
     if (isRTL) {
       final xProgress = size.width - size.width * progress;
       if (linearGradient != null) {
-        _paintLine.shader = _createGradientShaderRightToLeft(size, xProgress);
+        _paintLine.shader = _createGradientShaderRightToLeft(
+          linearGradient!,
+          size,
+          xProgress,
+        );
       }
       canvas.drawLine(end, Offset(xProgress, size.height / 2), _paintLine);
     } else {
       final xProgress = size.width * progress;
       if (linearGradient != null) {
-        _paintLine.shader = _createGradientShaderLeftToRight(size, xProgress);
+        _paintLine.shader = _createGradientShaderLeftToRight(
+          linearGradient!,
+          size,
+          xProgress,
+        );
       }
       canvas.drawLine(start, Offset(xProgress, size.height / 2), _paintLine);
     }
   }
 
-  Shader _createGradientShaderRightToLeft(Size size, double xProgress) {
+  Shader _createGradientShaderRightToLeft(
+      LinearGradient linearGradient, Size size, double xProgress) {
     Offset shaderEndPoint =
         clipLinearGradient ? Offset.zero : Offset(xProgress, size.height);
     return linearGradient.createShader(
@@ -393,7 +402,8 @@ class LinearPainter extends CustomPainter {
     );
   }
 
-  Shader _createGradientShaderLeftToRight(Size size, double xProgress) {
+  Shader _createGradientShaderLeftToRight(
+      LinearGradient linearGradient, Size size, double xProgress) {
     Offset shaderEndPoint = clipLinearGradient
         ? Offset(size.width, size.height)
         : Offset(xProgress, size.height);

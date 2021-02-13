@@ -16,14 +16,14 @@ class CirclePainter extends CustomPainter {
   final CircularStrokeCap circularStrokeCap;
   final double startAngle;
   final LinearGradient? linearGradient;
-  final Color arcBackgroundColor;
-  final ArcType arcType;
+  final Color? arcBackgroundColor;
+  final ArcType? arcType;
   final bool reverse;
-  final MaskFilter maskFilter;
+  final MaskFilter? maskFilter;
   final bool rotateLinearGradient;
 
   CirclePainter({
-    this.lineWidth,
+    required this.lineWidth,
     this.backgroundWidth,
     this.progress,
     required this.radius,

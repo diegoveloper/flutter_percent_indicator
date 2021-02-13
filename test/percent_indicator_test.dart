@@ -6,7 +6,7 @@ void main() {
   testWidgets('testing circular percent indicator widget',
       (WidgetTester tester) async {
     CircularPercentIndicator localWidget =
-        CircularPercentIndicator(radius: 20.0);
+        CircularPercentIndicator(diameter: 20.0);
     await tester.pumpWidget(localWidget);
     expect(localWidget.percent, 0.0);
   });

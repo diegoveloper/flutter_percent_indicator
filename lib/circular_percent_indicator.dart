@@ -1,6 +1,7 @@
 //import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:vector_math/vector_math.dart' as vectorMath show radians;
 import 'dart:math' as math;
 
 enum CircularStrokeCap { butt, round, square }
@@ -518,4 +519,4 @@ class CirclePainter extends CustomPainter {
   }
 }
 
-num radians(num deg) => deg * (math.pi / 180.0);
+double radians(double degrees) => vectorMath.radians(degrees);

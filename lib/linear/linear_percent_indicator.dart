@@ -17,9 +17,9 @@ class LinearPercentIndicator extends StatefulWidget {
   /// First color applied to the complete line
   final Color backgroundColor;
 
-  Color get progressColor => _progressColor;
+  Color? get progressColor => _progressColor;
 
-  Color _progressColor;
+  Color? _progressColor;
 
   /// true if you want the Line to have animation
   final bool animation;
@@ -28,16 +28,16 @@ class LinearPercentIndicator extends StatefulWidget {
   final int animationDuration;
 
   /// widget at the left of the Line
-  final Widget leading;
+  final Widget? leading;
 
   /// widget at the right of the Line
-  final Widget trailing;
+  final Widget? trailing;
 
   /// widget inside the Line
-  final Widget center;
+  final Widget? center;
 
   /// The kind of finish to place on the end of lines drawn, values supported: butt, round, roundAll
-  final LinearStrokeCap linearStrokeCap;
+  final LinearStrokeCap? linearStrokeCap;
 
   /// alignment of the Row (leading-widget-center-trailing)
   final MainAxisAlignment alignment;
@@ -51,7 +51,7 @@ class LinearPercentIndicator extends StatefulWidget {
   /// If present, this will make the progress bar colored by this gradient.
   ///
   /// This will override [progressColor]. It is an error to provide both.
-  final LinearGradient linearGradient;
+  final LinearGradient? linearGradient;
 
   /// set false if you don't want to preserve the state of the widget
   final bool addAutomaticKeepAlive;
@@ -60,7 +60,7 @@ class LinearPercentIndicator extends StatefulWidget {
   final bool isRTL;
 
   /// Creates a mask filter that takes the progress shape being drawn and blurs it.
-  final MaskFilter maskFilter;
+  final MaskFilter? maskFilter;
 
   /// Set true if you want to display only part of [linearGradient] based on percent value
   /// (ie. create 'VU effect'). If no [linearGradient] is specified this option is ignored.
@@ -74,10 +74,10 @@ class LinearPercentIndicator extends StatefulWidget {
   final bool restartAnimation;
 
   /// Callback called when the animation ends (only if `animation` is true)
-  final VoidCallback onAnimationEnd;
+  final VoidCallback? onAnimationEnd;
 
   /// Display a widget indicator at the end of the progress. It only works when `animation` is true
-  final Widget widgetIndicator;
+  final Widget? widgetIndicator;
 
   LinearPercentIndicator({
     Key? key,
@@ -87,7 +87,7 @@ class LinearPercentIndicator extends StatefulWidget {
     this.width = double.infinity,
     this.backgroundColor = const Color(0xFFB8C7CB),
     this.linearGradient,
-    Color progressColor,
+    Color? progressColor,
     this.animation = false,
     this.animationDuration = 500,
     this.animateFromLastPercent = false,
@@ -128,8 +128,8 @@ class LinearPercentIndicator extends StatefulWidget {
 
 class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  AnimationController _animationController;
-  Animation _animation;
+  late AnimationController _animationController;
+  late Animation _animation;
   double _percent = 0.0;
   final _containerKey = GlobalKey();
   final _keyIndicator = GlobalKey();

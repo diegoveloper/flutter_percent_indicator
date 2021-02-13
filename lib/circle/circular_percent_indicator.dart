@@ -1,10 +1,8 @@
 //import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/enums/arc_type.dart';
-import 'dart:math' as math show atan;
-
-import 'package:percent_indicator/enums/circular_stroke_cap.dart';
+import 'package:percent_indicator/circle/enums/circular_stroke_cap.dart';
+import 'package:percent_indicator/circle/enums/arc_type.dart';
 
 // ignore: must_be_immutable
 class CircularPercentIndicator extends StatefulWidget {

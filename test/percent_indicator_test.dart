@@ -7,7 +7,7 @@ void main() {
       (WidgetTester tester) async {
     CircularPercentIndicator localWidget =
         CircularPercentIndicator(radius: 20.0);
-    await tester.pumpWidget(localWidget);
+    await tester.pumpWidget(MaterialApp(home: localWidget));
     expect(localWidget.percent, 0.0);
   });
 

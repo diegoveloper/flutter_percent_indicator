@@ -1,3 +1,6 @@
+# 3.0.0
+- Null safety migration.
+
 # 2.1.9 - 2.1.9+1
 - Users can stop `animation` after this was initialize.
 - Added Half Arc for `CircularPercentIndicator` , added by Vivek

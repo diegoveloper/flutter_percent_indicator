@@ -201,7 +201,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
         _animationController!.duration =
             Duration(milliseconds: widget.animationDuration);
         _animation = Tween(
-                begin: (widget.animateFromLastPercent && (!widget.animateForwardAlways ||  widget.percent > oldWidget.percent) ? oldWidget.percent : 0.0,
+                begin: (widget.animateFromLastPercent && (!widget.animateForwardAlways ||  widget.percent > oldWidget.percent)) ? oldWidget.percent : 0.0,
                 end: widget.percent)
             .animate(
           CurvedAnimation(parent: _animationController!, curve: widget.curve),

@@ -42,6 +42,9 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                   center: Text("50.0%"),
                   linearStrokeCap: LinearStrokeCap.butt,
                   progressColor: Colors.red,
+                  linearGradientBackgroundColor: LinearGradient(
+                    colors: <Color>[Color(0xffB07BE6), Color(0xff5BA2E0)],
+                  ),
                   widgetIndicator: RotatedBox(
                       quarterTurns: 1,
                       child: Icon(Icons.airplanemode_active, size: 50)),

@@ -15,7 +15,11 @@ class LinearPercentIndicator extends StatefulWidget {
   final Color fillColor;
 
   ///First color applied to the complete line
-  final Color backgroundColor;
+  Color get backgroundColor => _backgroundColor;
+  late Color _backgroundColor;
+
+  ///First color applied to the complete line
+  final LinearGradient? linearGradientBackgroundColor;
 
   Color get progressColor => _progressColor;
 
@@ -85,7 +89,8 @@ class LinearPercentIndicator extends StatefulWidget {
     this.percent = 0.0,
     this.lineHeight = 5.0,
     this.width,
-    this.backgroundColor = const Color(0xFFB8C7CB),
+    Color? backgroundColor,
+    this.linearGradientBackgroundColor,
     this.linearGradient,
     Color? progressColor,
     this.animation = false,
@@ -111,6 +116,12 @@ class LinearPercentIndicator extends StatefulWidget {
           'Cannot provide both linearGradient and progressColor');
     }
     _progressColor = progressColor ?? Colors.red;
+
+    if (linearGradientBackgroundColor != null && backgroundColor != null) {
+      throw ArgumentError(
+          'Cannot provide both linearGradientBackgroundColor and backgroundColor');
+    }
+    _backgroundColor = backgroundColor ?? Color(0xFFB8C7CB);
 
     if (percent < 0.0 || percent > 1.0) {
       throw new Exception("Percent value must be a double between 0.0 and 1.0");
@@ -241,6 +252,8 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
               progressColor: widget.progressColor,
               linearGradient: widget.linearGradient,
               backgroundColor: widget.backgroundColor,
+              linearGradientBackgroundColor:
+                  widget.linearGradientBackgroundColor,
               linearStrokeCap: widget.linearStrokeCap,
               lineWidth: widget.lineHeight,
               maskFilter: widget.maskFilter,
@@ -307,6 +320,7 @@ class LinearPainter extends CustomPainter {
   final Color backgroundColor;
   final LinearStrokeCap? linearStrokeCap;
   final LinearGradient? linearGradient;
+  final LinearGradient? linearGradientBackgroundColor;
   final MaskFilter? maskFilter;
   final bool clipLinearGradient;
 
@@ -320,6 +334,7 @@ class LinearPainter extends CustomPainter {
     this.linearGradient,
     this.maskFilter,
     required this.clipLinearGradient,
+    this.linearGradientBackgroundColor,
   }) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
@@ -349,6 +364,12 @@ class LinearPainter extends CustomPainter {
 
     if (maskFilter != null) {
       _paintLine.maskFilter = maskFilter;
+    }
+    if (linearGradientBackgroundColor != null) {
+      Offset shaderEndPoint =
+          clipLinearGradient ? Offset.zero : Offset(size.width, size.height);
+      _paintBackground.shader = linearGradientBackgroundColor
+          ?.createShader(Rect.fromPoints(Offset.zero, shaderEndPoint));
     }
 
     if (isRTL) {

@@ -1,3 +1,6 @@
+# [3.0.1]
+- `linearGradientBackgroundColor` was added for `LinearPercentIndicator`. Thanks Jeremiah Parrack.
+
 # [3.3.0-nullsafety.1 - 3.0.0]
 - Null safety migration.
 

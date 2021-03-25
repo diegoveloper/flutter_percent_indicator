@@ -1,6 +1,9 @@
 name: percent_indicator_example
 description: A new Flutter project.
 
+version: 1.0.0+1
+publish_to: 'none'
+
 dependencies:
   flutter:
     sdk: flutter

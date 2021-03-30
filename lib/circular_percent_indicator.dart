@@ -355,6 +355,7 @@ class CirclePainter extends CustomPainter {
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = backgroundWidth;
     _paintBackground.strokeCap = circularStrokeCap.strokeCap;
+
     if (arcBackgroundColor != null) {
       _paintBackgroundStartAngle.color = arcBackgroundColor!;
       _paintBackgroundStartAngle.style = PaintingStyle.stroke;
@@ -365,13 +366,7 @@ class CirclePainter extends CustomPainter {
     _paintLine.color = progressColor;
     _paintLine.style = PaintingStyle.stroke;
     _paintLine.strokeWidth = lineWidth;
-    if (circularStrokeCap == CircularStrokeCap.round) {
-      _paintLine.strokeCap = StrokeCap.round;
-    } else if (circularStrokeCap == CircularStrokeCap.butt) {
-      _paintLine.strokeCap = StrokeCap.butt;
-    } else {
-      _paintLine.strokeCap = StrokeCap.square;
-    }
+    _paintLine.strokeCap = circularStrokeCap.strokeCap;
   }
 
   @override

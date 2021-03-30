@@ -62,7 +62,7 @@ class CircularPercentIndicator extends StatefulWidget {
   final LinearGradient? linearGradient;
 
   ///The kind of finish to place on the end of lines drawn, values supported: butt, round, square
-  final CircularStrokeCap? circularStrokeCap;
+  final CircularStrokeCap circularStrokeCap;
 
   ///the angle which the circle will start the progress (in degrees, eg: 0.0, 45.0, 90.0)
   final double startAngle;
@@ -110,8 +110,8 @@ class CircularPercentIndicator extends StatefulWidget {
     this.fillColor = Colors.transparent,
     this.backgroundColor = const Color(0xFFB8C7CB),
     Color? progressColor,
-    this.backgroundWidth =
-        -1, //negative values ignored, replaced with lineWidth
+    //negative values ignored, replaced with lineWidth
+    this.backgroundWidth = -1,
     this.linearGradient,
     this.animation = false,
     this.animationDuration = 500,
@@ -119,7 +119,7 @@ class CircularPercentIndicator extends StatefulWidget {
     this.footer,
     this.center,
     this.addAutomaticKeepAlive = true,
-    this.circularStrokeCap,
+    this.circularStrokeCap = CircularStrokeCap.butt,
     this.arcBackgroundColor,
     this.arcType,
     this.animateFromLastPercent = false,
@@ -249,7 +249,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
                 progressColor: widget.progressColor,
                 backgroundColor: widget.backgroundColor,
                 startAngle: widget.startAngle,
-                circularStrokeCap: widget.circularStrokeCap!,
+                circularStrokeCap: widget.circularStrokeCap,
                 radius: (widget.radius / 2) - widget.lineWidth / 2,
                 lineWidth: widget.lineWidth,
                 //negative values ignored, replaced with lineWidth
@@ -343,7 +343,7 @@ class CirclePainter extends CustomPainter {
     required this.progressColor,
     required this.backgroundColor,
     this.startAngle = 0.0,
-    this.circularStrokeCap = CircularStrokeCap.round,
+    this.circularStrokeCap = CircularStrokeCap.butt,
     this.linearGradient,
     required this.reverse,
     this.arcBackgroundColor,

@@ -265,7 +265,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
               ),
               child: (widget.center != null)
                   ? Center(child: widget.center)
-                  : SizedBox.shrink(),
+                  : SizedBox.expand(),
             ),
             if (widget.widgetIndicator != null && widget.animation)
               Positioned.fill(

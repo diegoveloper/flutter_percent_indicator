@@ -51,6 +51,9 @@ class LinearPercentIndicator extends StatefulWidget {
 
   /// set true if you want to animate the linear from the last percent value you set
   final bool animateFromLastPercent;
+  
+  /// set true if you want to always animate the linear forward
+  final bool animateForwardAlways;
 
   /// If present, this will make the progress bar colored by this gradient.
   ///
@@ -96,6 +99,7 @@ class LinearPercentIndicator extends StatefulWidget {
     this.animation = false,
     this.animationDuration = 500,
     this.animateFromLastPercent = false,
+    this.animateForwardAlways = false,
     this.isRTL = false,
     this.leading,
     this.trailing,
@@ -208,7 +212,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
         _animationController!.duration =
             Duration(milliseconds: widget.animationDuration);
         _animation = Tween(
-                begin: widget.animateFromLastPercent ? oldWidget.percent : 0.0,
+                begin: (widget.animateFromLastPercent && (!widget.animateForwardAlways ||  widget.percent > oldWidget.percent)) ? oldWidget.percent : 0.0,
                 end: widget.percent)
             .animate(
           CurvedAnimation(parent: _animationController!, curve: widget.curve),

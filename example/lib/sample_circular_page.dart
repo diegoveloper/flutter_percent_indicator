@@ -20,6 +20,47 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
           children: <Widget>[
             CircularPercentIndicator(
               radius: 120.0,
+              animation: true,
+              animationDuration: 1000,
+              lineWidth: 10.0,
+              percent: 0.9,
+              reverse: false,
+              arcType: ArcType.FULL,
+              startAngle: 0.0,
+              animateFromLastPercent: true,
+              circularStrokeCap: CircularStrokeCap.round,
+              backgroundColor: Colors.green,
+              linearGradient: const LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                tileMode: TileMode.clamp,
+                stops: [0.0, 1.0],
+                colors: <Color>[
+                  Colors.yellow,
+                  Colors.red,
+                ],
+              ),
+              widgetIndicator: Center(
+                child: Container(
+                  height: 30,
+                  width: 30,
+                  decoration: BoxDecoration(
+                    color: Colors.yellow,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  padding: const EdgeInsets.all(5),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.yellow,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                ),
+              ),
+              arcBackgroundColor: Colors.grey,
+            ),
+            CircularPercentIndicator(
+              radius: 120.0,
               lineWidth: 13.0,
               animation: true,
               animationDuration: 3000,

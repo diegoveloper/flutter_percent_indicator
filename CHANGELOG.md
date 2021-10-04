@@ -1,3 +1,7 @@
+# [3.4.0]
+- Null safety migration completed.
+- Widget Indicator works when using Arc mode on `CircularPercentIndicator`.
+
 # [3.0.1]
 - `linearGradientBackgroundColor` was added for `LinearPercentIndicator`. Thanks Jeremiah Parrack.
 

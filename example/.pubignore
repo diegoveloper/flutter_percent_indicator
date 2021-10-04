@@ -9,3 +9,7 @@ build/
 .flutter-plugins
 
 .idea/
+
+.idea/**/*.xml
+.idea/sonarlint
+!.idea/libraries/Dart_SDK.xml

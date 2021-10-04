@@ -1,5 +1,7 @@
 //import 'dart:math';
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
@@ -139,7 +141,8 @@ class CircularPercentIndicator extends StatefulWidget {
 
     assert(startAngle >= 0.0);
     if (percent < 0.0 || percent > 1.0) {
-      throw Exception("Percent value must be a double between 0.0 and 1.0, but it's $percent");
+      throw Exception(
+          "Percent value must be a double between 0.0 and 1.0, but it's $percent");
     }
 
     if (arcType == null && arcBackgroundColor != null) {
@@ -244,7 +247,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
         child: Stack(
           children: [
             CustomPaint(
-              painter: CirclePainter(
+              painter: _CirclePainter(
                 progress: _percent * 360,
                 progressColor: widget.progressColor,
                 backgroundColor: widget.backgroundColor,
@@ -277,8 +280,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
                               : 0)
                       .toDouble(),
                   child: Transform.rotate(
-                    angle: radians((widget.reverse ? -360 : 360) * _percent)
-                        .toDouble(),
+                    angle: getCurrentPercent(_percent),
                     child: Transform.translate(
                       offset: Offset(
                         (widget.circularStrokeCap != CircularStrokeCap.butt)
@@ -312,11 +314,50 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
     );
   }
 
+  double getCurrentPercent(double percent) {
+    if (widget.arcType != null) {
+      final angle = _getStartAngleFixedMargin(widget.arcType!).fixedStartAngle;
+      final fixedPercent = 1.0 / widget.percent * _percent;
+      late double margin;
+      if (widget.arcType == ArcType.HALF) {
+        margin = 180 * widget.percent;
+      } else {
+        margin = 270 * widget.percent;
+      }
+      return radians(angle + margin * fixedPercent).toDouble();
+    } else {
+      final angle = 360;
+      return radians((widget.reverse ? -angle : angle) * _percent).toDouble();
+    }
+  }
+
   @override
   bool get wantKeepAlive => widget.addAutomaticKeepAlive;
 }
 
-class CirclePainter extends CustomPainter {
+_ArcAngles _getStartAngleFixedMargin(ArcType arcType) {
+  double fixedStartAngle, startAngleFixedMargin;
+  if (arcType == ArcType.FULL) {
+    fixedStartAngle = 220;
+    startAngleFixedMargin = 172 / fixedStartAngle;
+  } else {
+    fixedStartAngle = 270;
+    startAngleFixedMargin = 135 / fixedStartAngle;
+  }
+  return _ArcAngles(
+    fixedStartAngle: fixedStartAngle,
+    startAngleFixedMargin: startAngleFixedMargin,
+  );
+}
+
+class _ArcAngles {
+  const _ArcAngles(
+      {required this.fixedStartAngle, required this.startAngleFixedMargin});
+  final double fixedStartAngle;
+  final double startAngleFixedMargin;
+}
+
+class _CirclePainter extends CustomPainter {
   final Paint _paintBackground = Paint();
   final Paint _paintLine = Paint();
   final Paint _paintBackgroundStartAngle = Paint();
@@ -335,7 +376,7 @@ class CirclePainter extends CustomPainter {
   final MaskFilter? maskFilter;
   final bool rotateLinearGradient;
 
-  CirclePainter({
+  _CirclePainter({
     required this.lineWidth,
     required this.backgroundWidth,
     required this.progress,
@@ -373,25 +414,13 @@ class CirclePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
     double fixedStartAngle = startAngle;
-    final rectForArc = Rect.fromCircle(center: center, radius: radius);
     double startAngleFixedMargin = 1.0;
     if (arcType != null) {
-      if (arcType == ArcType.FULL) {
-        fixedStartAngle = 220;
-        startAngleFixedMargin = 172 / fixedStartAngle;
-      } else {
-        fixedStartAngle = 270;
-        startAngleFixedMargin = 135 / fixedStartAngle;
-      }
+      final arcAngles = _getStartAngleFixedMargin(arcType!);
+      fixedStartAngle = arcAngles.fixedStartAngle;
+      startAngleFixedMargin = arcAngles.startAngleFixedMargin;
     }
-    if (arcType == ArcType.HALF) {
-      canvas.drawArc(
-          rectForArc,
-          radians(-90.0 + fixedStartAngle).toDouble(),
-          radians(360 * startAngleFixedMargin).toDouble(),
-          false,
-          _paintBackground);
-    } else {
+    if (arcType == null) {
       canvas.drawCircle(center, radius, _paintBackground);
     }
 
@@ -422,19 +451,6 @@ class CirclePainter extends CustomPainter {
         _paintLine.shader = linearGradient!.createShader(
           Rect.fromCircle(center: center, radius: radius),
         );
-      }
-    }
-
-    fixedStartAngle = startAngle;
-
-    startAngleFixedMargin = 1.0;
-    if (arcType != null) {
-      if (arcType == ArcType.FULL) {
-        fixedStartAngle = 220;
-        startAngleFixedMargin = 172 / fixedStartAngle;
-      } else {
-        fixedStartAngle = 270;
-        startAngleFixedMargin = 135 / fixedStartAngle;
       }
     }
 

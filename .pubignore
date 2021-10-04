@@ -12,3 +12,7 @@ ios/Runner/GeneratedPluginRegistrant.*
 example/ios/Flutter/flutter_export_environment.sh
 example/ios/Flutter/.last_build_id
 example/.idea/**
+
+.idea/**/*.xml
+.idea/sonarlint
+!.idea/libraries/Dart_SDK.xml

@@ -1,3 +1,6 @@
+# [3.5.0]
+- `linearStrokeCap` was deprecated. Use `barRadius` instead. Thanks to `martinkong0806`.
+
 # [3.4.0]
 - Null safety migration completed.
 - Widget Indicator works when using Arc mode on `CircularPercentIndicator`.

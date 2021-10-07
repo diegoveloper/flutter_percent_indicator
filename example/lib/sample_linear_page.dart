@@ -51,7 +51,6 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                 padding: EdgeInsets.all(15.0),
                 child: LinearPercentIndicator(
                   width: MediaQuery.of(context).size.width - 50,
-
                   lineHeight: 20.0,
                   animationDuration: 3000,
                   percent: 0.5,

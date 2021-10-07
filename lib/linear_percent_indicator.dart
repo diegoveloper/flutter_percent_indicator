@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-@Deprecated('This property is no longer used, please use `barRadius`  instead.')
-enum LinearStrokeCap {
-  butt, round, roundAll }
+@Deprecated('This property is no longer used, please use barRadius instead.')
+enum LinearStrokeCap { butt, round, roundAll }
 
 // ignore: must_be_immutable
 class LinearPercentIndicator extends StatefulWidget {
@@ -43,11 +42,11 @@ class LinearPercentIndicator extends StatefulWidget {
   final Widget? center;
 
   ///The kind of finish to place on the end of lines drawn, values supported: butt, round, roundAll
-  @Deprecated('This property is no longer used, please use barRadius  instead.')
+  @Deprecated('This property is no longer used, please use barRadius instead.')
   final LinearStrokeCap? linearStrokeCap;
 
   /// The border radius of the progress bar (Will replace linearStrokeCap)
-  final Radius? barRadius; 
+  final Radius? barRadius;
 
   ///alignment of the Row (leading-widget-center-trailing)
   final MainAxisAlignment alignment;
@@ -107,7 +106,6 @@ class LinearPercentIndicator extends StatefulWidget {
     this.trailing,
     this.center,
     this.addAutomaticKeepAlive = true,
-
     this.linearStrokeCap,
     this.barRadius,
     this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
@@ -255,17 +253,16 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
         children: [
           CustomPaint(
             key: _containerKey,
-            painter: LinearPainter(
+            painter: _LinearPainter(
               isRTL: widget.isRTL,
               progress: _percent,
               progressColor: widget.progressColor,
               linearGradient: widget.linearGradient,
               backgroundColor: widget.backgroundColor,
-              barRadius: widget.barRadius?? Radius.zero, // If radius is not defined, set it to zero
+              barRadius: widget.barRadius ??
+                  Radius.zero, // If radius is not defined, set it to zero
               linearGradientBackgroundColor:
                   widget.linearGradientBackgroundColor,
-              linearStrokeCap: widget.linearStrokeCap,
-              lineWidth: widget.lineHeight, // lineWidth is also no longer used
               maskFilter: widget.maskFilter,
               clipLinearGradient: widget.clipLinearGradient,
             ),
@@ -320,30 +317,25 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
   bool get wantKeepAlive => widget.addAutomaticKeepAlive;
 }
 
-class LinearPainter extends CustomPainter {
+class _LinearPainter extends CustomPainter {
   final Paint _paintBackground = new Paint();
   final Paint _paintLine = new Paint();
-  final double lineWidth;
   final double progress;
   final bool isRTL;
   final Color progressColor;
   final Color backgroundColor;
-  @Deprecated('This property is no longer used, please use `barRadius`  instead.')
-  final LinearStrokeCap? linearStrokeCap;
   final Radius barRadius;
   final LinearGradient? linearGradient;
   final LinearGradient? linearGradientBackgroundColor;
   final MaskFilter? maskFilter;
   final bool clipLinearGradient;
 
-  LinearPainter({
-    required this.lineWidth,
+  _LinearPainter({
     required this.progress,
     required this.isRTL,
     required this.progressColor,
     required this.backgroundColor,
     required this.barRadius,
-    this.linearStrokeCap = LinearStrokeCap.butt,
     this.linearGradient,
     this.maskFilter,
     required this.clipLinearGradient,
@@ -360,9 +352,8 @@ class LinearPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // Draw background first
     Path backgroundPath = Path();
-    backgroundPath.addRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, size.width , size.height ), barRadius)
-    );
+    backgroundPath.addRRect(RRect.fromRectAndRadius(
+        Rect.fromLTWH(0, 0, size.width, size.height), barRadius));
     canvas.drawPath(backgroundPath, _paintBackground);
 
     if (maskFilter != null) {
@@ -383,17 +374,16 @@ class LinearPainter extends CustomPainter {
       if (linearGradient != null) {
         _paintLine.shader = _createGradientShaderRightToLeft(size, xProgress);
       }
-      linePath.addRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(size.width -size.width * progress , 0, xProgress, size.height ), barRadius)
-    );
+      linePath.addRRect(RRect.fromRectAndRadius(
+          Rect.fromLTWH(
+              size.width - size.width * progress, 0, xProgress, size.height),
+          barRadius));
     } else {
-
       if (linearGradient != null) {
         _paintLine.shader = _createGradientShaderLeftToRight(size, xProgress);
       }
-      linePath.addRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, xProgress, size.height ), barRadius)
-      );
+      linePath.addRRect(RRect.fromRectAndRadius(
+          Rect.fromLTWH(0, 0, xProgress, size.height), barRadius));
     }
     canvas.drawPath(linePath, _paintLine);
   }
@@ -422,7 +412,5 @@ class LinearPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }

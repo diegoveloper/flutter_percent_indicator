@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-enum LinearStrokeCap { butt, round, roundAll }
+@Deprecated('This property is no longer used, please use `barRadius`  instead.')
+enum LinearStrokeCap {
+  butt, round, roundAll }
 
 // ignore: must_be_immutable
 class LinearPercentIndicator extends StatefulWidget {
@@ -41,6 +43,7 @@ class LinearPercentIndicator extends StatefulWidget {
   final Widget? center;
 
   ///The kind of finish to place on the end of lines drawn, values supported: butt, round, roundAll
+  @Deprecated('This property is no longer used, please use barRadius  instead.')
   final LinearStrokeCap? linearStrokeCap;
 
   /// The border radius of the progress bar (Will replace linearStrokeCap)
@@ -104,6 +107,7 @@ class LinearPercentIndicator extends StatefulWidget {
     this.trailing,
     this.center,
     this.addAutomaticKeepAlive = true,
+
     this.linearStrokeCap,
     this.barRadius,
     this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
@@ -261,7 +265,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
               linearGradientBackgroundColor:
                   widget.linearGradientBackgroundColor,
               linearStrokeCap: widget.linearStrokeCap,
-              lineWidth: widget.lineHeight,
+              lineWidth: widget.lineHeight, // lineWidth is also no longer used
               maskFilter: widget.maskFilter,
               clipLinearGradient: widget.clipLinearGradient,
             ),
@@ -324,6 +328,7 @@ class LinearPainter extends CustomPainter {
   final bool isRTL;
   final Color progressColor;
   final Color backgroundColor;
+  @Deprecated('This property is no longer used, please use `barRadius`  instead.')
   final LinearStrokeCap? linearStrokeCap;
   final Radius barRadius;
   final LinearGradient? linearGradient;
@@ -344,55 +349,26 @@ class LinearPainter extends CustomPainter {
     required this.clipLinearGradient,
     this.linearGradientBackgroundColor,
   }) {
-
-
     _paintBackground.color = backgroundColor;
-    // _paintBackground.style = PaintingStyle.stroke;
-    // _paintBackground.strokeWidth = lineWidth;
-
-
 
     _paintLine.color = progress.toString() == "0.0"
         ? progressColor.withOpacity(0.0)
         : progressColor;
-    // _paintLine.style = PaintingStyle.stroke;
-    // _paintLine.strokeWidth = lineWidth;
-
-    // _paintLine.strokeCap = StrokeCap.round;
-
-    // if (linearStrokeCap == LinearStrokeCap.round) {
-    //   _paintLine.strokeCap = StrokeCap.round;
-    // } else if (linearStrokeCap == LinearStrokeCap.butt) {
-    //   _paintLine.strokeCap = StrokeCap.butt;
-    // } else {
-    //   _paintLine.strokeCap = StrokeCap.round;
-    //   _paintBackground.strokeCap = StrokeCap.round;
-    // }
   }
 
   @override
   void paint(Canvas canvas, Size size) {
-    // final start = Offset(0, size.height / 2);
-    // final end = Offset(size.width, size.height / 2);
-    // canvas.drawLine(start, end, _paintBackground);
-    
-    // final start = Offset(0, size.height / 2);
-    // final end = Offset(size.width, size.height / 2);
-    // canvas.drawLine(start, end, _paintBackground);
-    Path path = Path();
-    // Draws a line from left top corner to right bottom
-    path.addRRect(
+    // Draw background first
+    Path backgroundPath = Path();
+    backgroundPath.addRRect(
       RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, size.width , size.height ), barRadius)
     );
-    // path.lineTo(0, size.height);
-    // path.lineTo(-size.width, 0);
-    // path.lineTo(0, -size.height);
-    canvas.drawPath(path, _paintBackground);
-    
+    canvas.drawPath(backgroundPath, _paintBackground);
 
     if (maskFilter != null) {
       _paintLine.maskFilter = maskFilter;
     }
+
     if (linearGradientBackgroundColor != null) {
       Offset shaderEndPoint =
           clipLinearGradient ? Offset.zero : Offset(size.width, size.height);
@@ -400,30 +376,26 @@ class LinearPainter extends CustomPainter {
           ?.createShader(Rect.fromPoints(Offset.zero, shaderEndPoint));
     }
 
+    // Then draw progress line
+    final xProgress = size.width * progress;
+    Path linePath = Path();
     if (isRTL) {
-      final xProgress = size.width * progress;
-      // final xProgress = size.width - size.width * progress;
       if (linearGradient != null) {
         _paintLine.shader = _createGradientShaderRightToLeft(size, xProgress);
       }
-      Path linepath = Path();
-      linepath.addRRect(
+      linePath.addRRect(
       RRect.fromRectAndRadius(Rect.fromLTWH(size.width -size.width * progress , 0, xProgress, size.height ), barRadius)
     );
-    canvas.drawPath(linepath, _paintLine);
-      // canvas.drawLine(end, Offset(xProgress, size.height / 2), _paintLine);
     } else {
-      final xProgress = size.width * progress;
+
       if (linearGradient != null) {
         _paintLine.shader = _createGradientShaderLeftToRight(size, xProgress);
       }
-      Path linepath = Path();
-      linepath.addRRect(
+      linePath.addRRect(
       RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, xProgress, size.height ), barRadius)
       );
-      canvas.drawPath(linepath, _paintLine);
-      // canvas.drawLine(start, Offset(xProgress, size.height / 2), _paintLine);
     }
+    canvas.drawPath(linePath, _paintLine);
   }
 
   Shader _createGradientShaderRightToLeft(Size size, double xProgress) {

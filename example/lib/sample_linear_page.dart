@@ -51,6 +51,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                 padding: EdgeInsets.all(15.0),
                 child: LinearPercentIndicator(
                   width: MediaQuery.of(context).size.width - 50,
+
                   lineHeight: 20.0,
                   animationDuration: 3000,
                   percent: 0.5,
@@ -225,6 +226,45 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                 ),
               ),
               Text(state),
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: LinearPercentIndicator(
+                  lineHeight: 20,
+                  center: Text('50%'),
+                  progressColor: Colors.pinkAccent,
+                  barRadius: Radius.circular(10),
+                  percent: .5,
+                  animation: true,
+                  animationDuration: 1000,
+                ),
+              ),
+              Text('Rounded Edges'),
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: LinearPercentIndicator(
+                  lineHeight: 20,
+                  center: Text('60%'),
+                  progressColor: Colors.purple,
+                  barRadius: Radius.circular(5),
+                  percent: .6,
+                  animation: true,
+                  animationDuration: 1200,
+                ),
+              ),
+              Text('Soft Corner Edges'),
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: LinearPercentIndicator(
+                  lineHeight: 20,
+                  center: Text('70%'),
+                  progressColor: Colors.deepPurple,
+                  barRadius: Radius.elliptical(5, 10),
+                  percent: .7,
+                  animation: true,
+                  animationDuration: 1400,
+                ),
+              ),
+              Text('Custom Edges'),
             ],
           ),
         ),

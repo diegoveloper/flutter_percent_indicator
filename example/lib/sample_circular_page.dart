@@ -19,7 +19,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
           padding: const EdgeInsets.symmetric(vertical: 10),
           children: <Widget>[
             CircularPercentIndicator(
-              radius: 120.0,
+              radius: 60.0,
               animation: true,
               animationDuration: 1000,
               lineWidth: 10.0,
@@ -60,7 +60,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               arcBackgroundColor: Colors.grey,
             ),
             CircularPercentIndicator(
-              radius: 120.0,
+              radius: 60.0,
               lineWidth: 13.0,
               animation: true,
               animationDuration: 3000,
@@ -82,7 +82,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               ),
             ),
             CircularPercentIndicator(
-              radius: 100.0,
+              radius: 50.0,
               lineWidth: 10.0,
               percent: 0.5,
               center: Text("50%"),
@@ -96,7 +96,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               ),
             ),
             CircularPercentIndicator(
-              radius: 100.0,
+              radius: 50.0,
               lineWidth: 10.0,
               percent: 0.8,
               header: Text("Icon header"),
@@ -111,7 +111,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
             ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               CircularPercentIndicator(
-                radius: 100.0,
+                radius: 50.0,
                 animation: true,
                 animationDuration: 2000,
                 lineWidth: 10.0,
@@ -127,7 +127,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                 progressColor: Colors.red,
               ),
               CircularPercentIndicator(
-                radius: 120.0,
+                radius: 60.0,
                 animation: true,
                 animationDuration: 2000,
                 lineWidth: 10.0,
@@ -145,7 +145,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               ),
             ]),
             CircularPercentIndicator(
-              radius: 100.0,
+              radius: 50.0,
               animation: true,
               animationDuration: 2000,
               lineWidth: 10.0,
@@ -161,7 +161,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               progressColor: Colors.red,
             ),
             CircularPercentIndicator(
-              radius: 120.0,
+              radius: 60.0,
               lineWidth: 13.0,
               animation: true,
               animationDuration: 3000,
@@ -181,7 +181,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
             Padding(
               padding: EdgeInsets.all(15.0),
               child: CircularPercentIndicator(
-                radius: 60.0,
+                radius: 30.0,
                 lineWidth: 5.0,
                 percent: 1.0,
                 center: Text("100%"),
@@ -196,7 +196,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     CircularPercentIndicator(
-                      radius: 45.0,
+                      radius: 22.0,
                       lineWidth: 4.0,
                       percent: 0.10,
                       center: Text("10%"),
@@ -206,7 +206,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                     ),
                     CircularPercentIndicator(
-                      radius: 45.0,
+                      radius: 22.0,
                       lineWidth: 4.0,
                       backgroundWidth: 1.0,
                       percent: 0.2,
@@ -218,7 +218,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                     ),
                     CircularPercentIndicator(
-                      radius: 45.0,
+                      radius: 22.0,
                       lineWidth: 4.0,
                       percent: 0.30,
                       center: Text("30%"),
@@ -228,7 +228,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                     ),
                     CircularPercentIndicator(
-                      radius: 45.0,
+                      radius: 22.0,
                       lineWidth: 4.0,
                       backgroundWidth: 8,
                       animation: true,
@@ -241,7 +241,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                     ),
                     CircularPercentIndicator(
-                      radius: 45.0,
+                      radius: 22.0,
                       lineWidth: 4.0,
                       percent: 0.90,
                       center: Text("90%"),
@@ -251,7 +251,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                     ),
                     CircularPercentIndicator(
-                      radius: 45.0,
+                      radius: 22.0,
                       lineWidth: 4.0,
                       percent: 1.0,
                       animation: true,
@@ -266,7 +266,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               ),
             ),
             CircularPercentIndicator(
-              radius: 80.0,
+              radius: 40.0,
               lineWidth: 5.0,
               animation: true,
               percent: .5,
@@ -287,7 +287,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
             ),
             const SizedBox(height: 20),
             CircularPercentIndicator(
-              radius: 80.0,
+              radius: 40.0,
               backgroundColor: Colors.white,
               percent: .7,
               lineWidth: 10,

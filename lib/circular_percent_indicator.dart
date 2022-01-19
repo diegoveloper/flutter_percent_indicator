@@ -160,6 +160,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
   AnimationController? _animationController;
   Animation? _animation;
   double _percent = 0.0;
+  double _diameter = 0.0;
 
   @override
   void dispose() {
@@ -196,6 +197,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
     } else {
       _updateProgress();
     }
+    _diameter = widget.radius * 2;
     super.initState();
   }
 
@@ -242,8 +244,8 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
     }
     items.add(
       Container(
-        height: widget.radius,
-        width: widget.radius,
+        height: _diameter,
+        width: _diameter,
         child: Stack(
           children: [
             CustomPaint(
@@ -253,7 +255,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
                 backgroundColor: widget.backgroundColor,
                 startAngle: widget.startAngle,
                 circularStrokeCap: widget.circularStrokeCap,
-                radius: (widget.radius / 2) - widget.lineWidth / 2,
+                radius: widget.radius - widget.lineWidth / 2,
                 lineWidth: widget.lineWidth,
                 //negative values ignored, replaced with lineWidth
                 backgroundWidth: widget.backgroundWidth >= 0.0
@@ -286,7 +288,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
                         (widget.circularStrokeCap != CircularStrokeCap.butt)
                             ? widget.lineWidth / 2
                             : 0,
-                        (-widget.radius / 2 + widget.lineWidth / 2),
+                        (-widget.radius + widget.lineWidth / 2),
                       ),
                       child: widget.widgetIndicator,
                     ),

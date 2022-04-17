@@ -16,8 +16,48 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
       ),
       body: Center(
         child: ListView(
-          padding: const EdgeInsets.symmetric(vertical: 10),
           children: <Widget>[
+            CircularPercentIndicator(
+              radius: 60.0,
+              animation: true,
+              animationDuration: 1000,
+              lineWidth: 10.0,
+              percent: 1.0,
+              reverse: false,
+              arcType: ArcType.FULL_REVERSED,
+              startAngle: 0.0,
+              animateFromLastPercent: true,
+              circularStrokeCap: CircularStrokeCap.round,
+              backgroundColor: Colors.green,
+              linearGradient: const LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                tileMode: TileMode.clamp,
+                stops: [0.0, 1.0],
+                colors: <Color>[
+                  Colors.yellow,
+                  Colors.red,
+                ],
+              ),
+              widgetIndicator: Center(
+                child: Container(
+                  height: 20,
+                  width: 20,
+                  decoration: BoxDecoration(
+                    color: Colors.yellow,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  padding: const EdgeInsets.all(5),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.yellow,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                ),
+              ),
+              arcBackgroundColor: Colors.grey,
+            ),
             CircularPercentIndicator(
               radius: 60.0,
               animation: true,

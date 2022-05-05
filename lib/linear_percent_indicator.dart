@@ -355,6 +355,7 @@ class _LinearPainter extends CustomPainter {
     backgroundPath.addRRect(RRect.fromRectAndRadius(
         Rect.fromLTWH(0, 0, size.width, size.height), barRadius));
     canvas.drawPath(backgroundPath, _paintBackground);
+    canvas.clipPath(backgroundPath);
 
     if (maskFilter != null) {
       _paintLine.maskFilter = maskFilter;

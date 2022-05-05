@@ -90,16 +90,33 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                   child: LinearPercentIndicator(
                     width: 140.0,
                     fillColor: Colors.green,
+                    lineHeight: 14.0,
+                    percent: 0.5,
+                    center: Text(
+                      "50.0%",
+                      style: TextStyle(fontSize: 12.0),
+                    ),
+                    trailing: Icon(Icons.mood),
+                    barRadius: Radius.circular(7),
+                    backgroundColor: Colors.grey,
+                    progressColor: Colors.blue,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(15.0),
+                child: FittedBox(
+                  child: LinearPercentIndicator(
+                    width: 140.0,
                     lineHeight: 40.0,
                     percent: 0.05,
                     center: Text(
                       "5.0%",
                       style: TextStyle(fontSize: 12.0),
                     ),
-                    trailing: Icon(Icons.mood),
                     barRadius: Radius.circular(20),
                     backgroundColor: Colors.grey,
-                    progressColor: Colors.blue,
+                    progressColor: Colors.red,
                   ),
                 ),
               ),

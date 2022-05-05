@@ -159,7 +159,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
           _containerWidth = _containerKey.currentContext?.size?.width ?? 0.0;
@@ -355,6 +355,7 @@ class _LinearPainter extends CustomPainter {
     backgroundPath.addRRect(RRect.fromRectAndRadius(
         Rect.fromLTWH(0, 0, size.width, size.height), barRadius));
     canvas.drawPath(backgroundPath, _paintBackground);
+    canvas.clipPath(backgroundPath);
 
     if (maskFilter != null) {
       _paintLine.maskFilter = maskFilter;

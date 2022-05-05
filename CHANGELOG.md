@@ -1,3 +1,6 @@
+# [4.0.1]
+- Fixed a bug: 1% progress should be inside. Thanks Gábor.
+
 # [4.0.0]
 - [BREAKING CHANGE] now `radius` is a real radius and not diameter. Thanks to `Nipun Shah`.
 

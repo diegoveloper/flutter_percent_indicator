@@ -1,11 +1,9 @@
 //import 'dart:math';
 
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-enum ArcType { HALF, FULL }
+enum ArcType { HALF, FULL, FULL_REVERSED }
 
 enum CircularStrokeCap { butt, round, square }
 
@@ -324,7 +322,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
       if (widget.arcType == ArcType.HALF) {
         margin = 180 * widget.percent;
       } else {
-        margin = 270 * widget.percent;
+        margin = 280 * widget.percent;
       }
       return radians(angle + margin * fixedPercent).toDouble();
     } else {
@@ -339,7 +337,10 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
 
 _ArcAngles _getStartAngleFixedMargin(ArcType arcType) {
   double fixedStartAngle, startAngleFixedMargin;
-  if (arcType == ArcType.FULL) {
+  if (arcType == ArcType.FULL_REVERSED) {
+    fixedStartAngle = 399;
+    startAngleFixedMargin = 312 / fixedStartAngle;
+  } else if (arcType == ArcType.FULL) {
     fixedStartAngle = 220;
     startAngleFixedMargin = 172 / fixedStartAngle;
   } else {

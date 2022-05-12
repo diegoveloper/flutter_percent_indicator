@@ -1,3 +1,6 @@
+# [4.2.0]
+- Flutter 3.0 updated.
+
 # [4.0.1]
 - Fixed a bug: 1% progress should be inside. Thanks Gábor.
 

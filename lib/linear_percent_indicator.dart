@@ -159,7 +159,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
           _containerWidth = _containerKey.currentContext?.size?.width ?? 0.0;

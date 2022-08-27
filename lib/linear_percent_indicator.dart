@@ -161,15 +161,22 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        setState(() {
-          _containerWidth = _containerKey.currentContext?.size?.width ?? 0.0;
-          _containerHeight = _containerKey.currentContext?.size?.height ?? 0.0;
-          if (_keyIndicator.currentContext != null) {
-            _indicatorWidth = _keyIndicator.currentContext?.size?.width ?? 0.0;
-            _indicatorHeight =
-                _keyIndicator.currentContext?.size?.height ?? 0.0;
-          }
-        });
+        final RenderBox box =
+            _containerKey.currentContext?.findRenderObject() as RenderBox;
+
+        if (box.hasSize) {
+          setState(() {
+            _containerWidth = _containerKey.currentContext?.size?.width ?? 0.0;
+            _containerHeight =
+                _containerKey.currentContext?.size?.height ?? 0.0;
+            if (_keyIndicator.currentContext != null) {
+              _indicatorWidth =
+                  _keyIndicator.currentContext?.size?.width ?? 0.0;
+              _indicatorHeight =
+                  _keyIndicator.currentContext?.size?.height ?? 0.0;
+            }
+          });
+        }
       }
     });
     if (widget.animation) {

@@ -88,6 +88,12 @@ class LinearPercentIndicator extends StatefulWidget {
   /// Display a widget indicator at the end of the progress. It only works when `animation` is true
   final Widget? widgetIndicator;
 
+  /// Display a widget inside of indicator at the end of indicator. it only works when `animation` is true and suggest to use a `Text` widget in here
+  final Widget? insideWidgetIndicator;
+
+  /// the margin from end, it needs `insideWidgetIndicator` to be defined first. default value is 30
+  final num? insideWidgetIndicatorMargin;
+
   LinearPercentIndicator({
     Key? key,
     this.fillColor = Colors.transparent,
@@ -116,6 +122,8 @@ class LinearPercentIndicator extends StatefulWidget {
     this.restartAnimation = false,
     this.onAnimationEnd,
     this.widgetIndicator,
+    this.insideWidgetIndicator,
+    this.insideWidgetIndicatorMargin = 30,
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
@@ -285,6 +293,19 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
               top: _containerHeight / 2 - _indicatorHeight,
               child: widget.widgetIndicator!,
             ),
+          if (widget.insideWidgetIndicator != null && _containerWidth > 0)
+            Positioned(
+              child: widget.insideWidgetIndicator!,
+              right: widget.isRTL
+                  ? percentPositionedHorizontal -
+                      widget.insideWidgetIndicatorMargin!
+                  : null,
+              left: !widget.isRTL
+                  ? percentPositionedHorizontal -
+                      widget.insideWidgetIndicatorMargin!
+                  : null,
+              top: _indicatorHeight,
+            )
         ],
       ),
     );

@@ -50,6 +50,23 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                 padding: EdgeInsets.all(15.0),
                 child: LinearPercentIndicator(
                   width: MediaQuery.of(context).size.width - 50,
+                  animation: isRunning,
+                  lineHeight: 20.0,
+                  animationDuration: 3000,
+                  percent: 0.5,
+                  animateFromLastPercent: true,
+                  progressColor: Colors.cyanAccent,
+                  insideWidgetIndicator: Text(
+                    "50.0",
+                    textAlign: TextAlign.center,
+                  ),
+                  insideWidgetIndicatorMargin: 35,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(15.0),
+                child: LinearPercentIndicator(
+                  width: MediaQuery.of(context).size.width - 50,
                   lineHeight: 20.0,
                   animationDuration: 3000,
                   percent: 0.5,

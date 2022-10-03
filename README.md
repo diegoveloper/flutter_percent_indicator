@@ -12,7 +12,7 @@ Circular and Linear percent indicators
 
 - Circle percent indicator
 - Linear percent indicator
-- Toggle animation 
+- Toggle animation
 - Custom duration of the animation
 - Progress based on a percentage value
 - Progress and background color
@@ -24,9 +24,10 @@ Circular and Linear percent indicators
 ## Getting started
 
 You should ensure that you add the router as a dependency in your flutter project.
+
 ```yaml
 dependencies:
- percent_indicator: ^4.0.1
+  percent_indicator: ^4.0.1
 ```
 
 You should then run `flutter packages upgrade` or update your packages in IntelliJ.
@@ -42,9 +43,11 @@ Need to include the import the package to the dart file where it will be used, u
 ```dart
 import 'package:percent_indicator/percent_indicator.dart';
 ```
+
 **Circular percent indicator**
 
 Basic Widget
+
 ```dart
 new CircularPercentIndicator(
                   radius: 60.0,
@@ -56,6 +59,7 @@ new CircularPercentIndicator(
 ```
 
 Complete example
+
 ```dart
   @override
   Widget build(BuildContext context) {
@@ -172,14 +176,15 @@ Complete example
     );
   }
 ```
+
 <p align="center">
   <img src="https://media.giphy.com/media/35LCxze8UGUXcZ9TIu/giphy.gif">
 </p>
 
-
 **Linear percent indicator**
 
 Basic Widget
+
 ```dart
 new LinearPercentIndicator(
                 width: 140.0,
@@ -192,6 +197,7 @@ new LinearPercentIndicator(
 ```
 
 Complete example
+
 ```dart
 @override
   Widget build(BuildContext context) {
@@ -214,7 +220,7 @@ Complete example
                   style: new TextStyle(fontSize: 12.0),
                 ),
                 trailing: Icon(Icons.mood),
-                linearStrokeCap: LinearStrokeCap.roundAll,
+                barRadius: const Radius.circular(20),
                 backgroundColor: Colors.grey,
                 progressColor: Colors.blue,
               ),
@@ -230,7 +236,6 @@ Complete example
                 trailing: new Text("right content"),
                 percent: 0.2,
                 center: Text("20.0%"),
-                linearStrokeCap: LinearStrokeCap.butt,
                 progressColor: Colors.red,
               ),
             ),
@@ -243,7 +248,7 @@ Complete example
                 animationDuration: 2000,
                 percent: 0.9,
                 center: Text("90.0%"),
-                linearStrokeCap: LinearStrokeCap.roundAll,
+                barRadius: const Radius.circular(20),
                 progressColor: Colors.greenAccent,
               ),
             ),
@@ -256,7 +261,7 @@ Complete example
                 animationDuration: 2500,
                 percent: 0.8,
                 center: Text("80.0%"),
-                linearStrokeCap: LinearStrokeCap.roundAll,
+                barRadius: const Radius.circular(20),
                 progressColor: Colors.green,
               ),
             ),
@@ -291,9 +296,9 @@ Complete example
     );
   }
 ```
+
 <p align="center">
   <img src="https://media.giphy.com/media/88j2PmdEqCrLq2pZxO/giphy.gif">
 </p>
-
 
 You can follow me on twitter [@diegoveloper](https://www.twitter.com/diegoveloper)

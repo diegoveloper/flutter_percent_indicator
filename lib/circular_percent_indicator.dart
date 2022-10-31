@@ -27,6 +27,7 @@ class CircularPercentIndicator extends StatefulWidget {
   ///Percent value between 0.0 and 1.0
   final double percent;
   final double radius;
+  final BoxBorder? boxBorder;
 
   ///Width of the progress bar of the circle
   final double lineWidth;
@@ -117,6 +118,7 @@ class CircularPercentIndicator extends StatefulWidget {
     this.animationDuration = 500,
     this.header,
     this.footer,
+    this.boxBorder,
     this.center,
     this.addAutomaticKeepAlive = true,
     this.circularStrokeCap = CircularStrokeCap.butt,
@@ -302,14 +304,16 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
       items.add(widget.footer!);
     }
 
-    return Material(
-      color: widget.fillColor,
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: items,
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: widget.boxBorder,
+        color: widget.fillColor,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: items,
       ),
     );
   }

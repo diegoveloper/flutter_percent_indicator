@@ -16,4 +16,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+screenshots:
+  - description: Circular Percent Indicator
+    path: screenshots/circular_percent_indicator.png
+  - description: Linear Percent Indicator
+    path: screenshots/linear_percent_indicator.png
+
 flutter:

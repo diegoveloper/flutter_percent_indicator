@@ -1,3 +1,5 @@
+# [4.2.3]
+- Screenshots added. Thanks FMorschel.
 # [4.2.2]
 - This version is for flutter 3.0 >=.
 

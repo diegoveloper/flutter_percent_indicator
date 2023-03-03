@@ -21,5 +21,9 @@ screenshots:
     path: screenshots/circular_percent_indicator.png
   - description: Linear Percent Indicator
     path: screenshots/linear_percent_indicator.png
+  - description: Circular Percent Indicator Gif
+    path: screenshots/circular_percent_indicator.gif
+  - description: Linear Percent Indicator Gif
+    path: screenshots/linear_percent_indicator.gif
 
 flutter:

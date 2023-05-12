@@ -15,6 +15,9 @@ class LinearPercentIndicator extends StatefulWidget {
   ///Color of the background of the Line , default = transparent
   final Color fillColor;
 
+  ///Color of the border of the progress bar , default = null
+  final Color? progressBorderColor;
+
   ///First color applied to the complete line
   Color get backgroundColor => _backgroundColor;
   late Color _backgroundColor;
@@ -116,6 +119,7 @@ class LinearPercentIndicator extends StatefulWidget {
     this.restartAnimation = false,
     this.onAnimationEnd,
     this.widgetIndicator,
+    this.progressBorderColor,
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
@@ -257,6 +261,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
               isRTL: widget.isRTL,
               progress: _percent,
               progressColor: widget.progressColor,
+              progressBorderColor: widget.progressBorderColor,
               linearGradient: widget.linearGradient,
               backgroundColor: widget.backgroundColor,
               barRadius: widget.barRadius ??
@@ -320,9 +325,11 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
 class _LinearPainter extends CustomPainter {
   final Paint _paintBackground = new Paint();
   final Paint _paintLine = new Paint();
+  final Paint _paintLineBorder = new Paint();
   final double progress;
   final bool isRTL;
   final Color progressColor;
+  final Color? progressBorderColor;
   final Color backgroundColor;
   final Radius barRadius;
   final LinearGradient? linearGradient;
@@ -336,6 +343,7 @@ class _LinearPainter extends CustomPainter {
     required this.progressColor,
     required this.backgroundColor,
     required this.barRadius,
+    this.progressBorderColor,
     this.linearGradient,
     this.maskFilter,
     required this.clipLinearGradient,
@@ -346,6 +354,12 @@ class _LinearPainter extends CustomPainter {
     _paintLine.color = progress.toString() == "0.0"
         ? progressColor.withOpacity(0.0)
         : progressColor;
+
+    if (progressBorderColor != null) {
+      _paintLineBorder.color = progress.toString() == "0.0"
+          ? progressBorderColor!.withOpacity(0.0)
+          : progressBorderColor!;
+    }
   }
 
   @override
@@ -358,6 +372,7 @@ class _LinearPainter extends CustomPainter {
     canvas.clipPath(backgroundPath);
 
     if (maskFilter != null) {
+      _paintLineBorder.maskFilter = maskFilter;
       _paintLine.maskFilter = maskFilter;
     }
 
@@ -373,6 +388,8 @@ class _LinearPainter extends CustomPainter {
     Path linePath = Path();
     if (isRTL) {
       if (linearGradient != null) {
+        _paintLineBorder.shader =
+            _createGradientShaderRightToLeft(size, xProgress);
         _paintLine.shader = _createGradientShaderRightToLeft(size, xProgress);
       }
       linePath.addRRect(RRect.fromRectAndRadius(
@@ -381,10 +398,15 @@ class _LinearPainter extends CustomPainter {
           barRadius));
     } else {
       if (linearGradient != null) {
+        _paintLineBorder.shader =
+            _createGradientShaderLeftToRight(size, xProgress);
         _paintLine.shader = _createGradientShaderLeftToRight(size, xProgress);
       }
       linePath.addRRect(RRect.fromRectAndRadius(
           Rect.fromLTWH(0, 0, xProgress, size.height), barRadius));
+    }
+    if (progressBorderColor != null) {
+      canvas.drawPath(linePath, _paintLineBorder);
     }
     canvas.drawPath(linePath, _paintLine);
   }

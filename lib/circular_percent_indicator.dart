@@ -416,8 +416,9 @@ class _CirclePainter extends CustomPainter {
     }
 
     _paintLine.color = progressColor;
-    _paintLine.style = PaintingStyle.fill;
-    _paintLine.strokeWidth = lineWidth - 2;
+    _paintLine.style = PaintingStyle.stroke;
+    _paintLine.strokeWidth =
+        progressBorderColor != null ? lineWidth - 2 : lineWidth;
     _paintLine.strokeCap = circularStrokeCap.strokeCap;
 
     if (progressBorderColor != null) {

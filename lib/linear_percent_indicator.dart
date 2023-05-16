@@ -386,6 +386,8 @@ class _LinearPainter extends CustomPainter {
     // Then draw progress line
     final xProgress = size.width * progress;
     Path linePath = Path();
+    Path linePathBorder = Path();
+    double factor = progressBorderColor != null ? 2 : 0;
     if (isRTL) {
       if (linearGradient != null) {
         _paintLineBorder.shader =
@@ -402,11 +404,17 @@ class _LinearPainter extends CustomPainter {
             _createGradientShaderLeftToRight(size, xProgress);
         _paintLine.shader = _createGradientShaderLeftToRight(size, xProgress);
       }
+      if (progressBorderColor != null) {
+        linePathBorder.addRRect(RRect.fromRectAndRadius(
+            Rect.fromLTWH(0, 0, xProgress, size.height), barRadius));
+      }
       linePath.addRRect(RRect.fromRectAndRadius(
-          Rect.fromLTWH(0, 0, xProgress, size.height), barRadius));
+          Rect.fromLTWH(
+              factor, factor, xProgress - factor * 2, size.height - factor * 2),
+          barRadius));
     }
     if (progressBorderColor != null) {
-      canvas.drawPath(linePath, _paintLineBorder);
+      canvas.drawPath(linePathBorder, _paintLineBorder);
     }
     canvas.drawPath(linePath, _paintLine);
   }

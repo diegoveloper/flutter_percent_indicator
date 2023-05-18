@@ -391,6 +391,7 @@ class _LinearPainter extends CustomPainter {
     Path linePath = Path();
     Path linePathBorder = Path();
     double factor = progressBorderColor != null ? 2 : 0;
+    double correction = factor * 2; //Left and right or top an down
     if (isRTL) {
       if (linearGradient != null) {
         _paintLineBorder.shader =
@@ -413,7 +414,7 @@ class _LinearPainter extends CustomPainter {
       }
       linePath.addRRect(RRect.fromRectAndRadius(
           Rect.fromLTWH(
-              factor, factor, xProgress - factor * 2, size.height - factor * 2),
+              factor, factor, xProgress - correction, size.height - correction),
           barRadius));
     }
     if (progressBorderColor != null) {

@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 @Deprecated('This property is no longer used, please use barRadius instead.')
 enum LinearStrokeCap { butt, round, roundAll }
 
+extension ExtDouble on double {
+  bool get isZero => this.toString() == '0.0';
+}
+
 // ignore: must_be_immutable
 class LinearPercentIndicator extends StatefulWidget {
   ///Percent value between 0.0 and 1.0
@@ -351,12 +355,11 @@ class _LinearPainter extends CustomPainter {
   }) {
     _paintBackground.color = backgroundColor;
 
-    _paintLine.color = progress.toString() == "0.0"
-        ? progressColor.withOpacity(0.0)
-        : progressColor;
+    _paintLine.color =
+        progress == 0 ? progressColor.withOpacity(0.0) : progressColor;
 
     if (progressBorderColor != null) {
-      _paintLineBorder.color = progress.toString() == "0.0"
+      _paintLineBorder.color = progress == 0
           ? progressBorderColor!.withOpacity(0.0)
           : progressBorderColor!;
     }

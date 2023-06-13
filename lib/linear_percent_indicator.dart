@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 @Deprecated('This property is no longer used, please use barRadius instead.')
 enum LinearStrokeCap { butt, round, roundAll }
 
+extension ExtDouble on double {
+  bool get isZero => this.toString() == '0.0';
+}
+
 // ignore: must_be_immutable
 class LinearPercentIndicator extends StatefulWidget {
   ///Percent value between 0.0 and 1.0
@@ -14,6 +18,9 @@ class LinearPercentIndicator extends StatefulWidget {
 
   ///Color of the background of the Line , default = transparent
   final Color fillColor;
+
+  ///Color of the border of the progress bar , default = null
+  final Color? progressBorderColor;
 
   ///First color applied to the complete line
   Color get backgroundColor => _backgroundColor;
@@ -116,6 +123,7 @@ class LinearPercentIndicator extends StatefulWidget {
     this.restartAnimation = false,
     this.onAnimationEnd,
     this.widgetIndicator,
+    this.progressBorderColor,
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
@@ -257,6 +265,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
               isRTL: widget.isRTL,
               progress: _percent,
               progressColor: widget.progressColor,
+              progressBorderColor: widget.progressBorderColor,
               linearGradient: widget.linearGradient,
               backgroundColor: widget.backgroundColor,
               barRadius: widget.barRadius ??
@@ -320,9 +329,11 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
 class _LinearPainter extends CustomPainter {
   final Paint _paintBackground = new Paint();
   final Paint _paintLine = new Paint();
+  final Paint _paintLineBorder = new Paint();
   final double progress;
   final bool isRTL;
   final Color progressColor;
+  final Color? progressBorderColor;
   final Color backgroundColor;
   final Radius barRadius;
   final LinearGradient? linearGradient;
@@ -336,6 +347,7 @@ class _LinearPainter extends CustomPainter {
     required this.progressColor,
     required this.backgroundColor,
     required this.barRadius,
+    this.progressBorderColor,
     this.linearGradient,
     this.maskFilter,
     required this.clipLinearGradient,
@@ -343,9 +355,14 @@ class _LinearPainter extends CustomPainter {
   }) {
     _paintBackground.color = backgroundColor;
 
-    _paintLine.color = progress.toString() == "0.0"
-        ? progressColor.withOpacity(0.0)
-        : progressColor;
+    _paintLine.color =
+        progress == 0 ? progressColor.withOpacity(0.0) : progressColor;
+
+    if (progressBorderColor != null) {
+      _paintLineBorder.color = progress == 0
+          ? progressBorderColor!.withOpacity(0.0)
+          : progressBorderColor!;
+    }
   }
 
   @override
@@ -358,6 +375,7 @@ class _LinearPainter extends CustomPainter {
     canvas.clipPath(backgroundPath);
 
     if (maskFilter != null) {
+      _paintLineBorder.maskFilter = maskFilter;
       _paintLine.maskFilter = maskFilter;
     }
 
@@ -371,8 +389,13 @@ class _LinearPainter extends CustomPainter {
     // Then draw progress line
     final xProgress = size.width * progress;
     Path linePath = Path();
+    Path linePathBorder = Path();
+    double factor = progressBorderColor != null ? 2 : 0;
+    double correction = factor * 2; //Left and right or top an down
     if (isRTL) {
       if (linearGradient != null) {
+        _paintLineBorder.shader =
+            _createGradientShaderRightToLeft(size, xProgress);
         _paintLine.shader = _createGradientShaderRightToLeft(size, xProgress);
       }
       linePath.addRRect(RRect.fromRectAndRadius(
@@ -381,10 +404,21 @@ class _LinearPainter extends CustomPainter {
           barRadius));
     } else {
       if (linearGradient != null) {
+        _paintLineBorder.shader =
+            _createGradientShaderLeftToRight(size, xProgress);
         _paintLine.shader = _createGradientShaderLeftToRight(size, xProgress);
       }
+      if (progressBorderColor != null) {
+        linePathBorder.addRRect(RRect.fromRectAndRadius(
+            Rect.fromLTWH(0, 0, xProgress, size.height), barRadius));
+      }
       linePath.addRRect(RRect.fromRectAndRadius(
-          Rect.fromLTWH(0, 0, xProgress, size.height), barRadius));
+          Rect.fromLTWH(
+              factor, factor, xProgress - correction, size.height - correction),
+          barRadius));
+    }
+    if (progressBorderColor != null) {
+      canvas.drawPath(linePathBorder, _paintLineBorder);
     }
     canvas.drawPath(linePath, _paintLine);
   }

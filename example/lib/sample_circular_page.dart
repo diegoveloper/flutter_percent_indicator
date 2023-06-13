@@ -337,6 +337,72 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               arcBackgroundColor: Colors.transparent,
               arcType: ArcType.HALF,
             ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 18.0),
+              child: Center(
+                child: Text(
+                  "With different border color",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CircularPercentIndicator(
+                  radius: 40.0,
+                  progressColor: Colors.yellow,
+                  progressBorderColor: Colors.green,
+                  percent: .2,
+                  lineWidth: 15,
+                  center: Text(
+                    "20.0%",
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
+                  ),
+                  backgroundWidth: 15,
+                  fillColor: Colors.transparent,
+                  circularStrokeCap: CircularStrokeCap.round,
+                  arcBackgroundColor: Colors.yellow[200],
+                  arcType: ArcType.FULL,
+                ),
+                CircularPercentIndicator(
+                  radius: 40.0,
+                  progressColor: Colors.white,
+                  progressBorderColor: Colors.blue,
+                  percent: .9,
+                  lineWidth: 10,
+                  center: Text(
+                    "90.0%",
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
+                  ),
+                  backgroundWidth: 15,
+                  fillColor: Colors.transparent,
+                  circularStrokeCap: CircularStrokeCap.round,
+                  arcBackgroundColor: Colors.transparent,
+                  arcType: ArcType.FULL,
+                ),
+                CircularPercentIndicator(
+                  radius: 40.0,
+                  progressColor: Colors.red,
+                  progressBorderColor: Colors.black,
+                  percent: .4,
+                  lineWidth: 10,
+                  backgroundWidth: 15,
+                  fillColor: Colors.transparent,
+                  circularStrokeCap: CircularStrokeCap.round,
+                  arcBackgroundColor: Colors.grey,
+                  arcType: ArcType.FULL,
+                  center: Text(
+                    "40.0%",
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

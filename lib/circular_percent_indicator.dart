@@ -239,6 +239,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
 
   @override
   Widget build(BuildContext context) {
+    _diameter = widget.radius * 2;
     super.build(context);
     var items = List<Widget>.empty(growable: true);
     if (widget.header != null) {

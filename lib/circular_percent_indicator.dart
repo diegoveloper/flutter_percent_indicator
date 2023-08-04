@@ -322,7 +322,8 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
   double getCurrentPercent(double percent) {
     if (widget.arcType != null) {
       final angle = _getStartAngleFixedMargin(widget.arcType!).fixedStartAngle;
-      final fixedPercent = 1.0 / widget.percent * _percent;
+      final fixedPercent =
+          widget.percent > 0 ? 1.0 / widget.percent * _percent : 0;
       late double margin;
       if (widget.arcType == ArcType.HALF) {
         margin = 180 * widget.percent;

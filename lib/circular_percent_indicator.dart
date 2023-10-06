@@ -104,6 +104,12 @@ class CircularPercentIndicator extends StatefulWidget {
   /// Set to true if you want to rotate linear gradient in accordance to the [startAngle].
   final bool rotateLinearGradient;
 
+  /// Display widget list with custom main axis alignment
+  final MainAxisAlignment? mainAxisAlignment;
+
+  /// Display widget list with custom cross axis alignment
+  final CrossAxisAlignment? crossAxisAlignment;
+
   CircularPercentIndicator({
     Key? key,
     this.percent = 0.0,
@@ -134,6 +140,8 @@ class CircularPercentIndicator extends StatefulWidget {
     this.widgetIndicator,
     this.rotateLinearGradient = false,
     this.progressBorderColor,
+    this.crossAxisAlignment,
+    this.mainAxisAlignment,
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
@@ -311,7 +319,8 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
       color: widget.fillColor,
       child: Container(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: widget.mainAxisAlignment ?? MainAxisAlignment.center,
+          crossAxisAlignment: widget.crossAxisAlignment ?? CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: items,
         ),

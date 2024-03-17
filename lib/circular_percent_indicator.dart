@@ -104,6 +104,9 @@ class CircularPercentIndicator extends StatefulWidget {
   /// Set to true if you want to rotate linear gradient in accordance to the [startAngle].
   final bool rotateLinearGradient;
 
+  /// Return current percent value if animation is true.
+  final Function(double value)? onPercentValue;
+
   CircularPercentIndicator({
     Key? key,
     this.percent = 0.0,
@@ -134,6 +137,7 @@ class CircularPercentIndicator extends StatefulWidget {
     this.widgetIndicator,
     this.rotateLinearGradient = false,
     this.progressBorderColor,
+    this.onPercentValue,
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
@@ -184,6 +188,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
       )..addListener(() {
           setState(() {
             _percent = _animation!.value;
+            widget.onPercentValue?.call(_percent);
           });
           if (widget.restartAnimation && _percent == 1.0) {
             _animationController!.repeat(min: 0, max: 1.0);

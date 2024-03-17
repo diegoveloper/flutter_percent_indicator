@@ -95,6 +95,9 @@ class LinearPercentIndicator extends StatefulWidget {
   /// Display a widget indicator at the end of the progress. It only works when `animation` is true
   final Widget? widgetIndicator;
 
+  /// Return current percent value if animation is true.
+  final Function(double value)? onPercentValue;
+
   LinearPercentIndicator({
     Key? key,
     this.fillColor = Colors.transparent,
@@ -124,6 +127,7 @@ class LinearPercentIndicator extends StatefulWidget {
     this.onAnimationEnd,
     this.widgetIndicator,
     this.progressBorderColor,
+    this.onPercentValue,
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
@@ -189,6 +193,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
       )..addListener(() {
           setState(() {
             _percent = _animation!.value;
+            widget.onPercentValue?.call(_percent);
           });
           if (widget.restartAnimation && _percent == 1.0) {
             _animationController!.repeat(min: 0, max: 1.0);
@@ -253,56 +258,54 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
     final percentPositionedHorizontal =
         _containerWidth * _percent - _indicatorWidth / 3;
     //LayoutBuilder is used to get the size of the container where the widget is rendered
-    var containerWidget = LayoutBuilder(
-        builder: (context, constraints) {
-          _containerWidth = constraints.maxWidth;
-          _containerHeight = constraints.maxHeight;
-          return Container(
-            width: hasSetWidth ? widget.width : double.infinity,
-            height: widget.lineHeight,
-            padding: widget.padding,
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                CustomPaint(
-                  key: _containerKey,
-                  painter: _LinearPainter(
-                    isRTL: widget.isRTL,
-                    progress: _percent,
-                    progressColor: widget.progressColor,
-                    linearGradient: widget.linearGradient,
-                    backgroundColor: widget.backgroundColor,
-                    barRadius: widget.barRadius ??
-                        Radius.zero, // If radius is not defined, set it to zero
-                    linearGradientBackgroundColor:
+    var containerWidget = LayoutBuilder(builder: (context, constraints) {
+      _containerWidth = constraints.maxWidth;
+      _containerHeight = constraints.maxHeight;
+      return Container(
+        width: hasSetWidth ? widget.width : double.infinity,
+        height: widget.lineHeight,
+        padding: widget.padding,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            CustomPaint(
+              key: _containerKey,
+              painter: _LinearPainter(
+                isRTL: widget.isRTL,
+                progress: _percent,
+                progressColor: widget.progressColor,
+                linearGradient: widget.linearGradient,
+                backgroundColor: widget.backgroundColor,
+                barRadius: widget.barRadius ??
+                    Radius.zero, // If radius is not defined, set it to zero
+                linearGradientBackgroundColor:
                     widget.linearGradientBackgroundColor,
-                    maskFilter: widget.maskFilter,
-                    clipLinearGradient: widget.clipLinearGradient,
-                  ),
-                  child: (widget.center != null)
-                      ? Center(child: widget.center)
-                      : Container(),
-                ),
-                if (widget.widgetIndicator != null && _indicatorWidth == 0)
-                  Opacity(
-                    opacity: 0.0,
-                    key: _keyIndicator,
-                    child: widget.widgetIndicator,
-                  ),
-                if (widget.widgetIndicator != null &&
-                    _containerWidth > 0 &&
-                    _indicatorWidth > 0)
-                  Positioned(
-                    right: widget.isRTL ? percentPositionedHorizontal : null,
-                    left: !widget.isRTL ? percentPositionedHorizontal : null,
-                    top: _containerHeight / 2 - _indicatorHeight,
-                    child: widget.widgetIndicator!,
-                  ),
-              ],
+                maskFilter: widget.maskFilter,
+                clipLinearGradient: widget.clipLinearGradient,
+              ),
+              child: (widget.center != null)
+                  ? Center(child: widget.center)
+                  : Container(),
             ),
-          );
-        }
-    );
+            if (widget.widgetIndicator != null && _indicatorWidth == 0)
+              Opacity(
+                opacity: 0.0,
+                key: _keyIndicator,
+                child: widget.widgetIndicator,
+              ),
+            if (widget.widgetIndicator != null &&
+                _containerWidth > 0 &&
+                _indicatorWidth > 0)
+              Positioned(
+                right: widget.isRTL ? percentPositionedHorizontal : null,
+                left: !widget.isRTL ? percentPositionedHorizontal : null,
+                top: _containerHeight / 2 - _indicatorHeight,
+                child: widget.widgetIndicator!,
+              ),
+          ],
+        ),
+      );
+    });
 
     if (hasSetWidth) {
       items.add(containerWidget);

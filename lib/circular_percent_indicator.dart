@@ -417,7 +417,7 @@ class _CirclePainter extends CustomPainter {
     if (arcBackgroundColor != null) {
       _paintBackgroundStartAngle.color = arcBackgroundColor!;
       _paintBackgroundStartAngle.style = PaintingStyle.stroke;
-      _paintBackgroundStartAngle.strokeWidth = lineWidth;
+      _paintBackgroundStartAngle.strokeWidth = backgroundWidth;
       _paintBackgroundStartAngle.strokeCap = circularStrokeCap.strokeCap;
     }
 

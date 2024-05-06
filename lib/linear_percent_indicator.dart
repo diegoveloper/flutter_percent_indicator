@@ -39,6 +39,9 @@ class LinearPercentIndicator extends StatefulWidget {
   ///duration of the animation in milliseconds, It only applies if animation attribute is true
   final int animationDuration;
 
+  ///If animations are turned on, controls where the initial animation starts. By default, animates up fro 0%. You could for example set to 1.0 to animate down from 100%, or set the same value as percent, to not have an initial animation at all.
+  final double initialPercent;
+
   ///widget at the left of the Line
   final Widget? leading;
 
@@ -110,6 +113,7 @@ class LinearPercentIndicator extends StatefulWidget {
     Color? progressColor,
     this.animation = false,
     this.animationDuration = 500,
+    this.initialPercent = 0.0,
     this.animateFromLastPercent = false,
     this.isRTL = false,
     this.leading,
@@ -185,10 +189,14 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
       }
     });
     if (widget.animation) {
+      _percent = widget.initialPercent;
       _animationController = AnimationController(
           vsync: this,
           duration: Duration(milliseconds: widget.animationDuration));
-      _animation = Tween(begin: 0.0, end: widget.percent).animate(
+      _animation = Tween(
+        begin: widget.initialPercent,
+        end: widget.percent,
+      ).animate(
         CurvedAnimation(parent: _animationController!, curve: widget.curve),
       )..addListener(() {
           setState(() {

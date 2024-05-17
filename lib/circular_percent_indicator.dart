@@ -53,7 +53,7 @@ class CircularPercentIndicator extends StatefulWidget {
   ///duration of the animation in milliseconds, It only applies if animation attribute is true
   final int animationDuration;
 
-  ///If animations are turned on, controls where the initial animation starts. By default, animates up fro 0%. You could for example set to 1.0 to animate down from 100%, or set the same value as percent, to not have an initial animation at all.
+  ///If animations are turned on, controls where the initial animation starts. By default, animates up from 0%. You could for example set to 1.0 to animate down from 100%, or set the same value as percent, to not have an initial animation at all.
   final double initialPercent;
 
   ///widget at the top of the circle

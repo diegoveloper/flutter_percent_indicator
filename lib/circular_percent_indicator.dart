@@ -53,9 +53,6 @@ class CircularPercentIndicator extends StatefulWidget {
   ///duration of the animation in milliseconds, It only applies if animation attribute is true
   final int animationDuration;
 
-  ///If animations are turned on, controls where the initial animation starts. By default, animates up from 0%. You could for example set to 1.0 to animate down from 100%, or set the same value as percent, to not have an initial animation at all.
-  final double initialPercent;
-
   ///widget at the top of the circle
   final Widget? header;
 
@@ -75,6 +72,9 @@ class CircularPercentIndicator extends StatefulWidget {
 
   /// set true if you want to animate the linear from the last percent value you set
   final bool animateFromLastPercent;
+
+  /// set to false if you do not want the default behavior of initially animating up from 0%
+  final bool animateToInitialPercent;
 
   /// set false if you don't want to preserve the state of the widget
   final bool addAutomaticKeepAlive;
@@ -124,7 +124,6 @@ class CircularPercentIndicator extends StatefulWidget {
     this.linearGradient,
     this.animation = false,
     this.animationDuration = 500,
-    this.initialPercent = 0.0,
     this.header,
     this.footer,
     this.center,
@@ -133,6 +132,7 @@ class CircularPercentIndicator extends StatefulWidget {
     this.arcBackgroundColor,
     this.arcType,
     this.animateFromLastPercent = false,
+    this.animateToInitialPercent = true,
     this.reverse = false,
     this.curve = Curves.linear,
     this.maskFilter,
@@ -183,15 +183,12 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
   @override
   void initState() {
     if (widget.animation) {
-      _percent = widget.initialPercent;
+      if (!widget.animateToInitialPercent) _percent = widget.percent;
       _animationController = AnimationController(
         vsync: this,
         duration: Duration(milliseconds: widget.animationDuration),
       );
-      _animation = Tween(
-        begin: widget.initialPercent,
-        end: widget.percent,
-      ).animate(
+      _animation = Tween(begin: _percent, end: widget.percent).animate(
         CurvedAnimation(parent: _animationController!, curve: widget.curve),
       )..addListener(() {
           setState(() {

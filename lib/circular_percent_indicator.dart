@@ -256,7 +256,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
     }
     items.add(
       Container(
-        height: _diameter,
+        height: widget.arcType == ArcType.HALF ? _diameter / 2 : _diameter,
         width: _diameter,
         child: Stack(
           children: [

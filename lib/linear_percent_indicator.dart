@@ -7,6 +7,16 @@ extension ExtDouble on double {
   bool get isZero => this.toString() == '0.0';
 }
 
+extension ExtGlobalKey on GlobalKey {
+  Size getSize() {
+    final RenderObject? renderObject = currentContext?.findRenderObject();
+    if (renderObject is RenderBox && renderObject.hasSize) {
+      return renderObject.size;
+    }
+    return Size.zero;
+  }
+}
+
 // ignore: must_be_immutable
 class LinearPercentIndicator extends StatefulWidget {
   ///Percent value between 0.0 and 1.0
@@ -177,14 +187,14 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        final RenderObject? containerObject = _containerKey.currentContext?.findRenderObject();
-        final RenderObject? keyObject = _keyIndicator.currentContext?.findRenderObject();
+        final Size containerSize = _containerKey.getSize();
+        final Size keySize = _keyIndicator.getSize();
         setState(() {
-          _containerWidth = (containerObject is RenderBox && containerObject.hasSize) ? containerObject.size.width : 0.0;
-          _containerHeight = (containerObject is RenderBox && containerObject.hasSize) ? containerObject.size.height : 0.0;
+          _containerWidth = containerSize.width;
+          _containerHeight = containerSize.height;
           if (_keyIndicator.currentContext != null) {
-            _indicatorWidth = (keyObject is RenderBox && keyObject.hasSize) ? keyObject.size.width : 0.0;
-            _indicatorHeight = (keyObject is RenderBox && keyObject.hasSize) ? keyObject.size.height : 0.0;
+            _indicatorWidth = keySize.width;
+            _indicatorHeight = keySize.height;
           }
         });
       }

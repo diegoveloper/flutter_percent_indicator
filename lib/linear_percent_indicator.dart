@@ -188,13 +188,13 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         final Size containerSize = _containerKey.getSize();
-        final Size keySize = _keyIndicator.getSize();
+        final Size indicatorSize = _keyIndicator.getSize();
         setState(() {
           _containerWidth = containerSize.width;
           _containerHeight = containerSize.height;
           if (_keyIndicator.currentContext != null) {
-            _indicatorWidth = keySize.width;
-            _indicatorHeight = keySize.height;
+            _indicatorWidth = indicatorSize.width;
+            _indicatorHeight = indicatorSize.height;
           }
         });
       }

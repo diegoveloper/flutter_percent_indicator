@@ -110,6 +110,9 @@ class CircularPercentIndicator extends StatefulWidget {
   /// Return current percent value if animation is true.
   final Function(double value)? onPercentValue;
 
+  /// set a delay duration in milliseconds to show the progress
+  final int delayDuration;
+
   CircularPercentIndicator({
     Key? key,
     this.percent = 0.0,
@@ -142,6 +145,7 @@ class CircularPercentIndicator extends StatefulWidget {
     this.rotateLinearGradient = false,
     this.progressBorderColor,
     this.onPercentValue,
+    this.delayDuration = 0,
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
@@ -182,6 +186,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
 
   @override
   void initState() {
+
     if (widget.animation) {
       if (!widget.animateToInitialPercent) _percent = widget.percent;
       _animationController = AnimationController(
@@ -205,7 +210,13 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
           widget.onAnimationEnd!();
         }
       });
-      _animationController!.forward();
+      if(widget.delayDuration > 0) {
+        Future.delayed(Duration(milliseconds: widget.delayDuration), (){
+          _animationController!.forward();
+        });
+      } else {
+        _animationController!.forward();
+      }
     } else {
       _updateProgress();
     }

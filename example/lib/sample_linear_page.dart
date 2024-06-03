@@ -41,6 +41,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                   animateFromLastPercent: true,
                   center: Text("50.0%"),
                   progressColor: Colors.red,
+                  delayDuration: 300,
                   widgetIndicator: RotatedBox(
                       quarterTurns: 1,
                       child: Icon(Icons.airplanemode_active, size: 50)),

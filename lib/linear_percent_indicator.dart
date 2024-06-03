@@ -101,6 +101,9 @@ class LinearPercentIndicator extends StatefulWidget {
   /// Return current percent value if animation is true.
   final Function(double value)? onPercentValue;
 
+  /// set a delay duration in milliseconds to show the progress
+  final int delayDuration;
+
   LinearPercentIndicator({
     Key? key,
     this.fillColor = Colors.transparent,
@@ -132,6 +135,7 @@ class LinearPercentIndicator extends StatefulWidget {
     this.widgetIndicator,
     this.progressBorderColor,
     this.onPercentValue,
+    this.delayDuration = 0,
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
@@ -210,7 +214,13 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
           widget.onAnimationEnd!();
         }
       });
-      _animationController!.forward();
+      if(widget.delayDuration > 0){
+        Future.delayed(Duration(milliseconds: widget.delayDuration), (){
+          _animationController!.forward();
+        });
+      } else {
+        _animationController!.forward();
+      }
     } else {
       _updateProgress();
     }

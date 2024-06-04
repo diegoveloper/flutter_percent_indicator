@@ -8,6 +8,7 @@ class SampleCircularPage extends StatefulWidget {
 
 class _SampleCircularPageState extends State<SampleCircularPage> {
   String state = 'Animation start';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

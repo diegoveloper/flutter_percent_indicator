@@ -110,9 +110,6 @@ class CircularPercentIndicator extends StatefulWidget {
   /// Return current percent value if animation is true.
   final Function(double value)? onPercentValue;
 
-  /// set a delay duration in milliseconds to show the progress
-  final int delayDuration;
-
   CircularPercentIndicator({
     Key? key,
     this.percent = 0.0,
@@ -145,7 +142,6 @@ class CircularPercentIndicator extends StatefulWidget {
     this.rotateLinearGradient = false,
     this.progressBorderColor,
     this.onPercentValue,
-    this.delayDuration = 0,
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
@@ -175,6 +171,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
   Animation? _animation;
   double _percent = 0.0;
   double _diameter = 0.0;
+  Animation<double>? _routeAnimation;
 
   @override
   void dispose() {
@@ -210,13 +207,6 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
           widget.onAnimationEnd!();
         }
       });
-      if(widget.delayDuration > 0) {
-        Future.delayed(Duration(milliseconds: widget.delayDuration), (){
-          _animationController!.forward();
-        });
-      } else {
-        _animationController!.forward();
-      }
     } else {
       _updateProgress();
     }
@@ -256,6 +246,24 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
 
   _updateProgress() {
     setState(() => _percent = widget.percent);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_routeAnimation == null) {
+      _routeAnimation =
+          ModalRoute.of(context)?.animation ?? kAlwaysCompleteAnimation;
+      _routeAnimation!.addStatusListener(_handleAnimationStatusChange);
+    }
+  }
+
+  void _handleAnimationStatusChange(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
+      if(widget.animation){
+        _animationController?.forward();
+      }
+    }
   }
 
   @override

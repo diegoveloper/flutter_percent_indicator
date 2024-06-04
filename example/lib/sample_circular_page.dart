@@ -8,6 +8,7 @@ class SampleCircularPage extends StatefulWidget {
 
 class _SampleCircularPageState extends State<SampleCircularPage> {
   String state = 'Animation start';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +27,6 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               reverse: false,
               arcType: ArcType.FULL_REVERSED,
               startAngle: 0.0,
-              delayDuration: 300,
               animateFromLastPercent: true,
               circularStrokeCap: CircularStrokeCap.round,
               backgroundColor: Colors.green,

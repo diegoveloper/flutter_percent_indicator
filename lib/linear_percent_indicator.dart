@@ -101,9 +101,6 @@ class LinearPercentIndicator extends StatefulWidget {
   /// Return current percent value if animation is true.
   final Function(double value)? onPercentValue;
 
-  /// set a delay duration in milliseconds to show the progress
-  final int delayDuration;
-
   LinearPercentIndicator({
     Key? key,
     this.fillColor = Colors.transparent,
@@ -135,7 +132,6 @@ class LinearPercentIndicator extends StatefulWidget {
     this.widgetIndicator,
     this.progressBorderColor,
     this.onPercentValue,
-    this.delayDuration = 0,
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
@@ -170,6 +166,8 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
   double _containerHeight = 0.0;
   double _indicatorWidth = 0.0;
   double _indicatorHeight = 0.0;
+  Animation<double>? _routeAnimation;
+
 
   @override
   void dispose() {
@@ -214,13 +212,6 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
           widget.onAnimationEnd!();
         }
       });
-      if(widget.delayDuration > 0){
-        Future.delayed(Duration(milliseconds: widget.delayDuration), (){
-          _animationController!.forward();
-        });
-      } else {
-        _animationController!.forward();
-      }
     } else {
       _updateProgress();
     }
@@ -261,6 +252,25 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
       _percent = widget.percent;
     });
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_routeAnimation == null) {
+      _routeAnimation =
+          ModalRoute.of(context)?.animation ?? kAlwaysCompleteAnimation;
+      _routeAnimation!.addStatusListener(_handleAnimationStatusChange);
+    }
+  }
+
+  void _handleAnimationStatusChange(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
+      if(widget.animation){
+        _animationController?.forward();
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,5 @@
+# [4.2.4]
+- A lot of fixes.
 # [4.2.3]
 - Screenshots added. Thanks FMorschel.
 # [4.2.2]

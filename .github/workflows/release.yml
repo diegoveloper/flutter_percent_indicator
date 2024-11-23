@@ -17,7 +17,7 @@ jobs:
         uses: WyriHaximus/github-action-get-previous-tag@master
 
       - name: Print Latest Version
-        run: echo "Latest tag: ${{ steps.previoustag.outputs.tag }}"
+        run: echo Latest tag: ${{ steps.previoustag.outputs.tag }}
 
       - name: Get Version from pubspec.yaml
         id: config
@@ -27,16 +27,16 @@ jobs:
           version_name: version
 
       - name: Print New Version
-        run: echo "New version from pubspec.yaml: ${{ steps.config.outputs.version_name }}"
+        run: echo New version from pubspec.yaml: ${{ steps.config.outputs.version_name }}
 
       - name: Compare Version
-        if: steps.config.outputs.version_name == steps.previoustag.outputs.tag
+        if: ${{ steps.config.outputs.version_name == steps.previoustag.outputs.tag }}
         run: |
-          echo 'The version from pubspec.yaml is the same as the latest release tag. Please update the version.'
+          echo "The version from pubspec.yaml is the same as the latest release tag. Please update the version."
           exit 1
 
       - name: Save New Version
-        run: echo "${{ steps.config.outputs.version_name }}" > version.txt
+        run: echo ${{ steps.config.outputs.version_name }} > version.txt
 
       - name: Upload New Version Artifact
         uses: actions/upload-artifact@v4

@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps: 
       - 
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
       - 
         continue-on-error: true
         env: 
@@ -33,16 +33,16 @@ jobs:
         run: "echo ${{ steps.config.outputs.version_name }}"
       - 
         if: "steps.config.outputs.version_name == steps.previoustag.outputs.tag"
-        name: "Compare Vresion"
+        name: "Compare Version"
         run: |
             echo 'The version from your pubspec.yaml is the same as Release, Please update the version'
             exit 1
       - 
-        run: "echo ${{ steps.config.outputs.version_name }}  > version.txt\n"
+        run: "echo ${{ steps.config.outputs.version_name }} > version.txt"
         shell: bash
       - 
         name: "Upload New Version"
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with: 
           name: home
           path: version.txt
@@ -53,7 +53,7 @@ jobs:
     steps: 
       - 
         name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
       - 
         name: "Publish Package"
         uses: Omega365/actions-flutter-pub-publisher@master
@@ -70,7 +70,7 @@ jobs:
     steps: 
       - 
         name: "Download New Version"
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4
         with: 
           name: home
       - 

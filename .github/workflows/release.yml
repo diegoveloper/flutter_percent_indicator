@@ -4,85 +4,87 @@ on:
   push:
     branches: [ master, release ]
 
-jobs: 
-  check_version: 
+jobs:
+  check_version:
     name: "Check Version Tag"
     runs-on: ubuntu-20.04
-    steps: 
-      - uses: actions/checkout@v3
-      - 
-        continue-on-error: true
-        env: 
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Get Latest Version Tag
         id: previoustag
-        name: "Get Latest Version"
         uses: WyriHaximus/github-action-get-previous-tag@master
-      - 
-        name: "Print Latest Version"
-        run: "echo ${{ steps.previoustag.outputs.tag }}"
-      - 
+
+      - name: Print Latest Version
+        run: echo "Latest tag: ${{ steps.previoustag.outputs.tag }}"
+
+      - name: Get Version from pubspec.yaml
         id: config
-        name: "Get New Version"
         uses: CumulusDS/get-yaml-paths-action@v0.1.0
-        with: 
+        with:
           file: pubspec.yaml
           version_name: version
-      - 
-        name: "Print New Version"
-        run: "echo ${{ steps.config.outputs.version_name }}"
-      - 
-        if: "steps.config.outputs.version_name == steps.previoustag.outputs.tag"
-        name: "Compare Version"
+
+      - name: Print New Version
+        run: echo "New version from pubspec.yaml: ${{ steps.config.outputs.version_name }}"
+
+      - name: Compare Version
+        if: steps.config.outputs.version_name == steps.previoustag.outputs.tag
         run: |
-            echo 'The version from your pubspec.yaml is the same as Release, Please update the version'
-            exit 1
-      - 
-        run: "echo ${{ steps.config.outputs.version_name }} > version.txt"
-        shell: bash
-      - 
-        name: "Upload New Version"
+          echo 'The version from pubspec.yaml is the same as the latest release tag. Please update the version.'
+          exit 1
+
+      - name: Save New Version
+        run: echo "${{ steps.config.outputs.version_name }}" > version.txt
+
+      - name: Upload New Version Artifact
         uses: actions/upload-artifact@v4
-        with: 
-          name: home
+        with:
+          name: version
           path: version.txt
 
-  publish: 
-    needs: 
-      - check_version
+  publish:
+    needs: check_version
     runs-on: ubuntu-20.04
-    steps: 
-      - name: Checkout
+    steps:
+      - name: Checkout Repository
         uses: actions/checkout@v3
-      - name: Create Pub Credentials Folder
-        run: mkdir -p ~/.pub-cache
-      - name: Create Pub Credentials File
-        run: echo "${{ secrets.CREDENTIAL_JSON }}" > ~/.pub-cache/credentials.json
-      - name: "Publish Package"
-        uses: Omega365/actions-flutter-pub-publisher@master
-        with: 
-          dry_run: false
-          flutter_package: true
-          skip_test: true
 
-  tag: 
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: stable
+
+      - name: Set Pub Credentials
+        run: echo "${{ secrets.CREDENTIAL_JSON }}" > ~/.pub-cache/credentials.json
+
+      - name: Verify Pub Credentials File
+        run: |
+          if [ -f ~/.pub-cache/credentials.json ]; then
+            echo "Credentials file exists."
+          else
+            echo "Credentials file not found!" && exit 1
+          fi
+
+      - name: Publish Package to Pub
+        run: flutter pub publish --force
+
+  tag:
     name: "Tag Version"
-    needs: 
-      - publish
+    needs: publish
     runs-on: ubuntu-20.04
-    steps: 
-      - 
-        name: "Download New Version"
+    steps:
+      - name: Download New Version
         uses: actions/download-artifact@v4
-        with: 
-          name: home
-      - 
-        env: 
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
-        name: "Set and Tag the new version"
-        run: "echo \"::set-env name=RELEASE_VERSION::$(cat home/version.txt)\""
-        shell: bash
-      - 
-        uses: tvdias/github-tagger@v0.0.2
-        with: 
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          tag: "${{env.RELEASE_VERSION}}"
+        with:
+          name: version
+
+      - name: Read and Tag New Version
+        env:
+          NEW_VERSION: ${{ steps.download-artifact.outputs.path }}
+        run: |
+          NEW_VERSION=$(cat version/version.txt)
+          echo "Tagging version: $NEW_VERSION"
+          git tag $NEW_VERSION
+          git push origin $NEW_VERSION

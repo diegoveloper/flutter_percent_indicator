@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'package:flutter/material.dart';
 
 @Deprecated('This property is no longer used, please use barRadius instead.')

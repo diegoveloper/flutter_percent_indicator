@@ -168,6 +168,8 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
   double _containerHeight = 0.0;
   double _indicatorWidth = 0.0;
   double _indicatorHeight = 0.0;
+  Animation<double>? _routeAnimation;
+
 
   @override
   void dispose() {
@@ -212,7 +214,6 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
           widget.onAnimationEnd!();
         }
       });
-      _animationController!.forward();
     } else {
       _updateProgress();
     }
@@ -253,6 +254,25 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
       _percent = widget.percent;
     });
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_routeAnimation == null) {
+      _routeAnimation =
+          ModalRoute.of(context)?.animation ?? kAlwaysCompleteAnimation;
+      _routeAnimation!.addStatusListener(_handleAnimationStatusChange);
+    }
+  }
+
+  void _handleAnimationStatusChange(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
+      if(widget.animation){
+        _animationController?.forward();
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {

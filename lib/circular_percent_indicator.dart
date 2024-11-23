@@ -171,6 +171,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
   Animation? _animation;
   double _percent = 0.0;
   double _diameter = 0.0;
+  Animation<double>? _routeAnimation;
 
   @override
   void dispose() {
@@ -182,6 +183,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
 
   @override
   void initState() {
+
     if (widget.animation) {
       if (!widget.animateToInitialPercent) _percent = widget.percent;
       _animationController = AnimationController(
@@ -205,7 +207,6 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
           widget.onAnimationEnd!();
         }
       });
-      _animationController!.forward();
     } else {
       _updateProgress();
     }
@@ -245,6 +246,24 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
 
   _updateProgress() {
     setState(() => _percent = widget.percent);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_routeAnimation == null) {
+      _routeAnimation =
+          ModalRoute.of(context)?.animation ?? kAlwaysCompleteAnimation;
+      _routeAnimation!.addStatusListener(_handleAnimationStatusChange);
+    }
+  }
+
+  void _handleAnimationStatusChange(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
+      if(widget.animation){
+        _animationController?.forward();
+      }
+    }
   }
 
   @override

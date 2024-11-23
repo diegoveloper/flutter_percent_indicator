@@ -17,7 +17,7 @@ jobs:
         uses: WyriHaximus/github-action-get-previous-tag@master
 
       - name: Print Latest Version
-        run: echo Latest tag: ${{ steps.previoustag.outputs.tag }}
+        run: "echo Latest tag: ${{ steps.previoustag.outputs.tag }}"
 
       - name: Get Version from pubspec.yaml
         id: config
@@ -27,62 +27,57 @@ jobs:
           version_name: version
 
       - name: Print New Version
-        run: echo New version from pubspec.yaml: ${{ steps.config.outputs.version_name }}
+        run: "echo New version from pubspec.yaml: ${{ steps.config.outputs.version_name }}"
 
       - name: Compare Version
         if: ${{ steps.config.outputs.version_name == steps.previoustag.outputs.tag }}
         run: |
-          echo "The version from pubspec.yaml is the same as the latest release tag. Please update the version."
+          echo "The version from pubspec.yaml is the same as the previous tag, please update the version"
           exit 1
 
       - name: Save New Version
-        run: echo ${{ steps.config.outputs.version_name }} > version.txt
+        run: "echo ${{ steps.config.outputs.version_name }} > version.txt"
 
-      - name: Upload New Version Artifact
+      - name: Upload New Version
         uses: actions/upload-artifact@v4
         with:
-          name: version
+          name: home
           path: version.txt
 
   publish:
-    needs: check_version
+    needs:
+      - check_version
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+      - name: Publish Package
+        uses: Omega365/actions-flutter-pub-publisher@master
         with:
-          flutter-version: stable
-
-      - name: Set Pub Credentials
-        run: echo "${{ secrets.CREDENTIAL_JSON }}" > ~/.pub-cache/credentials.json
-
-      - name: Verify Pub Credentials File
-        run: |
-          if [ -f ~/.pub-cache/credentials.json ]; then
-            echo "Credentials file exists."
-          else
-            echo "Credentials file not found!" && exit 1
-          fi
-
-      - name: Publish Package to Pub
-        run: flutter pub publish --force
+          credential: "${{ secrets.CREDENTIAL_JSON }}"
+          dry_run: false
+          flutter_package: true
+          skip_test: true
 
   tag:
     name: "Tag Version"
-    needs: publish
+    needs:
+      - publish
     runs-on: ubuntu-20.04
     steps:
       - name: Download New Version
         uses: actions/download-artifact@v4
         with:
-          name: version
+          name: home
 
-      - name: Read and Tag New Version
+      - name: Set and Tag the New Version
         run: |
-          NEW_VERSION=$(cat version/version.txt)
-          echo "Tagging version: $NEW_VERSION"
-          git tag $NEW_VERSION
-          git push origin $NEW_VERSION
+          echo "RELEASE_VERSION=$(cat home/version.txt)" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Create New Tag
+        uses: tvdias/github-tagger@v0.0.2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          tag: "${{ env.RELEASE_VERSION }}"

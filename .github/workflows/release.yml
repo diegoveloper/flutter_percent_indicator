@@ -81,8 +81,6 @@ jobs:
           name: version
 
       - name: Read and Tag New Version
-        env:
-          NEW_VERSION: ${{ steps.download-artifact.outputs.path }}
         run: |
           NEW_VERSION=$(cat version/version.txt)
           echo "Tagging version: $NEW_VERSION"

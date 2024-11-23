@@ -53,6 +53,8 @@ jobs:
     steps: 
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Create Pub Credentials Folder
+        run: mkdir -p ~/.pub-cache
       - name: Create Pub Credentials File
         run: echo "${{ secrets.CREDENTIAL_JSON }}" > ~/.pub-cache/credentials.json
       - name: "Publish Package"

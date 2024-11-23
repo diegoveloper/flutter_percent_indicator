@@ -2,7 +2,7 @@ name: Package Publish dry-run
 
 on:
   push:
-    branches: [ master ]
+    branches: [  ]
 
 jobs:
 

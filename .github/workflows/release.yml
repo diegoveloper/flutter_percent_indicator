@@ -2,7 +2,7 @@ name: Package Publish
 
 on:
   push:
-    branches: [ release ]
+    branches: [ main, release ]
 
 jobs: 
   check_version: 

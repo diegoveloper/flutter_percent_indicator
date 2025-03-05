@@ -7,10 +7,14 @@ repository: https://github.com/diegoveloper/flutter_percent_indicator/
 dependencies:
   flutter:
     sdk: flutter
+  multi_segment_linear_indicator:
+    git:
+      url: https://github.com/naseerahmedaziz/flutter_percent_indicator.git
+      ref: master # or specific tag/commit hash
 
 environment:
-    sdk: '>=2.12.0 <4.0.0'
-    flutter: '>=2.12.0'
+  sdk: ">=2.12.0 <4.0.0"
+  flutter: ">=2.12.0"
 
 dev_dependencies:
   flutter_test:
@@ -25,5 +29,4 @@ screenshots:
     path: screenshots/circular_percent_indicator.gif
   - description: Linear Percent Indicator Gif
     path: screenshots/linear_percent_indicator.gif
-
 flutter:

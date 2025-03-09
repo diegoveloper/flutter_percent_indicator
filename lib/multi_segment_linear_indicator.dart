@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 ///   lineHeight: 20,
 ///   barRadius: Radius.circular(10),
 ///   animation: true,
+///   enableStripes: [1, 2], // Enable stripes for first and second segments
 /// )
 /// ```
 class MultiSegmentLinearIndicator extends StatefulWidget {
@@ -42,8 +43,8 @@ class MultiSegmentLinearIndicator extends StatefulWidget {
   /// Color of the third segment (background)
   final Color thirdSegmentColor;
 
-  /// Whether to show stripes in the second segment
-  final bool hasStripes;
+  /// Whether to show stripes in specific segments (1 for first, 2 for second, 3 for third)
+  final List<int> enableStripes;
 
   /// Border radius of the progress bar
   final Radius? barRadius;
@@ -80,7 +81,7 @@ class MultiSegmentLinearIndicator extends StatefulWidget {
     this.firstSegmentColor = Colors.blue,
     this.secondSegmentColor = Colors.orange,
     this.thirdSegmentColor = Colors.grey,
-    this.hasStripes = true,
+    this.enableStripes = const [],
     this.barRadius,
     this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
     this.animation = false,
@@ -230,7 +231,7 @@ class _MultiSegmentLinearIndicatorState
           firstSegmentColor: widget.firstSegmentColor,
           secondSegmentColor: widget.secondSegmentColor,
           thirdSegmentColor: widget.thirdSegmentColor,
-          hasStripes: widget.hasStripes,
+          enableStripes: widget.enableStripes,
           barRadius: widget.barRadius ?? Radius.zero,
         ),
         child: SizedBox(
@@ -249,7 +250,7 @@ class _MultiSegmentPainter extends CustomPainter {
   final Color firstSegmentColor;
   final Color secondSegmentColor;
   final Color thirdSegmentColor;
-  final bool hasStripes;
+  final List<int> enableStripes;
   final Radius barRadius;
 
   _MultiSegmentPainter({
@@ -259,7 +260,7 @@ class _MultiSegmentPainter extends CustomPainter {
     required this.firstSegmentColor,
     required this.secondSegmentColor,
     required this.thirdSegmentColor,
-    required this.hasStripes,
+    required this.enableStripes,
     required this.barRadius,
   });
 
@@ -308,6 +309,11 @@ class _MultiSegmentPainter extends CustomPainter {
         );
       }
       canvas.drawPath(firstSegmentPath, firstSegmentPaint);
+
+      // Draw stripes for first segment if enabled
+      if (enableStripes.contains(1)) {
+        _drawStripes(canvas, 0, firstSegmentWidth, size.height);
+      }
     }
 
     // Draw second segment
@@ -345,31 +351,42 @@ class _MultiSegmentPainter extends CustomPainter {
       }
       canvas.drawPath(secondSegmentPath, secondSegmentPaint);
 
-      // Draw stripes if enabled
-      if (hasStripes) {
-        final stripePaint = Paint()
-          ..color = Colors.white.withOpacity(0.3)
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 2;
-
-        const stripeSpacing = 8.0;
-
-        canvas.save();
-        canvas.clipRect(Rect.fromLTWH(
-            secondSegmentStart, 0, secondSegmentWidth, size.height));
-
-        for (double x = secondSegmentStart - size.height;
-            x < secondSegmentStart + secondSegmentWidth + size.height;
-            x += stripeSpacing) {
-          canvas.drawLine(
-            Offset(x, size.height),
-            Offset(x + size.height, 0),
-            stripePaint,
-          );
-        }
-        canvas.restore();
+      // Draw stripes for second segment if enabled
+      if (enableStripes.contains(2)) {
+        _drawStripes(
+            canvas, secondSegmentStart, secondSegmentWidth, size.height);
       }
     }
+
+    // Draw stripes for third segment if enabled
+    if (thirdSegmentPercent > 0 && enableStripes.contains(3)) {
+      final thirdSegmentStart = secondSegmentStart + secondSegmentWidth;
+      final thirdSegmentWidth = size.width * thirdSegmentPercent;
+      _drawStripes(canvas, thirdSegmentStart, thirdSegmentWidth, size.height);
+    }
+  }
+
+  void _drawStripes(Canvas canvas, double startX, double width, double height) {
+    final stripePaint = Paint()
+      ..color = Colors.white.withOpacity(0.3)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2;
+
+    const stripeSpacing = 8.0;
+
+    canvas.save();
+    canvas.clipRect(Rect.fromLTWH(startX, 0, width, height));
+
+    for (double x = startX - height;
+        x < startX + width + height;
+        x += stripeSpacing) {
+      canvas.drawLine(
+        Offset(x, height),
+        Offset(x + height, 0),
+        stripePaint,
+      );
+    }
+    canvas.restore();
   }
 
   @override

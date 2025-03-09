@@ -1,100 +1,453 @@
-# Multi-Segment Linear Indicator
+# Percent Indicator
 
-A Flutter package that provides a customizable linear progress indicator with three distinct segments, each with its own color and style. The middle segment can optionally display animated stripes.
+[![pub package](https://img.shields.io/pub/v/percent_indicator.svg)](https://pub.dev/packages/percent_indicator)
+
+Circular, Linear and Multi-segment linear percent indicators
+
+<p align="center">
+<img src="https://image.ibb.co/doViid/screen1.png" alt="drawing" width="230px" hspace="30"/>  <img src="https://image.ibb.co/bszyGy/screen2.png" alt="drawing" width="230px"/> 
+</p>
 
 ## Features
 
-- Three independently animated segments
-- Customizable colors for each segment
-- Optional striped pattern for the middle segment
-- Smooth animations with customizable duration and curve
-- Configurable border radius
-- RTL support
-- Flexible sizing and padding options
+- Circle percent indicator
+- Linear percent indicator
+- Multi-segment linear indicator
+- Toggle animation
+- Custom duration of the animation
+- Progress based on a percentage value
+- Progress and background color
+- Custom size
+- Left , right or center child for Linear percent indicator
+- Top, bottom or center child for Circular percent indicator
+- Progress Color using gradients
 
-## Installation
+## Getting started
 
-Add this to your package's `pubspec.yaml` file:
+You should ensure that you add the router as a dependency in your flutter project.
 
 ```yaml
 dependencies:
-  multi_segment_linear_indicator: ^1.0.0
+  percent_indicator: ^4.0.1
 ```
+
+You should then run `flutter packages upgrade` or update your packages in IntelliJ.
+
+## Example Project
+
+There is a example project in the `example` folder. Check it out. Otherwise, keep reading to get up and running.
 
 ## Usage
 
-### Basic Usage
+Need to include the import the package to the dart file where it will be used, use the below command,
 
 ```dart
-import 'package:multi_segment_linear_indicator/multi_segment_linear_indicator.dart';
-
-MultiSegmentLinearIndicator(
-  firstSegmentPercent: 0.3,
-  secondSegmentPercent: 0.4,
-  thirdSegmentPercent: 0.3,
-  lineHeight: 20,
-  barRadius: Radius.circular(10),
-  animation: true,
-)
+import 'package:percent_indicator/percent_indicator.dart';
 ```
 
-### Advanced Usage
+**Circular percent indicator**
+
+Basic Widget
 
 ```dart
-MultiSegmentLinearIndicator(
-  firstSegmentPercent: 0.3,
-  secondSegmentPercent: 0.4,
-  thirdSegmentPercent: 0.3,
-  lineHeight: 20,
-  width: 300, // Optional fixed width
-  firstSegmentColor: Colors.blue,
-  secondSegmentColor: Colors.orange,
-  thirdSegmentColor: Colors.grey,
-  hasStripes: true,
-  barRadius: Radius.circular(10),
-  padding: EdgeInsets.symmetric(horizontal: 16),
-  animation: true,
-  animationDuration: 1000,
-  curve: Curves.easeInOut,
-  animateFromLastPercent: true,
-  onAnimationEnd: () {
-    print('Animation completed');
-  },
-)
+new CircularPercentIndicator(
+                  radius: 60.0,
+                  lineWidth: 5.0,
+                  percent: 1.0,
+                  center: new Text("100%"),
+                  progressColor: Colors.green,
+                )
 ```
 
-## Properties
+Complete example
 
-| Property                 | Type            | Description                                       |
-| ------------------------ | --------------- | ------------------------------------------------- |
-| `firstSegmentPercent`    | `double`        | Percentage for the first segment (0.0 to 1.0)     |
-| `secondSegmentPercent`   | `double`        | Percentage for the second segment (0.0 to 1.0)    |
-| `thirdSegmentPercent`    | `double`        | Percentage for the third segment (0.0 to 1.0)     |
-| `lineHeight`             | `double`        | Height of the progress bar                        |
-| `width`                  | `double?`       | Optional fixed width. If null, fills parent width |
-| `firstSegmentColor`      | `Color`         | Color of the first segment                        |
-| `secondSegmentColor`     | `Color`         | Color of the second segment                       |
-| `thirdSegmentColor`      | `Color`         | Color of the third segment (background)           |
-| `hasStripes`             | `bool`          | Whether to show stripes in the second segment     |
-| `barRadius`              | `Radius?`       | Border radius of the progress bar                 |
-| `padding`                | `EdgeInsets`    | Padding around the progress bar                   |
-| `animation`              | `bool`          | Whether to animate changes in progress values     |
-| `animationDuration`      | `int`           | Duration of the animation in milliseconds         |
-| `curve`                  | `Curve`         | Animation curve to use                            |
-| `animateFromLastPercent` | `bool`          | Whether to animate from the last percentage value |
-| `onAnimationEnd`         | `VoidCallback?` | Callback when animation completes                 |
+```dart
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: new AppBar(
+        title: new Text("Circular Percent Indicators"),
+      ),
+          body: Center(
+        child: ListView(
+            children: <Widget>[
+              new CircularPercentIndicator(
+                radius: 100.0,
+                lineWidth: 10.0,
+                percent: 0.8,
+                header: new Text("Icon header"),
+                center: new Icon(
+                  Icons.person_pin,
+                  size: 50.0,
+                  color: Colors.blue,
+                ),
+                backgroundColor: Colors.grey,
+                progressColor: Colors.blue,
+              ),
+              new CircularPercentIndicator(
+                radius: 130.0,
+                animation: true,
+                animationDuration: 1200,
+                lineWidth: 15.0,
+                percent: 0.4,
+                center: new Text(
+                  "40 hours",
+                  style:
+                      new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                ),
+                circularStrokeCap: CircularStrokeCap.butt,
+                backgroundColor: Colors.yellow,
+                progressColor: Colors.red,
+              ),
+              new CircularPercentIndicator(
+                radius: 120.0,
+                lineWidth: 13.0,
+                animation: true,
+                percent: 0.7,
+                center: new Text(
+                  "70.0%",
+                  style:
+                      new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                ),
+                footer: new Text(
+                  "Sales this week",
+                  style:
+                      new TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                ),
+                circularStrokeCap: CircularStrokeCap.round,
+                progressColor: Colors.purple,
+              ),
+              Padding(
+                padding: EdgeInsets.all(15.0),
+                child: new CircularPercentIndicator(
+                  radius: 60.0,
+                  lineWidth: 5.0,
+                  percent: 1.0,
+                  center: new Text("100%"),
+                  progressColor: Colors.green,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(15.0),
+                child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    new CircularPercentIndicator(
+                      radius: 45.0,
+                      lineWidth: 4.0,
+                      percent: 0.10,
+                      center: new Text("10%"),
+                      progressColor: Colors.red,
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    ),
+                    new CircularPercentIndicator(
+                      radius: 45.0,
+                      lineWidth: 4.0,
+                      percent: 0.30,
+                      center: new Text("30%"),
+                      progressColor: Colors.orange,
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    ),
+                    new CircularPercentIndicator(
+                      radius: 45.0,
+                      lineWidth: 4.0,
+                      percent: 0.60,
+                      center: new Text("60%"),
+                      progressColor: Colors.yellow,
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    ),
+                    new CircularPercentIndicator(
+                      radius: 45.0,
+                      lineWidth: 4.0,
+                      percent: 0.90,
+                      center: new Text("90%"),
+                      progressColor: Colors.green,
+                    )
+                  ],
+                ),
+              )
+            ]),
+      ),
+    );
+  }
+```
 
-## Notes
+<p align="center">
+  <img src="https://media.giphy.com/media/35LCxze8UGUXcZ9TIu/giphy.gif">
+</p>
 
-- The sum of all segment percentages must be less than or equal to 1.0
-- Each segment percentage must be between 0.0 and 1.0
-- The widget automatically handles state management and animations
-- Stripes are only shown in the second segment when `hasStripes` is true
+**Linear percent indicator**
 
-## Example
+Basic Widget
 
-Check out the [example](example) directory for a complete sample application.
+```dart
+new LinearPercentIndicator(
+                width: 140.0,
+                lineHeight: 14.0,
+                percent: 0.5,
+                backgroundColor: Colors.grey,
+                progressColor: Colors.blue,
+              ),
 
-## License
+```
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Complete example
+
+```dart
+@override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: new AppBar(
+        title: new Text("Linear Percent Indicators"),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(15.0),
+              child: new LinearPercentIndicator(
+                width: 140.0,
+                lineHeight: 14.0,
+                percent: 0.5,
+                center: Text(
+                  "50.0%",
+                  style: new TextStyle(fontSize: 12.0),
+                ),
+                trailing: Icon(Icons.mood),
+                linearStrokeCap: LinearStrokeCap.roundAll,
+                backgroundColor: Colors.grey,
+                progressColor: Colors.blue,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(15.0),
+              child: new LinearPercentIndicator(
+                width: 170.0,
+                animation: true,
+                animationDuration: 1000,
+                lineHeight: 20.0,
+                leading: new Text("left content"),
+                trailing: new Text("right content"),
+                percent: 0.2,
+                center: Text("20.0%"),
+                linearStrokeCap: LinearStrokeCap.butt,
+                progressColor: Colors.red,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(15.0),
+              child: new LinearPercentIndicator(
+                width: MediaQuery.of(context).size.width - 50,
+                animation: true,
+                lineHeight: 20.0,
+                animationDuration: 2000,
+                percent: 0.9,
+                center: Text("90.0%"),
+                linearStrokeCap: LinearStrokeCap.roundAll,
+                progressColor: Colors.greenAccent,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(15.0),
+              child: new LinearPercentIndicator(
+                width: MediaQuery.of(context).size.width - 50,
+                animation: true,
+                lineHeight: 20.0,
+                animationDuration: 2500,
+                percent: 0.8,
+                center: Text("80.0%"),
+                linearStrokeCap: LinearStrokeCap.roundAll,
+                progressColor: Colors.green,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Column(
+                children: <Widget>[
+                  new LinearPercentIndicator(
+                    width: 100.0,
+                    lineHeight: 8.0,
+                    percent: 0.2,
+                    progressColor: Colors.red,
+                  ),
+                  new LinearPercentIndicator(
+                    width: 100.0,
+                    lineHeight: 8.0,
+                    percent: 0.5,
+                    progressColor: Colors.orange,
+                  ),
+                  new LinearPercentIndicator(
+                    width: 100.0,
+                    lineHeight: 8.0,
+                    percent: 0.9,
+                    progressColor: Colors.blue,
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+```
+
+**Multi-segment linear indicator**
+
+Basic Widget
+
+```dart
+new MultiSegmentLinearIndicator(
+                width: MediaQuery.of(context).size.width - 64,
+                lineHeight: 30.0,
+                firstSegmentPercent: 0.25,
+                secondSegmentPercent: 0.4,
+                thirdSegmentPercent: 0.35,
+                firstSegmentColor: Color(0xFF4285F4),
+                secondSegmentColor: Color(0xFF6DD5F6),
+                thirdSegmentColor: Color(0xFFEFEFEF),
+                enableStripes: [1],
+                barRadius: Radius.circular(10.0),
+                animation: true,
+                animationDuration: 1000,
+                curve: Curves.easeInOut,
+                animateFromLastPercent: true,
+                onAnimationEnd: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Animation completed!'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                },
+              ),
+
+```
+
+Complete example
+
+```dart
+@override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Multi Segment Progress'),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              MultiSegmentLinearIndicator(
+                width: MediaQuery.of(context).size.width - 64,
+                lineHeight: 30.0,
+                firstSegmentPercent: 0.25,
+                secondSegmentPercent: 0.4,
+                thirdSegmentPercent: 0.35,
+                firstSegmentColor: Color(0xFF4285F4),
+                secondSegmentColor: Color(0xFF6DD5F6),
+                thirdSegmentColor: Color(0xFFEFEFEF),
+                enableStripes: [1],
+                barRadius: Radius.circular(10.0),
+                animation: true,
+                animationDuration: 1000,
+                curve: Curves.easeInOut,
+                animateFromLastPercent: true,
+                onAnimationEnd: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Animation completed!'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Static with easeInOut: 25% - 40% - 35%',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 30),
+              MultiSegmentLinearIndicator(
+                width: MediaQuery.of(context).size.width - 40,
+                lineHeight: 20.0,
+                firstSegmentPercent: 0.3,
+                secondSegmentPercent: 0.4,
+                thirdSegmentPercent: 0.3,
+                firstSegmentColor: Color(0xFFBA0521),
+                secondSegmentColor: Color(0xFF071437),
+                thirdSegmentColor: Color(0xFFFF9205),
+                enableStripes: [2],
+                barRadius: Radius.circular(20),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Static: 30% - 40% - 30%',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 30),
+              MultiSegmentLinearIndicator(
+                width: MediaQuery.of(context).size.width - 40,
+                lineHeight: 20.0,
+                firstSegmentPercent: firstSegment,
+                secondSegmentPercent: secondSegment,
+                thirdSegmentPercent: thirdSegment,
+                firstSegmentColor: Colors.green,
+                secondSegmentColor: Colors.blue,
+                thirdSegmentColor: Colors.orange,
+                enableStripes: [1, 3],
+                animation: true,
+                animateFromLastPercent: true,
+                animationDuration: 1000,
+                curve: Curves.easeInOut,
+                barRadius: Radius.circular(10),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Progress: ${(firstSegment * 100).toInt()}% - ${(secondSegment * 100).toInt()}% - ${(thirdSegment * 100).toInt()}%',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 30),
+              MultiSegmentLinearIndicator(
+                width: MediaQuery.of(context).size.width - 64,
+                lineHeight: 30.0,
+                firstSegmentPercent: 0.15,
+                secondSegmentPercent: 0.4,
+                thirdSegmentPercent: 0.45,
+                firstSegmentColor: Color(0xFFBA0521),
+                secondSegmentColor: Color(0xFFAEFAB00),
+                thirdSegmentColor: Color(0xFFEFEFEF),
+                enableStripes: [1],
+                animation: true,
+                animationDuration: 1000,
+                curve: Curves.decelerate,
+                animateFromLastPercent: true,
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Static with decelerate: 25% - 40% - 35%',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 30),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+```
+
+<p align="center">
+  <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWt5Y2hwMmF0eXhnd2NsNTV4eWY3ajRqcDRoeGFsOTh6ODY4dW0wYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/EQ760ehLdfONjPQWvk/giphy.gif">
+</p>
+
+You can follow me on twitter [@diegoveloper](https://www.twitter.com/diegoveloper)

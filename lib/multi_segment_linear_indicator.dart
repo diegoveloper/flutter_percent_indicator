@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 /// ```dart
 /// MultiSegmentLinearIndicator(
 ///   segments: [
-///     SegmentLinearIndicator(percent: 0.3, color: Colors.red),
+///     SegmentLinearIndicator(percent: 0.3, color: Colors.red, enableStripes: true),
 ///     SegmentLinearIndicator(percent: 0.4, color: Colors.blue),
 ///     SegmentLinearIndicator(percent: 0.3, color: Colors.green),
 ///   ],

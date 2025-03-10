@@ -77,12 +77,14 @@ class _MultiSegmentDemoState extends State<MultiSegmentDemo> {
                     MultiSegmentLinearIndicator(
                       width: MediaQuery.of(context).size.width - 64,
                       lineHeight: lineHeight,
-                      firstSegmentPercent: firstSegment,
-                      secondSegmentPercent: secondSegment,
-                      thirdSegmentPercent: thirdSegment,
-                      firstSegmentColor: firstColor,
-                      secondSegmentColor: secondColor,
-                      thirdSegmentColor: thirdColor,
+                      segments: [
+                        SegmentLinearIndicator(
+                            percent: firstSegment, color: firstColor),
+                        SegmentLinearIndicator(
+                            percent: secondSegment, color: secondColor),
+                        SegmentLinearIndicator(
+                            percent: thirdSegment, color: thirdColor),
+                      ],
                       enableStripes: [1, 2],
                       barRadius: Radius.circular(borderRadius),
                       animation: animate,

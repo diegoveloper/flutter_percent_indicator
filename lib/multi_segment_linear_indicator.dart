@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// A linear progress indicator that displays three segments with different colors and styles.
-/// The middle segment can optionally display stripes.
+/// A multi-segment linear progress indicator that displays three segments with different colors and styles.
+/// One segment can optionally display stripes.
 ///
 /// The total of all segments must be less than or equal to 1.0 (100%).
 /// Each segment percentage must be between 0.0 and 1.0.
@@ -9,39 +9,35 @@ import 'package:flutter/material.dart';
 /// Example:
 /// ```dart
 /// MultiSegmentLinearIndicator(
-///   firstSegmentPercent: 0.3,
-///   secondSegmentPercent: 0.4,
-///   thirdSegmentPercent: 0.3,
+///   segments: [
+///     SegmentLinearIndicator(percent: 0.3, color: Colors.red),
+///     SegmentLinearIndicator(percent: 0.4, color: Colors.blue),
+///     SegmentLinearIndicator(percent: 0.3, color: Colors.green),
+///   ],
 ///   lineHeight: 20,
 ///   barRadius: Radius.circular(10),
 ///   animation: true,
 ///   enableStripes: [1, 2], // Enable stripes for first and second segments
 /// )
 /// ```
+
+/// Represents a segment in the linear indicator with a percentage and color.
+class SegmentLinearIndicator {
+  final double percent;
+  final Color color;
+
+  SegmentLinearIndicator({required this.percent, required this.color});
+}
+
 class MultiSegmentLinearIndicator extends StatefulWidget {
-  /// Percentage for the first segment (0.0 to 1.0)
-  final double firstSegmentPercent;
-
-  /// Percentage for the second segment (0.0 to 1.0)
-  final double secondSegmentPercent;
-
-  /// Percentage for the third segment (0.0 to 1.0)
-  final double thirdSegmentPercent;
+  /// List of segments to display in the indicator.
+  final List<SegmentLinearIndicator> segments;
 
   /// Height of the progress bar
   final double lineHeight;
 
   /// Optional width of the progress bar. If null, fills the parent width
   final double? width;
-
-  /// Color of the first segment
-  final Color firstSegmentColor;
-
-  /// Color of the second segment
-  final Color secondSegmentColor;
-
-  /// Color of the third segment (background)
-  final Color thirdSegmentColor;
 
   /// Whether to show stripes in specific segments (1 for first, 2 for second, 3 for third)
   final List<int> enableStripes;
@@ -69,18 +65,12 @@ class MultiSegmentLinearIndicator extends StatefulWidget {
 
   /// Creates a multi-segment linear progress indicator.
   ///
-  /// The sum of [firstSegmentPercent], [secondSegmentPercent], and [thirdSegmentPercent]
-  /// must be less than or equal to 1.0.
+  /// The sum of all segment percentages must be less than or equal to 1.0.
   const MultiSegmentLinearIndicator({
     Key? key,
-    required this.firstSegmentPercent,
-    required this.secondSegmentPercent,
-    required this.thirdSegmentPercent,
+    required this.segments,
     this.lineHeight = 5.0,
     this.width,
-    this.firstSegmentColor = Colors.blue,
-    this.secondSegmentColor = Colors.orange,
-    this.thirdSegmentColor = Colors.grey,
     this.enableStripes = const [],
     this.barRadius,
     this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
@@ -89,17 +79,7 @@ class MultiSegmentLinearIndicator extends StatefulWidget {
     this.curve = Curves.linear,
     this.animateFromLastPercent = false,
     this.onAnimationEnd,
-  })  : assert(firstSegmentPercent >= 0 && firstSegmentPercent <= 1.0,
-            'First segment percentage must be between 0.0 and 1.0'),
-        assert(secondSegmentPercent >= 0 && secondSegmentPercent <= 1.0,
-            'Second segment percentage must be between 0.0 and 1.0'),
-        assert(thirdSegmentPercent >= 0 && thirdSegmentPercent <= 1.0,
-            'Third segment percentage must be between 0.0 and 1.0'),
-        assert(
-            firstSegmentPercent + secondSegmentPercent + thirdSegmentPercent <=
-                1.0,
-            'Sum of all segments must be less than or equal to 1.0'),
-        super(key: key);
+  });
 
   @override
   State<MultiSegmentLinearIndicator> createState() =>
@@ -110,22 +90,19 @@ class _MultiSegmentLinearIndicatorState
     extends State<MultiSegmentLinearIndicator>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  late Animation<double> _firstSegmentAnimation;
-  late Animation<double> _secondSegmentAnimation;
-  late Animation<double> _thirdSegmentAnimation;
-
-  double _firstPercent = 0.0;
-  double _secondPercent = 0.0;
-  double _thirdPercent = 0.0;
+  late List<Animation<double>> _segmentAnimations;
+  late List<double> _segmentPercents;
+  bool _isAnimationCompleted = false;
 
   @override
   void initState() {
     super.initState();
+    _segmentPercents = List.filled(widget.segments.length, 0.0);
 
     if (!widget.animation) {
-      _firstPercent = widget.firstSegmentPercent;
-      _secondPercent = widget.secondSegmentPercent;
-      _thirdPercent = widget.thirdSegmentPercent;
+      for (int i = 0; i < widget.segments.length; i++) {
+        _segmentPercents[i] = widget.segments[i].percent;
+      }
       return;
     }
 
@@ -139,76 +116,49 @@ class _MultiSegmentLinearIndicatorState
   }
 
   void _setupAnimations() {
-    final double firstStart =
-        widget.animateFromLastPercent ? _firstPercent : 0.0;
-    final double secondStart =
-        widget.animateFromLastPercent ? _secondPercent : 0.0;
-    final double thirdStart =
-        widget.animateFromLastPercent ? _thirdPercent : 0.0;
+    _segmentAnimations = List.generate(widget.segments.length, (index) {
+      final double start =
+          widget.animateFromLastPercent ? _segmentPercents[index] : 0.0;
 
-    _firstSegmentAnimation = Tween<double>(
-      begin: firstStart,
-      end: widget.firstSegmentPercent,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: widget.curve,
-    ))
-      ..addListener(() {
-        setState(() {
-          _firstPercent = _firstSegmentAnimation.value;
+      return Tween<double>(
+        begin: start,
+        end: widget.segments[index].percent,
+      ).animate(CurvedAnimation(
+        parent: _animationController,
+        curve: widget.curve,
+      ))
+        ..addListener(() {
+          setState(() {
+            _segmentPercents[index] = _segmentAnimations[index].value;
+          });
         });
-      });
-
-    _secondSegmentAnimation = Tween<double>(
-      begin: secondStart,
-      end: widget.secondSegmentPercent,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: widget.curve,
-    ))
-      ..addListener(() {
-        setState(() {
-          _secondPercent = _secondSegmentAnimation.value;
-        });
-      });
-
-    _thirdSegmentAnimation = Tween<double>(
-      begin: thirdStart,
-      end: widget.thirdSegmentPercent,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: widget.curve,
-    ))
-      ..addListener(() {
-        setState(() {
-          _thirdPercent = _thirdSegmentAnimation.value;
-        });
-      });
-
-    _animationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed &&
-          widget.onAnimationEnd != null) {
-        widget.onAnimationEnd!();
-      }
     });
+
+    // Only add the status listener if it hasn't been completed yet
+    if (!_isAnimationCompleted) {
+      _animationController.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _isAnimationCompleted = true;
+          widget.onAnimationEnd?.call();
+        }
+      });
+    }
   }
 
   @override
   void didUpdateWidget(MultiSegmentLinearIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.animation &&
-        (oldWidget.firstSegmentPercent != widget.firstSegmentPercent ||
-            oldWidget.secondSegmentPercent != widget.secondSegmentPercent ||
-            oldWidget.thirdSegmentPercent != widget.thirdSegmentPercent)) {
+    if (widget.animation && oldWidget.segments != widget.segments) {
       _animationController.duration =
           Duration(milliseconds: widget.animationDuration);
+      _isAnimationCompleted = false; // Reset the completion flag
       _setupAnimations();
       _animationController.forward(from: 0.0);
     } else if (!widget.animation) {
-      _firstPercent = widget.firstSegmentPercent;
-      _secondPercent = widget.secondSegmentPercent;
-      _thirdPercent = widget.thirdSegmentPercent;
+      for (int i = 0; i < widget.segments.length; i++) {
+        _segmentPercents[i] = widget.segments[i].percent;
+      }
     }
   }
 
@@ -225,12 +175,8 @@ class _MultiSegmentLinearIndicatorState
       padding: widget.padding,
       child: CustomPaint(
         painter: _MultiSegmentPainter(
-          firstSegmentPercent: _firstPercent,
-          secondSegmentPercent: _secondPercent,
-          thirdSegmentPercent: _thirdPercent,
-          firstSegmentColor: widget.firstSegmentColor,
-          secondSegmentColor: widget.secondSegmentColor,
-          thirdSegmentColor: widget.thirdSegmentColor,
+          segments: widget.segments,
+          segmentPercents: _segmentPercents,
           enableStripes: widget.enableStripes,
           barRadius: widget.barRadius ?? Radius.zero,
         ),
@@ -244,125 +190,63 @@ class _MultiSegmentLinearIndicatorState
 
 /// Custom painter for drawing the multi-segment progress bar
 class _MultiSegmentPainter extends CustomPainter {
-  final double firstSegmentPercent;
-  final double secondSegmentPercent;
-  final double thirdSegmentPercent;
-  final Color firstSegmentColor;
-  final Color secondSegmentColor;
-  final Color thirdSegmentColor;
+  final List<SegmentLinearIndicator> segments;
+  final List<double> segmentPercents;
   final List<int> enableStripes;
   final Radius barRadius;
 
   _MultiSegmentPainter({
-    required this.firstSegmentPercent,
-    required this.secondSegmentPercent,
-    required this.thirdSegmentPercent,
-    required this.firstSegmentColor,
-    required this.secondSegmentColor,
-    required this.thirdSegmentColor,
+    required this.segments,
+    required this.segmentPercents,
     required this.enableStripes,
     required this.barRadius,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint backgroundPaint = Paint()
-      ..color = thirdSegmentColor
-      ..style = PaintingStyle.fill;
+    double startX = 0.0;
 
-    // Draw background (third segment)
-    final backgroundPath = Path()
-      ..addRRect(RRect.fromRectAndRadius(
-        Rect.fromLTWH(0, 0, size.width, size.height),
-        barRadius,
-      ));
-    canvas.drawPath(backgroundPath, backgroundPaint);
-
-    // Calculate segment widths
-    final firstSegmentWidth = size.width * firstSegmentPercent;
-    final secondSegmentWidth = size.width * secondSegmentPercent;
-    final secondSegmentStart = firstSegmentWidth;
-
-    // Draw first segment
-    if (firstSegmentPercent > 0) {
-      final firstSegmentPaint = Paint()
-        ..color = firstSegmentColor
+    for (int i = 0; i < segments.length; i++) {
+      final segmentWidth = size.width * segmentPercents[i];
+      final segmentPaint = Paint()
+        ..color = segments[i].color
         ..style = PaintingStyle.fill;
 
-      final firstSegmentPath = Path();
-      if (firstSegmentPercent == 1.0) {
-        // If it's full width, use full border radius
-        firstSegmentPath.addRRect(RRect.fromRectAndRadius(
-          Rect.fromLTWH(0, 0, firstSegmentWidth, size.height),
+      final segmentPath = Path();
+      if (i == 0 && segmentPercents[i] == 1.0) {
+        // Full width with full border radius
+        segmentPath.addRRect(RRect.fromRectAndRadius(
+          Rect.fromLTWH(startX, 0, segmentWidth, size.height),
           barRadius,
         ));
-      } else {
-        // Only round the left side
-        firstSegmentPath.addPath(
-          Path()
-            ..addRRect(RRect.fromRectAndCorners(
-              Rect.fromLTWH(0, 0, firstSegmentWidth, size.height),
-              topLeft: barRadius,
-              bottomLeft: barRadius,
-            )),
-          Offset.zero,
-        );
-      }
-      canvas.drawPath(firstSegmentPath, firstSegmentPaint);
-
-      // Draw stripes for first segment if enabled
-      if (enableStripes.contains(1)) {
-        _drawStripes(canvas, 0, firstSegmentWidth, size.height);
-      }
-    }
-
-    // Draw second segment
-    if (secondSegmentPercent > 0) {
-      final secondSegmentPaint = Paint()
-        ..color = secondSegmentColor
-        ..style = PaintingStyle.fill;
-
-      final secondSegmentPath = Path();
-      if (firstSegmentPercent == 0 && secondSegmentPercent == 1.0) {
-        // If it's full width, use full border radius
-        secondSegmentPath.addRRect(RRect.fromRectAndRadius(
-          Rect.fromLTWH(secondSegmentStart, 0, secondSegmentWidth, size.height),
-          barRadius,
-        ));
-      } else if (firstSegmentPercent == 0) {
+      } else if (i == 0) {
         // Round only the left side
-        secondSegmentPath.addRRect(RRect.fromRectAndCorners(
-          Rect.fromLTWH(secondSegmentStart, 0, secondSegmentWidth, size.height),
+        segmentPath.addRRect(RRect.fromRectAndCorners(
+          Rect.fromLTWH(startX, 0, segmentWidth, size.height),
           topLeft: barRadius,
           bottomLeft: barRadius,
         ));
-      } else if (firstSegmentPercent + secondSegmentPercent == 1.0) {
-        // Round only the right side
-        secondSegmentPath.addRRect(RRect.fromRectAndCorners(
-          Rect.fromLTWH(secondSegmentStart, 0, secondSegmentWidth, size.height),
+      } else if (i == segments.length - 1) {
+        // Round only the right side for the last segment
+        segmentPath.addRRect(RRect.fromRectAndCorners(
+          Rect.fromLTWH(startX, 0, segmentWidth, size.height),
           topRight: barRadius,
           bottomRight: barRadius,
         ));
       } else {
-        // No rounding
-        secondSegmentPath.addRect(
-          Rect.fromLTWH(secondSegmentStart, 0, secondSegmentWidth, size.height),
+        // No rounding for middle segments
+        segmentPath.addRect(
+          Rect.fromLTWH(startX, 0, segmentWidth, size.height),
         );
       }
-      canvas.drawPath(secondSegmentPath, secondSegmentPaint);
+      canvas.drawPath(segmentPath, segmentPaint);
 
-      // Draw stripes for second segment if enabled
-      if (enableStripes.contains(2)) {
-        _drawStripes(
-            canvas, secondSegmentStart, secondSegmentWidth, size.height);
+      // Draw stripes if enabled
+      if (enableStripes.contains(i + 1)) {
+        _drawStripes(canvas, startX, segmentWidth, size.height);
       }
-    }
 
-    // Draw stripes for third segment if enabled
-    if (thirdSegmentPercent > 0 && enableStripes.contains(3)) {
-      final thirdSegmentStart = secondSegmentStart + secondSegmentWidth;
-      final thirdSegmentWidth = size.width * thirdSegmentPercent;
-      _drawStripes(canvas, thirdSegmentStart, thirdSegmentWidth, size.height);
+      startX += segmentWidth;
     }
   }
 

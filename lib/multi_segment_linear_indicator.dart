@@ -25,8 +25,13 @@ import 'package:flutter/material.dart';
 class SegmentLinearIndicator {
   final double percent;
   final Color color;
+  final bool enableStripes;
 
-  SegmentLinearIndicator({required this.percent, required this.color});
+  SegmentLinearIndicator({
+    required this.percent,
+    required this.color,
+    this.enableStripes = false,
+  });
 }
 
 class MultiSegmentLinearIndicator extends StatefulWidget {
@@ -38,9 +43,6 @@ class MultiSegmentLinearIndicator extends StatefulWidget {
 
   /// Optional width of the progress bar. If null, fills the parent width
   final double? width;
-
-  /// Whether to show stripes in specific segments (1 for first, 2 for second, 3 for third)
-  final List<int> enableStripes;
 
   /// Border radius of the progress bar
   final Radius? barRadius;
@@ -71,7 +73,6 @@ class MultiSegmentLinearIndicator extends StatefulWidget {
     required this.segments,
     this.lineHeight = 5.0,
     this.width,
-    this.enableStripes = const [],
     this.barRadius,
     this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
     this.animation = false,
@@ -177,7 +178,6 @@ class _MultiSegmentLinearIndicatorState
         painter: _MultiSegmentPainter(
           segments: widget.segments,
           segmentPercents: _segmentPercents,
-          enableStripes: widget.enableStripes,
           barRadius: widget.barRadius ?? Radius.zero,
         ),
         child: SizedBox(
@@ -192,13 +192,11 @@ class _MultiSegmentLinearIndicatorState
 class _MultiSegmentPainter extends CustomPainter {
   final List<SegmentLinearIndicator> segments;
   final List<double> segmentPercents;
-  final List<int> enableStripes;
   final Radius barRadius;
 
   _MultiSegmentPainter({
     required this.segments,
     required this.segmentPercents,
-    required this.enableStripes,
     required this.barRadius,
   });
 
@@ -241,8 +239,8 @@ class _MultiSegmentPainter extends CustomPainter {
       }
       canvas.drawPath(segmentPath, segmentPaint);
 
-      // Draw stripes if enabled
-      if (enableStripes.contains(i + 1)) {
+      // Draw stripes if enabled for this segment
+      if (segments[i].enableStripes) {
         _drawStripes(canvas, startX, segmentWidth, size.height);
       }
 

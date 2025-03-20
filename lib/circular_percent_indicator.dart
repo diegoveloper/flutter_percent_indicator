@@ -107,6 +107,10 @@ class CircularPercentIndicator extends StatefulWidget {
   /// Set to true if you want to rotate linear gradient in accordance to the [startAngle].
   final bool rotateLinearGradient;
 
+  /// Set true if you want to display only part of [linearGradient] based on percent value.
+  /// Works only if [rotateLinearGradient] is true.
+  final bool clipRotatedLinearGradient;
+
   /// Return current percent value if animation is true.
   final Function(double value)? onPercentValue;
 
@@ -140,6 +144,7 @@ class CircularPercentIndicator extends StatefulWidget {
     this.onAnimationEnd,
     this.widgetIndicator,
     this.rotateLinearGradient = false,
+    this.clipRotatedLinearGradient = false,
     this.progressBorderColor,
     this.onPercentValue,
   }) : super(key: key) {
@@ -280,6 +285,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
                 linearGradient: widget.linearGradient,
                 maskFilter: widget.maskFilter,
                 rotateLinearGradient: widget.rotateLinearGradient,
+                clipRotatedLinearGradient: widget.clipRotatedLinearGradient,
               ),
               child: (widget.center != null)
                   ? Center(child: widget.center)
@@ -396,6 +402,7 @@ class _CirclePainter extends CustomPainter {
   final bool reverse;
   final MaskFilter? maskFilter;
   final bool rotateLinearGradient;
+  final bool clipRotatedLinearGradient;
 
   _CirclePainter({
     required this.lineWidth,
@@ -413,6 +420,7 @@ class _CirclePainter extends CustomPainter {
     this.arcType,
     this.maskFilter,
     required this.rotateLinearGradient,
+    required this.clipRotatedLinearGradient,
   }) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
@@ -469,7 +477,9 @@ class _CirclePainter extends CustomPainter {
                   radians(-90 - progress + startAngle) - correction)
               : GradientRotation(radians(-90.0 + startAngle) - correction),
           startAngle: radians(0).toDouble(),
-          endAngle: radians(progress).toDouble(),
+          endAngle: clipRotatedLinearGradient
+              ? radians(360).toDouble()
+              : radians(progress).toDouble(),
           tileMode: TileMode.clamp,
           colors: reverse
               ? linearGradient!.colors.reversed.toList()

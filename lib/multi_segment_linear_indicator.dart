@@ -68,7 +68,7 @@ class MultiSegmentLinearIndicator extends StatefulWidget {
   /// Creates a multi-segment linear progress indicator.
   ///
   /// The sum of all segment percentages must be less than or equal to 1.0.
-  const MultiSegmentLinearIndicator({
+  MultiSegmentLinearIndicator({
     Key? key,
     required this.segments,
     this.lineHeight = 5.0,
@@ -80,7 +80,17 @@ class MultiSegmentLinearIndicator extends StatefulWidget {
     this.curve = Curves.linear,
     this.animateFromLastPercent = false,
     this.onAnimationEnd,
-  });
+  }) : super(key: key) {
+    final sum = segments.fold<double>(
+      0.0,
+      (sum, segment) => sum + segment.percent,
+    );
+    if (sum > 1.0) {
+      throw Exception(
+        'The sum of all segment percentages must be less than or equal to 1.0, but got $sum',
+      );
+    }
+  }
 
   @override
   State<MultiSegmentLinearIndicator> createState() =>
@@ -90,10 +100,15 @@ class MultiSegmentLinearIndicator extends StatefulWidget {
 class _MultiSegmentLinearIndicatorState
     extends State<MultiSegmentLinearIndicator>
     with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
+  AnimationController? _animationController;
   late List<Animation<double>> _segmentAnimations;
   late List<double> _segmentPercents;
-  bool _isAnimationCompleted = false;
+
+  @override
+  void dispose() {
+    _animationController?.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -113,7 +128,15 @@ class _MultiSegmentLinearIndicatorState
     );
 
     _setupAnimations();
-    _animationController.forward();
+
+    _animationController!.addStatusListener((status) {
+      if (widget.onAnimationEnd != null &&
+          status == AnimationStatus.completed) {
+        widget.onAnimationEnd!();
+      }
+    });
+
+    _animationController!.forward();
   }
 
   void _setupAnimations() {
@@ -125,7 +148,7 @@ class _MultiSegmentLinearIndicatorState
         begin: start,
         end: widget.segments[index].percent,
       ).animate(CurvedAnimation(
-        parent: _animationController,
+        parent: _animationController!,
         curve: widget.curve,
       ))
         ..addListener(() {
@@ -134,15 +157,13 @@ class _MultiSegmentLinearIndicatorState
           });
         });
     });
+  }
 
-    // Only add the status listener if it hasn't been completed yet
-    if (!_isAnimationCompleted) {
-      _animationController.addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          _isAnimationCompleted = true;
-          widget.onAnimationEnd?.call();
-        }
-      });
+  void _checkIfNeedCancelAnimation(MultiSegmentLinearIndicator oldWidget) {
+    if (oldWidget.animation &&
+        !widget.animation &&
+        _animationController != null) {
+      _animationController!.stop();
     }
   }
 
@@ -150,23 +171,30 @@ class _MultiSegmentLinearIndicatorState
   void didUpdateWidget(MultiSegmentLinearIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.animation && oldWidget.segments != widget.segments) {
-      _animationController.duration =
+    if (widget.animation &&
+        !_areSegmentsEqual(oldWidget.segments, widget.segments)) {
+      _animationController!.duration =
           Duration(milliseconds: widget.animationDuration);
-      _isAnimationCompleted = false; // Reset the completion flag
       _setupAnimations();
-      _animationController.forward(from: 0.0);
+      _animationController!.forward(from: 0.0);
     } else if (!widget.animation) {
       for (int i = 0; i < widget.segments.length; i++) {
         _segmentPercents[i] = widget.segments[i].percent;
       }
     }
+
+    _checkIfNeedCancelAnimation(oldWidget);
   }
 
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
+  bool _areSegmentsEqual(
+      List<SegmentLinearIndicator> a, List<SegmentLinearIndicator> b) {
+    if (a.length != b.length) return false;
+
+    for (int i = 0; i < a.length; i++) {
+      if (a[i].percent != b[i].percent) return false;
+    }
+
+    return true;
   }
 
   @override

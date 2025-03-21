@@ -2,7 +2,7 @@
 
 [![pub package](https://img.shields.io/pub/v/percent_indicator.svg)](https://pub.dev/packages/percent_indicator)
 
-Circular and Linear percent indicators
+Circular, Linear and Multi-segment linear percent indicators
 
 <p align="center">
 <img src="https://image.ibb.co/doViid/screen1.png" alt="drawing" width="230px" hspace="30"/>  <img src="https://image.ibb.co/bszyGy/screen2.png" alt="drawing" width="230px"/> 
@@ -12,7 +12,8 @@ Circular and Linear percent indicators
 
 - Circle percent indicator
 - Linear percent indicator
-- Toggle animation 
+- Multi-segment linear indicator
+- Toggle animation
 - Custom duration of the animation
 - Progress based on a percentage value
 - Progress and background color
@@ -24,9 +25,10 @@ Circular and Linear percent indicators
 ## Getting started
 
 You should ensure that you add the router as a dependency in your flutter project.
+
 ```yaml
 dependencies:
- percent_indicator: ^4.0.1
+  percent_indicator: ^4.2.5
 ```
 
 You should then run `flutter packages upgrade` or update your packages in IntelliJ.
@@ -42,9 +44,11 @@ Need to include the import the package to the dart file where it will be used, u
 ```dart
 import 'package:percent_indicator/percent_indicator.dart';
 ```
+
 **Circular percent indicator**
 
 Basic Widget
+
 ```dart
 new CircularPercentIndicator(
                   radius: 60.0,
@@ -56,6 +60,7 @@ new CircularPercentIndicator(
 ```
 
 Complete example
+
 ```dart
   @override
   Widget build(BuildContext context) {
@@ -172,14 +177,15 @@ Complete example
     );
   }
 ```
+
 <p align="center">
   <img src="https://media.giphy.com/media/35LCxze8UGUXcZ9TIu/giphy.gif">
 </p>
 
-
 **Linear percent indicator**
 
 Basic Widget
+
 ```dart
 new LinearPercentIndicator(
                 width: 140.0,
@@ -192,6 +198,7 @@ new LinearPercentIndicator(
 ```
 
 Complete example
+
 ```dart
 @override
   Widget build(BuildContext context) {
@@ -291,9 +298,156 @@ Complete example
     );
   }
 ```
-<p align="center">
-  <img src="https://media.giphy.com/media/88j2PmdEqCrLq2pZxO/giphy.gif">
-</p>
 
+**Multi-segment linear indicator**
+
+Basic Widget
+
+```dart
+new MultiSegmentLinearIndicator(
+                width: MediaQuery.of(context).size.width - 64,
+                lineHeight: 30.0,
+                firstSegmentPercent: 0.25,
+                secondSegmentPercent: 0.4,
+                thirdSegmentPercent: 0.35,
+                firstSegmentColor: Color(0xFF4285F4),
+                secondSegmentColor: Color(0xFF6DD5F6),
+                thirdSegmentColor: Color(0xFFEFEFEF),
+                enableStripes: [1],
+                barRadius: Radius.circular(10.0),
+                animation: true,
+                animationDuration: 1000,
+                curve: Curves.easeInOut,
+                animateFromLastPercent: true,
+                onAnimationEnd: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Animation completed!'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                },
+              ),
+
+```
+
+Complete example
+
+```dart
+@override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Multi Segment Progress'),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              MultiSegmentLinearIndicator(
+                width: MediaQuery.of(context).size.width - 64,
+                lineHeight: 30.0,
+                firstSegmentPercent: 0.25,
+                secondSegmentPercent: 0.4,
+                thirdSegmentPercent: 0.35,
+                firstSegmentColor: Color(0xFF4285F4),
+                secondSegmentColor: Color(0xFF6DD5F6),
+                thirdSegmentColor: Color(0xFFEFEFEF),
+                enableStripes: [1],
+                barRadius: Radius.circular(10.0),
+                animation: true,
+                animationDuration: 1000,
+                curve: Curves.easeInOut,
+                animateFromLastPercent: true,
+                onAnimationEnd: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Animation completed!'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Static with easeInOut: 25% - 40% - 35%',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 30),
+              MultiSegmentLinearIndicator(
+                width: MediaQuery.of(context).size.width - 40,
+                lineHeight: 20.0,
+                firstSegmentPercent: 0.3,
+                secondSegmentPercent: 0.4,
+                thirdSegmentPercent: 0.3,
+                firstSegmentColor: Color(0xFFBA0521),
+                secondSegmentColor: Color(0xFF071437),
+                thirdSegmentColor: Color(0xFFFF9205),
+                enableStripes: [2],
+                barRadius: Radius.circular(20),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Static: 30% - 40% - 30%',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 30),
+              MultiSegmentLinearIndicator(
+                width: MediaQuery.of(context).size.width - 40,
+                lineHeight: 20.0,
+                firstSegmentPercent: firstSegment,
+                secondSegmentPercent: secondSegment,
+                thirdSegmentPercent: thirdSegment,
+                firstSegmentColor: Colors.green,
+                secondSegmentColor: Colors.blue,
+                thirdSegmentColor: Colors.orange,
+                enableStripes: [1, 3],
+                animation: true,
+                animateFromLastPercent: true,
+                animationDuration: 1000,
+                curve: Curves.easeInOut,
+                barRadius: Radius.circular(10),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Progress: ${(firstSegment * 100).toInt()}% - ${(secondSegment * 100).toInt()}% - ${(thirdSegment * 100).toInt()}%',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 30),
+              MultiSegmentLinearIndicator(
+                width: MediaQuery.of(context).size.width - 64,
+                lineHeight: 30.0,
+                firstSegmentPercent: 0.15,
+                secondSegmentPercent: 0.4,
+                thirdSegmentPercent: 0.45,
+                firstSegmentColor: Color(0xFFBA0521),
+                secondSegmentColor: Color(0xFFAEFAB00),
+                thirdSegmentColor: Color(0xFFEFEFEF),
+                enableStripes: [1],
+                animation: true,
+                animationDuration: 1000,
+                curve: Curves.decelerate,
+                animateFromLastPercent: true,
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Static with decelerate: 25% - 40% - 35%',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 30),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+```
+
+<p align="center">
+  <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWt5Y2hwMmF0eXhnd2NsNTV4eWY3ajRqcDRoeGFsOTh6ODY4dW0wYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/EQ760ehLdfONjPQWvk/giphy.gif">
+</p>
 
 You can follow me on twitter [@diegoveloper](https://www.twitter.com/diegoveloper)

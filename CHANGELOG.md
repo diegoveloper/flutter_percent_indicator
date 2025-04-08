@@ -1,3 +1,9 @@
+# [4.2.5]
+
+- Added clipRotatedLinearGradient param, thanks kamil-matula
+- Enabling multi-segment progress bar with animations and stripes, thanks naseerahmedaziz
+- A lot of fixes.
+
 # [4.2.4]
 
 - A lot of fixes.

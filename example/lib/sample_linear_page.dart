@@ -27,6 +27,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
       ),
       body: Center(
         child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(vertical: 15.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -289,6 +290,37 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                 ),
               ),
               Text('Custom Border Color'),
+              Container(
+                color: Colors.white,
+                margin: EdgeInsets.all(15),
+                width: 150,
+                child: Stack(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: List.generate(
+                        5,
+                        (_) => Icon(
+                          Icons.star,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                    LinearPercentIndicator(
+                      lineHeight: 20,
+                      progressColor: Colors.white.withOpacity(0.75),
+                      backgroundColor: Colors.transparent,
+                      padding: EdgeInsets.zero,
+                      percent: 0.5,
+                      animation: true,
+                      animationDuration: 2000,
+                      isRTL: true,
+                      reverse: true,
+                    ),
+                  ],
+                ),
+              ),
+              Text('Reversed RTL Animation'),
             ],
           ),
         ),

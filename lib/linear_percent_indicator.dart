@@ -80,6 +80,9 @@ class LinearPercentIndicator extends StatefulWidget {
   /// set true if you want to animate the linear from the right to left (RTL)
   final bool isRTL;
 
+  /// set true when you want to display the progress in reverse mode
+  final bool reverse;
+
   /// Creates a mask filter that takes the progress shape being drawn and blurs it.
   final MaskFilter? maskFilter;
 
@@ -118,6 +121,7 @@ class LinearPercentIndicator extends StatefulWidget {
     this.animateFromLastPercent = false,
     this.animateToInitialPercent = true,
     this.isRTL = false,
+    this.reverse = false,
     this.leading,
     this.trailing,
     this.center,
@@ -279,6 +283,7 @@ class _LinearPercentIndicatorState extends State<LinearPercentIndicator>
               key: _containerKey,
               painter: _LinearPainter(
                 isRTL: widget.isRTL,
+                reverse: widget.reverse,
                 progress: _percent,
                 progressColor: widget.progressColor,
                 linearGradient: widget.linearGradient,
@@ -348,6 +353,7 @@ class _LinearPainter extends CustomPainter {
   final Paint _paintLineBorder = new Paint();
   final double progress;
   final bool isRTL;
+  final bool reverse;
   final Color progressColor;
   final Color? progressBorderColor;
   final Color backgroundColor;
@@ -360,6 +366,7 @@ class _LinearPainter extends CustomPainter {
   _LinearPainter({
     required this.progress,
     required this.isRTL,
+    required this.reverse,
     required this.progressColor,
     required this.backgroundColor,
     required this.barRadius,
@@ -371,11 +378,12 @@ class _LinearPainter extends CustomPainter {
   }) {
     _paintBackground.color = backgroundColor;
 
-    _paintLine.color =
-        progress == 0 ? progressColor.withOpacity(0.0) : progressColor;
+    _paintLine.color = progress == 0 && !reverse
+        ? progressColor.withOpacity(0.0)
+        : progressColor;
 
     if (progressBorderColor != null) {
-      _paintLineBorder.color = progress == 0
+      _paintLineBorder.color = progress == 0 && !reverse
           ? progressBorderColor!.withOpacity(0.0)
           : progressBorderColor!;
     }
@@ -403,7 +411,7 @@ class _LinearPainter extends CustomPainter {
     }
 
     // Then draw progress line
-    final xProgress = size.width * progress;
+    final xProgress = size.width * (reverse ? 1 - progress : progress);
     Path linePath = Path();
     Path linePathBorder = Path();
     double factor = progressBorderColor != null ? 2 : 0;
@@ -415,8 +423,7 @@ class _LinearPainter extends CustomPainter {
         _paintLine.shader = _createGradientShaderRightToLeft(size, xProgress);
       }
       linePath.addRRect(RRect.fromRectAndRadius(
-          Rect.fromLTWH(
-              size.width - size.width * progress, 0, xProgress, size.height),
+          Rect.fromLTWH(size.width - xProgress, 0, xProgress, size.height),
           barRadius));
     } else {
       if (linearGradient != null) {

@@ -58,6 +58,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               ),
               arcBackgroundColor: Colors.grey,
             ),
+            const SizedBox(height: 20),
             CircularPercentIndicator(
               radius: 60.0,
               animation: true,
@@ -99,6 +100,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               ),
               arcBackgroundColor: Colors.grey,
             ),
+            const SizedBox(height: 20),
             CircularPercentIndicator(
               radius: 60.0,
               lineWidth: 13.0,
@@ -121,6 +123,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                 child: Icon(Icons.airplanemode_active, size: 30),
               ),
             ),
+            const SizedBox(height: 20),
             CircularPercentIndicator(
               radius: 50.0,
               lineWidth: 10.0,
@@ -135,6 +138,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                 colors: [Colors.orange, Colors.yellow],
               ),
             ),
+            const SizedBox(height: 20),
             CircularPercentIndicator(
               radius: 50.0,
               lineWidth: 10.0,
@@ -149,6 +153,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               backgroundColor: Colors.grey,
               progressColor: Colors.blue,
             ),
+            const SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               CircularPercentIndicator(
                 radius: 50.0,
@@ -184,6 +189,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                 progressColor: Colors.red,
               ),
             ]),
+            const SizedBox(height: 20),
             CircularPercentIndicator(
               radius: 50.0,
               animation: true,
@@ -200,6 +206,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               backgroundColor: Colors.grey,
               progressColor: Colors.red,
             ),
+            const SizedBox(height: 20),
             CircularPercentIndicator(
               radius: 60.0,
               lineWidth: 13.0,
@@ -218,18 +225,17 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
               circularStrokeCap: CircularStrokeCap.round,
               progressColor: Colors.purple,
             ),
-            Padding(
-              padding: EdgeInsets.all(15.0),
-              child: CircularPercentIndicator(
-                radius: 30.0,
-                lineWidth: 5.0,
-                percent: 1.0,
-                center: Text("100%"),
-                progressColor: Colors.green,
-              ),
+            const SizedBox(height: 20),
+            CircularPercentIndicator(
+              radius: 30.0,
+              lineWidth: 5.0,
+              percent: 1.0,
+              center: Text("100%"),
+              progressColor: Colors.green,
             ),
+            const SizedBox(height: 20),
             Container(
-              padding: EdgeInsets.all(15.0),
+              padding: EdgeInsets.symmetric(horizontal: 15.0),
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -305,6 +311,7 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                 ),
               ),
             ),
+            const SizedBox(height: 20),
             CircularPercentIndicator(
               radius: 40.0,
               lineWidth: 5.0,
@@ -403,6 +410,76 @@ class _SampleCircularPageState extends State<SampleCircularPage> {
                 ),
               ],
             ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 18.0),
+              child: Center(
+                child: Text(
+                  "Circular with (rotated) gradient",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CircularPercentIndicator(
+                  radius: 40.0,
+                  percent: 0.6,
+                  lineWidth: 10,
+                  backgroundWidth: 10,
+                  backgroundColor: Colors.grey,
+                  animation: true,
+                  animationDuration: 2000,
+                  center: Text("60.0%"),
+                  linearGradient: const LinearGradient(
+                    colors: <Color>[
+                      Colors.red,
+                      Colors.yellow,
+                      Colors.green,
+                    ],
+                  ),
+                ),
+                CircularPercentIndicator(
+                  radius: 40.0,
+                  percent: 0.6,
+                  lineWidth: 10,
+                  backgroundWidth: 10,
+                  backgroundColor: Colors.grey,
+                  animation: true,
+                  animationDuration: 2000,
+                  center: Text("60.0%"),
+                  linearGradient: const LinearGradient(
+                    colors: <Color>[
+                      Colors.red,
+                      Colors.yellow,
+                      Colors.green,
+                    ],
+                  ),
+                  rotateLinearGradient: true,
+                ),
+                CircularPercentIndicator(
+                  radius: 40.0,
+                  percent: 0.6,
+                  lineWidth: 10,
+                  backgroundWidth: 10,
+                  backgroundColor: Colors.grey,
+                  animation: true,
+                  animationDuration: 2000,
+                  center: Text("60.0%"),
+                  linearGradient: const LinearGradient(
+                    colors: <Color>[
+                      Colors.red,
+                      Colors.yellow,
+                      Colors.green,
+                    ],
+                  ),
+                  rotateLinearGradient: true,
+                  clipRotatedLinearGradient: true,
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
           ],
         ),
       ),

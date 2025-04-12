@@ -45,7 +45,7 @@
 
 - `linearGradientBackgroundColor` was added for `LinearPercentIndicator`. Thanks Jeremiah Parrack.
 
-# [3.3.0-nullsafety.1 - 3.0.0]
+# [3.0.0]
 
 - Null safety migration.
 
@@ -134,11 +134,11 @@
 
 - padding property was added for LinearPercentIndicator
 
-# 1.0.7, 1.0.8
+# 1.0.7 - 1.0.8
 
 - alignment property was added for LinearPercentIndicator
 
-# 1.0.5, 1.0.6
+# 1.0.5 - 1.0.6
 
 - fillColor property was added to LinearPercentIndicator
 
@@ -148,20 +148,4 @@
 
 # 1.0.0
 
-Initial release of the multi_segment_linear_indicator package.
-
-### Features
-
-- Three independently animated segments
-- Customizable colors for each segment
-- Optional striped pattern for the middle segment
-- Smooth animations with customizable duration and curve
-- Configurable border radius
-- RTL support
-- Flexible sizing and padding options
-
-### Documentation
-
-- Added comprehensive README with usage examples
-- Added API documentation
-- Added example application
+- Initial release

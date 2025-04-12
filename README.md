@@ -299,6 +299,10 @@ Complete example
   }
 ```
 
+<p align="center">
+  <img src="https://media.giphy.com/media/88j2PmdEqCrLq2pZxO/giphy.gif">
+</p>
+
 **Multi-segment linear indicator**
 
 Basic Widget

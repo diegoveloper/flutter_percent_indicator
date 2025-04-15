@@ -315,7 +315,7 @@ class _SampleLinearPageState extends State<SampleLinearPage> {
                       animation: true,
                       animationDuration: 2000,
                       isRTL: true,
-                      reverse: true,
+                      countdown: true,
                     ),
                   ],
                 ),

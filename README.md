@@ -307,13 +307,21 @@ Basic Widget
 new MultiSegmentLinearIndicator(
                 width: MediaQuery.of(context).size.width - 64,
                 lineHeight: 30.0,
-                firstSegmentPercent: 0.25,
-                secondSegmentPercent: 0.4,
-                thirdSegmentPercent: 0.35,
-                firstSegmentColor: Color(0xFF4285F4),
-                secondSegmentColor: Color(0xFF6DD5F6),
-                thirdSegmentColor: Color(0xFFEFEFEF),
-                enableStripes: [1],
+                segments: [
+                  SegmentLinearIndicator(
+                    percent: 0.25,
+                    color: Color(0xFF4285F4),
+                    enableStripes: true,
+                  ),
+                  SegmentLinearIndicator(
+                    percent: 0.4,
+                    color: Color(0xFF6DD5F6),
+                  ),
+                  SegmentLinearIndicator(
+                    percent: 0.35,
+                    color: Color(0xFFEFEFEF),
+                  ),
+                ],
                 barRadius: Radius.circular(10.0),
                 animation: true,
                 animationDuration: 1000,
@@ -349,13 +357,21 @@ Complete example
               MultiSegmentLinearIndicator(
                 width: MediaQuery.of(context).size.width - 64,
                 lineHeight: 30.0,
-                firstSegmentPercent: 0.25,
-                secondSegmentPercent: 0.4,
-                thirdSegmentPercent: 0.35,
-                firstSegmentColor: Color(0xFF4285F4),
-                secondSegmentColor: Color(0xFF6DD5F6),
-                thirdSegmentColor: Color(0xFFEFEFEF),
-                enableStripes: [1],
+                segments: [
+                  SegmentLinearIndicator(
+                    percent: 0.25,
+                    color: Color(0xFF4285F4),
+                    enableStripes: true,
+                  ),
+                  SegmentLinearIndicator(
+                    percent: 0.4,
+                    color: Color(0xFF6DD5F6),
+                  ),
+                  SegmentLinearIndicator(
+                    percent: 0.35,
+                    color: Color(0xFFEFEFEF),
+                  ),
+                ],
                 barRadius: Radius.circular(10.0),
                 animation: true,
                 animationDuration: 1000,
@@ -379,13 +395,21 @@ Complete example
               MultiSegmentLinearIndicator(
                 width: MediaQuery.of(context).size.width - 40,
                 lineHeight: 20.0,
-                firstSegmentPercent: 0.3,
-                secondSegmentPercent: 0.4,
-                thirdSegmentPercent: 0.3,
-                firstSegmentColor: Color(0xFFBA0521),
-                secondSegmentColor: Color(0xFF071437),
-                thirdSegmentColor: Color(0xFFFF9205),
-                enableStripes: [2],
+                segments: [
+                  SegmentLinearIndicator(
+                    percent: 0.3,
+                    color: Color(0xFFBA0521),
+                  ),
+                  SegmentLinearIndicator(
+                    percent: 0.4,
+                    color: Color(0xFF071437),
+                    enableStripes: true,
+                  ),
+                  SegmentLinearIndicator(
+                    percent: 0.3,
+                    color: Color(0xFFFF9205),
+                  ),
+                ],
                 barRadius: Radius.circular(20),
               ),
               SizedBox(height: 10),
@@ -397,13 +421,22 @@ Complete example
               MultiSegmentLinearIndicator(
                 width: MediaQuery.of(context).size.width - 40,
                 lineHeight: 20.0,
-                firstSegmentPercent: firstSegment,
-                secondSegmentPercent: secondSegment,
-                thirdSegmentPercent: thirdSegment,
-                firstSegmentColor: Colors.green,
-                secondSegmentColor: Colors.blue,
-                thirdSegmentColor: Colors.orange,
-                enableStripes: [1, 3],
+                segments: [
+                  SegmentLinearIndicator(
+                    percent: firstSegment,
+                    color: Colors.green,
+                    enableStripes: true,
+                  ),
+                  SegmentLinearIndicator(
+                    percent: secondSegment,
+                    color: Colors.blue,
+                    enableStripes: true,
+                  ),
+                  SegmentLinearIndicator(
+                    percent: thirdSegment,
+                    color: Colors.orange,
+                  ),
+                ],
                 animation: true,
                 animateFromLastPercent: true,
                 animationDuration: 1000,
@@ -419,13 +452,17 @@ Complete example
               MultiSegmentLinearIndicator(
                 width: MediaQuery.of(context).size.width - 64,
                 lineHeight: 30.0,
-                firstSegmentPercent: 0.15,
-                secondSegmentPercent: 0.4,
-                thirdSegmentPercent: 0.45,
-                firstSegmentColor: Color(0xFFBA0521),
-                secondSegmentColor: Color(0xFFAEFAB00),
-                thirdSegmentColor: Color(0xFFEFEFEF),
-                enableStripes: [1],
+                segments: [
+                  SegmentLinearIndicator(
+                    percent: 0.15,
+                    color: Color(0xFFBA0521),
+                    enableStripes: true,
+                  ),
+                  SegmentLinearIndicator(
+                      percent: 0.4, color: Color(0xFFAEFAB00)),
+                  SegmentLinearIndicator(
+                      percent: 0.45, color: Color(0xFFEFEFEF)),
+                ],
                 animation: true,
                 animationDuration: 1000,
                 curve: Curves.decelerate,

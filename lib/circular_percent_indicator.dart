@@ -73,6 +73,9 @@ class CircularPercentIndicator extends StatefulWidget {
   /// set true if you want to animate the linear from the last percent value you set
   final bool animateFromLastPercent;
 
+  /// set to false if you do not want the default behavior of initially animating up from 0%
+  final bool animateToInitialPercent;
+
   /// set false if you don't want to preserve the state of the widget
   final bool addAutomaticKeepAlive;
 
@@ -104,6 +107,13 @@ class CircularPercentIndicator extends StatefulWidget {
   /// Set to true if you want to rotate linear gradient in accordance to the [startAngle].
   final bool rotateLinearGradient;
 
+  /// Set true if you want to display only part of [linearGradient] based on percent value.
+  /// Works only if [rotateLinearGradient] is true.
+  final bool clipRotatedLinearGradient;
+
+  /// Return current percent value if animation is true.
+  final Function(double value)? onPercentValue;
+
   CircularPercentIndicator({
     Key? key,
     this.percent = 0.0,
@@ -126,6 +136,7 @@ class CircularPercentIndicator extends StatefulWidget {
     this.arcBackgroundColor,
     this.arcType,
     this.animateFromLastPercent = false,
+    this.animateToInitialPercent = true,
     this.reverse = false,
     this.curve = Curves.linear,
     this.maskFilter,
@@ -133,7 +144,9 @@ class CircularPercentIndicator extends StatefulWidget {
     this.onAnimationEnd,
     this.widgetIndicator,
     this.rotateLinearGradient = false,
+    this.clipRotatedLinearGradient = false,
     this.progressBorderColor,
+    this.onPercentValue,
   }) : super(key: key) {
     if (linearGradient != null && progressColor != null) {
       throw ArgumentError(
@@ -175,15 +188,17 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
   @override
   void initState() {
     if (widget.animation) {
+      if (!widget.animateToInitialPercent) _percent = widget.percent;
       _animationController = AnimationController(
         vsync: this,
         duration: Duration(milliseconds: widget.animationDuration),
       );
-      _animation = Tween(begin: 0.0, end: widget.percent).animate(
+      _animation = Tween(begin: _percent, end: widget.percent).animate(
         CurvedAnimation(parent: _animationController!, curve: widget.curve),
       )..addListener(() {
           setState(() {
             _percent = _animation!.value;
+            widget.onPercentValue?.call(_percent);
           });
           if (widget.restartAnimation && _percent == 1.0) {
             _animationController!.repeat(min: 0, max: 1.0);
@@ -271,6 +286,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
                 linearGradient: widget.linearGradient,
                 maskFilter: widget.maskFilter,
                 rotateLinearGradient: widget.rotateLinearGradient,
+                clipRotatedLinearGradient: widget.clipRotatedLinearGradient,
               ),
               child: (widget.center != null)
                   ? Center(child: widget.center)
@@ -323,7 +339,8 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
   double getCurrentPercent(double percent) {
     if (widget.arcType != null) {
       final angle = _getStartAngleFixedMargin(widget.arcType!).fixedStartAngle;
-      final fixedPercent = 1.0 / widget.percent * _percent;
+      final fixedPercent =
+          widget.percent > 0 ? 1.0 / widget.percent * _percent : 0;
       late double margin;
       if (widget.arcType == ArcType.HALF) {
         margin = 180 * widget.percent;
@@ -386,6 +403,7 @@ class _CirclePainter extends CustomPainter {
   final bool reverse;
   final MaskFilter? maskFilter;
   final bool rotateLinearGradient;
+  final bool clipRotatedLinearGradient;
 
   _CirclePainter({
     required this.lineWidth,
@@ -403,6 +421,7 @@ class _CirclePainter extends CustomPainter {
     this.arcType,
     this.maskFilter,
     required this.rotateLinearGradient,
+    required this.clipRotatedLinearGradient,
   }) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
@@ -459,7 +478,9 @@ class _CirclePainter extends CustomPainter {
                   radians(-90 - progress + startAngle) - correction)
               : GradientRotation(radians(-90.0 + startAngle) - correction),
           startAngle: radians(0).toDouble(),
-          endAngle: radians(progress).toDouble(),
+          endAngle: clipRotatedLinearGradient
+              ? radians(360).toDouble()
+              : radians(progress).toDouble(),
           tileMode: TileMode.clamp,
           colors: reverse
               ? linearGradient!.colors.reversed.toList()

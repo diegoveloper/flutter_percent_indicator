@@ -229,6 +229,11 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
   @override
   void didUpdateWidget(CircularPercentIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.radius != widget.radius) {
+      _diameter = widget.radius * 2;
+    }
+
     if (oldWidget.percent != widget.percent ||
         oldWidget.startAngle != widget.startAngle) {
       if (_animationController != null) {
@@ -254,7 +259,6 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
 
   @override
   Widget build(BuildContext context) {
-    _diameter = widget.radius * 2;
     super.build(context);
     var items = List<Widget>.empty(growable: true);
     if (widget.header != null) {

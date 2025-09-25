@@ -214,7 +214,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
     } else {
       _updateProgress();
     }
-    _diameter = widget.radius * 2;
+    _calculateDiameter();
     super.initState();
   }
 
@@ -229,6 +229,11 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
   @override
   void didUpdateWidget(CircularPercentIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.radius != widget.radius) {
+      _calculateDiameter();
+    }
+
     if (oldWidget.percent != widget.percent ||
         oldWidget.startAngle != widget.startAngle) {
       if (_animationController != null) {
@@ -248,8 +253,12 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
     _checkIfNeedCancelAnimation(oldWidget);
   }
 
-  _updateProgress() {
+  void _updateProgress() {
     setState(() => _percent = widget.percent);
+  }
+
+  void _calculateDiameter() {
+    _diameter = widget.radius * 2;
   }
 
   @override

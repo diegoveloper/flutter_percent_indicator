@@ -253,11 +253,11 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
     _checkIfNeedCancelAnimation(oldWidget);
   }
 
-  _updateProgress() {
+  void _updateProgress() {
     setState(() => _percent = widget.percent);
   }
 
-  _calculateDiameter() {
+  void _calculateDiameter() {
     _diameter = widget.radius * 2;
   }
 

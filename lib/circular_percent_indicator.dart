@@ -214,7 +214,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
     } else {
       _updateProgress();
     }
-    _diameter = widget.radius * 2;
+    _calculateDiameter();
     super.initState();
   }
 
@@ -231,7 +231,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.radius != widget.radius) {
-      _diameter = widget.radius * 2;
+      _calculateDiameter();
     }
 
     if (oldWidget.percent != widget.percent ||
@@ -255,6 +255,10 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
 
   _updateProgress() {
     setState(() => _percent = widget.percent);
+  }
+
+  _calculateDiameter() {
+    _diameter = widget.radius * 2;
   }
 
   @override
